@@ -84,8 +84,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_day"
-                android:textSize="16sp"
-                android:paddingStart="4dp" />
+                android:textSize="20sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
         </LinearLayout>
 
         <!-- 日历视图 -->
@@ -107,8 +108,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calendar_view"
-                android:textSize="16sp"
-                android:paddingStart="4dp" />
+                android:textSize="20sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
         </LinearLayout>
 
         <!-- 倒计时 -->
@@ -123,15 +125,16 @@
 
             <ImageView
                 android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_countdown" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="倒计时"
-                android:textSize="16sp"
-                android:paddingStart="4dp" />
+                android:text="@string/count_down"
+                android:textSize="20sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
         </LinearLayout>
 
         <!-- 任务 -->
@@ -152,9 +155,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="任务"
-                android:textSize="16sp"
-                android:paddingStart="4dp" />
+                android:text="@string/tasks"
+                android:textSize="20sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
         </LinearLayout>
     </LinearLayout>
 
