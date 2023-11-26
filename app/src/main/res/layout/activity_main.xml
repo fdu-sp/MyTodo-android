@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 顶部栏 -->
+    <LinearLayout
+        android:id="@+id/topBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <!-- 左侧用户名 -->
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="用户名"
+            android:textSize="16sp"
+            android:textColor="#000000"/>
+
+        <!-- 右侧搜索框 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="end"> <!-- 右对齐 -->
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:hint="搜索"
+                android:inputType="text"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_search"
+                android:layout_gravity="end"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- 中部列表 -->
+    <LinearLayout
+        android:id="@+id/centerListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topBarLayout"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/border_background">
+
+        <!-- 我的一天 -->
+        <LinearLayout
+            android:id="@+id/myDayItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_my_day"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的一天"
+                android:textSize="16sp"
+                android:paddingStart="4dp"/>
+        </LinearLayout>
+
+        <!-- 日历视图 -->
+        <LinearLayout
+            android:id="@+id/calendarViewItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_calendar"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日历视图"
+                android:textSize="16sp"
+                android:paddingStart="4dp"/>
+        </LinearLayout>
+
+        <!-- 倒计时 -->
+        <LinearLayout
+            android:id="@+id/countdownItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_countdown"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="倒计时"
+                android:textSize="16sp"
+                android:paddingStart="4dp"/>
+        </LinearLayout>
+
+        <!-- 任务 -->
+        <LinearLayout
+            android:id="@+id/allTasksItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_home"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="任务"
+                android:textSize="16sp"
+                android:paddingStart="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 底部可展开列表 -->
+    <ExpandableListView
+        android:id="@+id/bottomExpandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/centerListLayout"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"/>
+
+</RelativeLayout>
