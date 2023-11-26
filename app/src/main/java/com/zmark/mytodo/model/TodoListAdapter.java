@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.zmark.mytodo.R;
 
 import java.util.List;
@@ -59,7 +58,23 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         // 显示标签
         StringBuilder tagsStringBuilder = new StringBuilder();
         for (String tag : todoItem.getTags()) {
-            tagsStringBuilder.append(tag).append(", ");
+            if (tag.isEmpty()) {
+                continue;
+            }
+            if (tag.length() > 5) {
+                tag = tag.substring(0, 10) + "...";
+            }
+            if (tag.endsWith(",")) {
+                tag = tag.substring(0, tag.length() - 1);
+            }
+            if (tag.startsWith(",")) {
+                tag = tag.substring(1);
+            }
+            if (todoItem.getTags().indexOf(tag) == todoItem.getTags().size() - 1) {
+                tagsStringBuilder.append(tag);
+            } else {
+                tagsStringBuilder.append(tag).append(", ");
+            }
         }
         String tagsString = tagsStringBuilder.toString().trim();
         if (!tagsString.isEmpty()) {
