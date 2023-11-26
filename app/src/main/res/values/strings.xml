@@ -4,6 +4,7 @@
     <string name="isRecurring">为循环任务</string>
     <string name="hello">Hello ZMark!</string>
     <string name="home">Home</string>
+    <string name="task_view">任务视图</string>
     <string name="my_day">我的一天</string>
     <string name="calendar_view">日历视图</string>
     <string name="four_quadrants_view">四象限视图</string>
