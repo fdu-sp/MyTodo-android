@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:padding="1dp"
+    android:orientation="horizontal"
+    android:layout_marginStart="0dp">
+    
+    <!-- 左侧圆形勾选框 -->
+    <CheckBox
+        android:id="@+id/taskCheckBox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/check_box" />
+
+    <!-- 右侧，todoTitle -->
+    <TextView
+        android:id="@+id/taskTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+</LinearLayout>

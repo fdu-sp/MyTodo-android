@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.MyDayFragment;
+import com.zmark.mytodo.fragment.QuadrantViewFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         navigationMap.put(R.id.navigation_home, new HomeFragment());
         navigationMap.put(R.id.navigation_my_day, new MyDayFragment());
         navigationMap.put(R.id.navigation_calendar_view, new CalendarViewFragment());
+        navigationMap.put(R.id.navigation_four_quadrants_view, new QuadrantViewFragment());
     }
 
     @Override
