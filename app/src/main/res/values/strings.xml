@@ -11,4 +11,5 @@
     <string name="user_name">用户名</string>
     <string name="no_task_msg">没有任务</string>
     <string name="add_todo_item">添加todo</string>
+    <string name="search">搜索</string>
 </resources>
