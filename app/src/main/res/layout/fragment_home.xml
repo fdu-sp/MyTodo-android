@@ -49,7 +49,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <!-- 中部列表 -->
     <LinearLayout
         android:id="@+id/centerListLayout"
@@ -162,13 +161,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 底部可展开列表 -->
-    <ExpandableListView
-        android:id="@+id/bottomExpandableListView"
+    <!-- 底部任务组 -->
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/taskGroupRecyclerView"
         android:layout_below="@id/centerListLayout"
-        android:divider="#CCCCCC"
-        android:dividerHeight="1dp" />
-
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border_background"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        tools:visibility="visible"
+        tools:listitem="@layout/task_group_item" />
 </RelativeLayout>
