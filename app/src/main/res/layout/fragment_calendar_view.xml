@@ -1,0 +1,99 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendarGrid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="6"
+    android:columnCount="7"
+    android:layout_gravity="center"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/monthYearTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="7"
+        android:text="November 2023"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="8dp" />
+
+    <!-- Weekday labels -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sun"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mon"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Wed"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Thu"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Fri"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sat"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+
+    <!-- Calendar days -->
+    <!-- You can dynamically populate the days based on the actual month and year -->
+    <!-- For simplicity, here is a static example for the month of November 2023 -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="31"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_columnWeight="1" />
+    <!-- ... Repeat for the remaining days -->
+
+</GridLayout>

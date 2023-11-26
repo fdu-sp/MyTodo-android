@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.MyDayFragment;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void registerNavigations() {
         navigationMap.put(R.id.navigation_home, new HomeFragment());
         navigationMap.put(R.id.navigation_my_day, new MyDayFragment());
+        navigationMap.put(R.id.navigation_calendar_view, new CalendarViewFragment());
     }
 
     @Override
