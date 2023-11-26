@@ -10,4 +10,5 @@
     <string name="four_quadrants_view">四象限视图</string>
     <string name="user_name">用户名</string>
     <string name="no_task_msg">没有任务</string>
+    <string name="add_todo_item">添加todo</string>
 </resources>
