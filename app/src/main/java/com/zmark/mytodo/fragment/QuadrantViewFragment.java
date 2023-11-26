@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,15 +45,15 @@ public class QuadrantViewFragment extends Fragment {
         setupQuadrantRecyclerView(notUrgentNotImportantRecyclerView);
 
         // 为每个象限设置数据
-        List<String> urgentImportantTasks = getSampleTasks(4);
+        List<String> urgentImportantTasks = new ArrayList<>();
         List<String> notUrgentImportantTasks = getSampleTasks(15);
-        List<String> urgentNotImportantTasks = getSampleTasks(23);
+        List<String> urgentNotImportantTasks = getSampleTasks(4);
         List<String> notUrgentNotImportantTasks = getSampleTasks(40);
 
-        setQuadrantAdapter(urgentImportantRecyclerView, urgentImportantTasks);
-        setQuadrantAdapter(notUrgentImportantRecyclerView, notUrgentImportantTasks);
-        setQuadrantAdapter(urgentNotImportantRecyclerView, urgentNotImportantTasks);
-        setQuadrantAdapter(notUrgentNotImportantRecyclerView, notUrgentNotImportantTasks);
+        setQuadrantAdapter(view, urgentImportantRecyclerView, urgentImportantTasks, R.id.urgentImportantEmptyTextView);
+        setQuadrantAdapter(view, notUrgentImportantRecyclerView, notUrgentImportantTasks, R.id.notUrgentImportantEmptyTextView);
+        setQuadrantAdapter(view, urgentNotImportantRecyclerView, urgentNotImportantTasks, R.id.urgentNotImportantEmptyTextView);
+        setQuadrantAdapter(view, notUrgentNotImportantRecyclerView, notUrgentNotImportantTasks, R.id.notUrgentNotImportantEmptyTextView);
     }
 
     private void setupQuadrantRecyclerView(RecyclerView recyclerView) {
@@ -63,6 +64,20 @@ public class QuadrantViewFragment extends Fragment {
     private void setQuadrantAdapter(RecyclerView recyclerView, List<String> tasks) {
         QuadrantAdapter quadrantAdapter = new QuadrantAdapter(tasks);
         recyclerView.setAdapter(quadrantAdapter);
+    }
+
+    private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView, List<String> tasks, int emptyTaskTextId) {
+        if (tasks.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            TextView textView = view.findViewById(emptyTaskTextId);
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            TextView textView = view.findViewById(emptyTaskTextId);
+            textView.setVisibility(View.GONE);
+            QuadrantAdapter quadrantAdapter = new QuadrantAdapter(tasks);
+            recyclerView.setAdapter(quadrantAdapter);
+        }
     }
 
     private List<String> getSampleTasks(int taskNumber) {

@@ -18,7 +18,7 @@ public class QuadrantAdapter extends RecyclerView.Adapter<QuadrantAdapter.Quadra
 
     private final List<String> tasks;
 
-    public QuadrantAdapter(List<String> tasks) {
+    public QuadrantAdapter(@NonNull List<String> tasks) {
         this.tasks = tasks;
     }
 

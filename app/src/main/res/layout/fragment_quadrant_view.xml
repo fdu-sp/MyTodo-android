@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:layout_margin="3dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -22,6 +22,14 @@
             android:padding="4dp"
             android:background="#FFCDD2"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/urgentImportantEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_task_msg"
+            android:visibility="gone" />
     </androidx.cardview.widget.CardView>
 
     <!-- 重要不紧急 -->
@@ -30,7 +38,7 @@
         android:layout_height="0dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:layout_margin="3dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -40,6 +48,14 @@
             android:padding="4dp"
             android:background="#C8E6C9"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/notUrgentImportantEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_task_msg"
+            android:visibility="gone" />
     </androidx.cardview.widget.CardView>
 
     <!-- 不重要但紧急 -->
@@ -48,7 +64,7 @@
         android:layout_height="0dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:layout_margin="3dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -58,6 +74,14 @@
             android:padding="4dp"
             android:background="#FFECB3"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/urgentNotImportantEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_task_msg"
+            android:visibility="gone" />
     </androidx.cardview.widget.CardView>
 
     <!-- 不重要不紧急 -->
@@ -66,7 +90,7 @@
         android:layout_height="0dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:layout_margin="3dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,6 +100,14 @@
             android:padding="4dp"
             android:background="#B2EBF2"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/notUrgentNotImportantEmptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_task_msg"
+            android:visibility="gone" />
     </androidx.cardview.widget.CardView>
 
 </GridLayout>
