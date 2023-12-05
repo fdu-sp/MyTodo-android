@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.api.HelloService;
 import com.zmark.mytodo.api.vo.Result;
+import com.zmark.mytodo.config.Config;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 
@@ -59,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         HelloService helloService;
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.31.61:8787/api/")
+                .baseUrl(Config.getRearBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         helloService = retrofit.create(HelloService.class);
