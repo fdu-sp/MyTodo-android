@@ -2,6 +2,7 @@ package com.zmark.mytodo.api.vo.task.req;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,13 +12,16 @@ import java.util.List;
  */
 public class TaskCreatReq {
     private String title;
-
-    private List<String> tagNames;
+    /**
+     * 可以为空，但是不可以为null，所以默认值为{}
+     */
+    private List<String> tagNames = new ArrayList<>();
 
     /**
      * content description
+     * 不可以为null，所以默认值为""
      */
-    private String description;
+    private String description = "";
 
     /**
      * priority info
@@ -34,4 +38,8 @@ public class TaskCreatReq {
     private Date expectedExecutionDate;
     private Time expectedExecutionStartPeriod;
     private Time expectedExecutionEndPeriod;
+
+    public TaskCreatReq(String todoTitle) {
+        this.title = todoTitle;
+    }
 }
