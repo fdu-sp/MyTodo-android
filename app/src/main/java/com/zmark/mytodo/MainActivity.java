@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zmark.mytodo.api.HelloService;
-import com.zmark.mytodo.api.vo.Result;
-import com.zmark.mytodo.config.Config;
+import com.zmark.mytodo.api.invariant.Msg;
+import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.MyDayFragment;
@@ -27,11 +27,9 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private final Map<Integer, Fragment> navigationMap = new HashMap<>();
 
     protected void registerNavigations() {
@@ -92,17 +90,23 @@ public class MainActivity extends AppCompatActivity {
 
         // 加载默认的Fragment
         loadFragment(new HomeFragment());
+
+        this.fetchHelloMsg();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        HelloService helloService;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.getRearBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        helloService = retrofit.create(HelloService.class);
+    }
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void fetchHelloMsg() {
+        HelloService helloService = MainApplication.getHelloService();
 
         Call<Result<String>> call = helloService.hello();
         call.enqueue(new Callback<Result<String>>() {
@@ -112,24 +116,19 @@ public class MainActivity extends AppCompatActivity {
                     Result<String> result = response.body();
                     assert result != null;
                     Toast.makeText(MainActivity.this, result.getObject(), Toast.LENGTH_SHORT).show();
-                    Log.i("HelloService", "onResponse: " + result.getMsg());
-                    Log.i("HelloService", "onResponse: " + result.getCode());
-                    Log.i("HelloService", "onResponse: " + result.getObject());
+                    Log.i(TAG, "onResponse: " + result.getMsg());
+                    Log.i(TAG, "onResponse: " + result.getCode());
+                    Log.i(TAG, "onResponse: " + result.getObject());
                 } else {
-                    Log.w("HelloService", "onResponse: " + response.errorBody());
+                    Log.w(TAG, "onResponse: " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Result<String>> call, @NonNull Throwable t) {
-                Log.e("HelloService", "onFailure: " + t.getMessage());
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
     }
 }

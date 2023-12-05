@@ -1,7 +1,7 @@
 package com.zmark.mytodo.api;
 
 
-import com.zmark.mytodo.api.vo.Result;
+import com.zmark.mytodo.api.result.Result;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

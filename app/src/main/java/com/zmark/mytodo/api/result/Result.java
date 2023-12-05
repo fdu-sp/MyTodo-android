@@ -1,4 +1,4 @@
-package com.zmark.mytodo.api.vo;
+package com.zmark.mytodo.api.result;
 
 public class Result<T> {
     private Integer code;

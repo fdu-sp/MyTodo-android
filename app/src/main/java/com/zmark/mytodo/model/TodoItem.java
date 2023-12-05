@@ -1,5 +1,7 @@
 package com.zmark.mytodo.model;
 
+import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,22 @@ public class TodoItem {
         this.dueDate = dueDate;
         this.isRecurring = isRecurring;
         this.isDone = false;
+    }
+
+    public TodoItem(TaskSimpleResp taskSimpleResp) {
+        this.title = taskSimpleResp.getTitle();
+        this.description = "";
+        this.tags = new ArrayList<>();
+        taskSimpleResp.getTags().forEach(tagSimpleResp -> this.tags.add(tagSimpleResp.getTagName()));
+        this.dueDate = taskSimpleResp.getDueDate();
+        this.isRecurring = false;
+        this.isDone = taskSimpleResp.getCompleted();
+    }
+
+    public static List<TodoItem> from(List<TaskSimpleResp> taskSimpleRespList) {
+        List<TodoItem> todoItemList = new ArrayList<>();
+        taskSimpleRespList.forEach(taskSimpleResp -> todoItemList.add(new TodoItem(taskSimpleResp)));
+        return todoItemList;
     }
 
     public String getTitle() {
