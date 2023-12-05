@@ -16,4 +16,7 @@ public interface TaskService {
 
     @POST("/api/task/complete/{task-id}")
     Call<Result<String>> completeTask(@Path("task-id") Long taskId);
+
+    @POST("/api/task/un-complete/{task-id}")
+    Call<Result<String>> unCompleteTask(@Path("task-id") Long taskId);
 }
