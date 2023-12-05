@@ -41,6 +41,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             Log.i(TAG, "position: " + position + (todoItem.isDone() ? " 已完成" : " 未完成"));
             holder.titleTextView.setText(todoItem.getTitle());
             // 设置CheckBox的选中状态和事件
+            holder.checkBox.setOnCheckedChangeListener(null);
+            // 使用 setTag 区分不同的 CheckBox
+            holder.checkBox.setTag(position);
             holder.checkBox.setChecked(todoItem.isDone());
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 // 处理选中和取消选中事件
@@ -82,6 +85,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             } else {
                 holder.recurringIconImageView.setVisibility(View.GONE);
             }
+            // 重要：确保每次设置 CheckBox 状态时都明确指定，避免 RecyclerView 复用导致的问题
+            holder.checkBox.setChecked(todoItem.isDone());
         }
     }
 
