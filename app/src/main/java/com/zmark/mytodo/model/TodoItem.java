@@ -70,6 +70,10 @@ public class TodoItem {
         return tagsStringBuilder.toString().trim();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

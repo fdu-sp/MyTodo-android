@@ -13,7 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.api.TaskService;
+import com.zmark.mytodo.api.result.Result;
+import com.zmark.mytodo.api.result.ResultCode;
 
 import java.util.List;
 
@@ -50,12 +54,12 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 if (isChecked) {
                     Log.i(TAG, "onCheckedChanged: 选中");
                     // 处理选中事件
-                    // 在此处执行你的操作
                     todoItem.changeToBeDone(); // 更新数据项的选中状态
+                    // 调用后端接口，完成任务
+                    completeTask(todoItem.getId());
                 } else {
                     Log.i(TAG, "onCheckedChanged: 取消选中");
                     // 处理取消选中事件
-                    // 在此处执行你的操作
                     todoItem.changeToBeUndone(); // 更新数据项的选中状态
                 }
                 // 通知Adapter刷新特定位置的项目
@@ -88,6 +92,32 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             // 重要：确保每次设置 CheckBox 状态时都明确指定，避免 RecyclerView 复用导致的问题
             holder.checkBox.setChecked(todoItem.isDone());
         }
+    }
+
+    private void completeTask(Long taskId) {
+        TaskService taskService = MainApplication.getTaskService();
+        taskService.completeTask(taskId).enqueue(new retrofit2.Callback<Result<String>>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<Result<String>> call, @NonNull retrofit2.Response<Result<String>> response) {
+                if (response.isSuccessful()) {
+                    Result<String> result = response.body();
+                    if (result == null) {
+                        Log.w(TAG, "result is null");
+                        return;
+                    }
+                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
+                        Log.i(TAG, "onResponse: 任务完成");
+                    } else {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<Result<String>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
     }
 
     @Override
