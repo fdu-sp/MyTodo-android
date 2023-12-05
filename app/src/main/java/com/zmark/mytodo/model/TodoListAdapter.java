@@ -16,6 +16,7 @@ import com.zmark.mytodo.R;
 import java.util.List;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
+    private static final String TAG = "TodoListAdapter";
 
     private final List<TodoItem> todoList;
 
@@ -34,19 +35,19 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TodoItem todoItem = todoList.get(position);
-        Log.i("to-do-item-debug", "position: " + position + (todoItem.isDone() ? " 已完成" : " 未完成"));
+        Log.i(TAG, "position: " + position + (todoItem.isDone() ? " 已完成" : " 未完成"));
         holder.titleTextView.setText(todoItem.getTitle());
         // 设置CheckBox的选中状态和事件
         holder.checkBox.setChecked(todoItem.isDone());
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // 处理选中和取消选中事件
             if (isChecked) {
-                Log.i("to-do-item-checkbox", "onCheckedChanged: 选中");
+                Log.i(TAG, "onCheckedChanged: 选中");
                 // 处理选中事件
                 // 在此处执行你的操作
                 todoItem.changeToBeDone(); // 更新数据项的选中状态
             } else {
-                Log.i("to-do-item-checkbox", "onCheckedChanged: 取消选中");
+                Log.i(TAG, "onCheckedChanged: 取消选中");
                 // 处理取消选中事件
                 // 在此处执行你的操作
                 todoItem.changeToBeUndone(); // 更新数据项的选中状态
@@ -115,5 +116,4 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             recurringIconImageView = view.findViewById(R.id.recurringIcon);
         }
     }
-
 }
