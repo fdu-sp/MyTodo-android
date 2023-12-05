@@ -77,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
             // 设置对话框按钮
             builder.setPositiveButton("确定", (dialog, which) -> {
                 // 处理用户点击确定按钮的逻辑
+                if (editTextTodo.getText().toString().isEmpty()) {
+                    // 如果待办事项为空，则不执行添加操作
+                    dialog.cancel();
+                }
                 String todoText = editTextTodo.getText().toString();
                 // 执行添加待办事项的操作
-                // 可以将任务添加到数据库或其他数据源
-                // 更新 UI 或重新加载数据
                 createNewTask(new TaskCreatReq(todoText));
+                // 关闭对话框
+                dialog.dismiss();
             });
 
             builder.setNegativeButton("取消", (dialog, which) -> {
