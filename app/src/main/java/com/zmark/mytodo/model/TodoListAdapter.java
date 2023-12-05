@@ -35,6 +35,12 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             } else if (!o1.isDone() && o2.isDone()) {
                 return -1;
             } else {
+                if (o1.getDueDate() == null) {
+                    return 1;
+                }
+                if (o2.getDueDate() == null) {
+                    return -1;
+                }
                 return o1.getDueDate().compareTo(o2.getDueDate());
             }
         });
