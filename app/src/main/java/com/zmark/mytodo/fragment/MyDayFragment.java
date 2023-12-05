@@ -67,7 +67,7 @@ public class MyDayFragment extends Fragment {
                     Result<List<TaskSimpleResp>> result = response.body();
                     if (result == null) {
                         Log.w(TAG, "result is null");
-                        Toast.makeText(getContext(), Msg.INTERNAL_SERVER_ERROR, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (result.getCode() == ResultCode.SUCCESS.getCode()) {
@@ -77,6 +77,7 @@ public class MyDayFragment extends Fragment {
                             Toast.makeText(getContext(), Msg.NO_TASKS_TODAY, Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        todoList.clear();
                         todoList.addAll(TodoItem.from(taskList));
                         updateUI();
                     } else {
@@ -96,12 +97,17 @@ public class MyDayFragment extends Fragment {
 
     private void updateUI() {
         requireActivity().runOnUiThread(() -> {
-            // 创建RecyclerView的Adapter
-            TodoListAdapter todoListAdapter = new TodoListAdapter(todoList);
-            // 设置RecyclerView的LayoutManager
-            todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-            // 将Adapter设置给RecyclerView
-            todoRecyclerView.setAdapter(todoListAdapter);
+            try {
+                // 创建RecyclerView的Adapter
+                TodoListAdapter todoListAdapter = new TodoListAdapter(todoList);
+                // 设置RecyclerView的LayoutManager
+                todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                // 将Adapter设置给RecyclerView
+                todoRecyclerView.setAdapter(todoListAdapter);
+            } catch (Exception e) {
+                Log.e(TAG, "updateUI: " + e.getMessage(), e);
+                Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
