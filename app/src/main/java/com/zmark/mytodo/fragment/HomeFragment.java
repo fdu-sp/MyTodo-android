@@ -1,11 +1,9 @@
 package com.zmark.mytodo.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,21 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.api.HelloService;
-import com.zmark.mytodo.api.vo.Result;
-import com.zmark.mytodo.config.Config;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -57,35 +46,6 @@ public class HomeFragment extends Fragment {
         // Set the adapter to the RecyclerView
         taskGroupRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         taskGroupRecyclerView.setAdapter(taskGroupAdapter);
-
-        HelloService helloService;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.getRearBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        helloService = retrofit.create(HelloService.class);
-
-        Call<Result<String>> call = helloService.hello();
-        call.enqueue(new Callback<Result<String>>() {
-            @Override
-            public void onResponse(@NonNull Call<Result<String>> call, @NonNull Response<Result<String>> response) {
-                if (response.isSuccessful()) {
-                    Result<String> result = response.body();
-                    assert result != null;
-                    Toast.makeText(getActivity(), result.getObject(), Toast.LENGTH_SHORT).show();
-                    Log.i("HelloService", "onResponse: " + result.getMsg());
-                    Log.i("HelloService", "onResponse: " + result.getCode());
-                    Log.i("HelloService", "onResponse: " + result.getObject());
-                } else {
-                    Log.w("HelloService", "onResponse: " + response.errorBody());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Result<String>> call, @NonNull Throwable t) {
-                Log.e("HelloService", "onFailure: " + t.getMessage());
-            }
-        });
     }
 
     private List<TaskGroup> getTaskGroups() {
