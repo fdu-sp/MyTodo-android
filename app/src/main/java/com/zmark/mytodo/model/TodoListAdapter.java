@@ -57,27 +57,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 //            notifyItemChanged(position);
         });
         // 显示标签
-        StringBuilder tagsStringBuilder = new StringBuilder();
-        for (String tag : todoItem.getTags()) {
-            if (tag.isEmpty()) {
-                continue;
-            }
-            if (tag.length() > 5) {
-                tag = tag.substring(0, Math.min(tag.length() - 1, 10)) + "...";
-            }
-            if (tag.endsWith(",")) {
-                tag = tag.substring(0, tag.length() - 1);
-            }
-            if (tag.startsWith(",")) {
-                tag = tag.substring(1);
-            }
-            if (todoItem.getTags().indexOf(tag) == todoItem.getTags().size() - 1) {
-                tagsStringBuilder.append(tag);
-            } else {
-                tagsStringBuilder.append(tag).append(", ");
-            }
-        }
-        String tagsString = tagsStringBuilder.toString().trim();
+        String tagsString = todoItem.getTagString();
         if (!tagsString.isEmpty()) {
             holder.tagsTextView.setText(tagsString);
         } else {

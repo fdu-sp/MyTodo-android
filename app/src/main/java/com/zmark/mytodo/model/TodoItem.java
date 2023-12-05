@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TodoItem {
+    private Long id;
     private String title;
     private String description;
     private List<String> tags;
@@ -23,6 +24,7 @@ public class TodoItem {
     }
 
     public TodoItem(TaskSimpleResp taskSimpleResp) {
+        this.id = taskSimpleResp.getId();
         this.title = taskSimpleResp.getTitle();
         this.description = "";
         this.tags = new ArrayList<>();
@@ -36,6 +38,30 @@ public class TodoItem {
         List<TodoItem> todoItemList = new ArrayList<>();
         taskSimpleRespList.forEach(taskSimpleResp -> todoItemList.add(new TodoItem(taskSimpleResp)));
         return todoItemList;
+    }
+
+    public String getTagString() {
+        StringBuilder tagsStringBuilder = new StringBuilder();
+        for (String tag : this.getTags()) {
+            if (tag.isEmpty()) {
+                continue;
+            }
+            if (tag.length() > 5) {
+                tag = tag.substring(0, Math.min(tag.length() - 1, 10)) + "...";
+            }
+            if (tag.endsWith(",")) {
+                tag = tag.substring(0, tag.length() - 1);
+            }
+            if (tag.startsWith(",")) {
+                tag = tag.substring(1);
+            }
+            if (this.getTags().indexOf(tag) == this.getTags().size() - 1) {
+                tagsStringBuilder.append(tag);
+            } else {
+                tagsStringBuilder.append(tag).append(", ");
+            }
+        }
+        return tagsStringBuilder.toString().trim();
     }
 
     public String getTitle() {
@@ -69,20 +95,4 @@ public class TodoItem {
     public void changeToBeUndone() {
         this.isDone = false;
     }
-
-    static public List<TodoItem> getToDoList(int dataNum) {
-        List<TodoItem> todoList = new ArrayList<>();
-        for (int i = 0; i < dataNum; i++) {
-            List<String> tags = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                tags.add("标签" + j);
-            }
-            // i%31得到的是0-30的整数，加上1得到1-31的整数，取两位的整数（只有一位的前面补零），作为日期
-            int modNum = i % 31 + 1;
-            String dueDate = "2023-10-" + (modNum < 10 ? "0" + modNum : modNum);
-            todoList.add(new TodoItem("任务" + i, "这是任务" + i + "的描述", tags, dueDate, i % 2 == 0));
-        }
-        return todoList;
-    }
-
 }
