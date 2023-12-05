@@ -13,6 +13,10 @@ public class TodoItem {
     private String dueDate;
     private boolean isRecurring;
     private boolean isDone;
+    /**
+     * 是否处于更新中
+     */
+    private boolean binding;
 
     public TodoItem(String title, String description, List<String> tags, String dueDate, boolean isRecurring) {
         this.title = title;
@@ -21,6 +25,7 @@ public class TodoItem {
         this.dueDate = dueDate;
         this.isRecurring = isRecurring;
         this.isDone = false;
+        this.binding = false;
     }
 
     public TodoItem(TaskSimpleResp taskSimpleResp) {
@@ -32,6 +37,7 @@ public class TodoItem {
         this.dueDate = taskSimpleResp.getDueDate();
         this.isRecurring = false;
         this.isDone = taskSimpleResp.getCompleted();
+        this.binding = false;
     }
 
     public static List<TodoItem> from(List<TaskSimpleResp> taskSimpleRespList) {
@@ -94,5 +100,13 @@ public class TodoItem {
 
     public void changeToBeUndone() {
         this.isDone = false;
+    }
+
+    public void setBinding(boolean binding) {
+        this.binding = binding;
+    }
+
+    public boolean isBinding() {
+        return binding;
     }
 }

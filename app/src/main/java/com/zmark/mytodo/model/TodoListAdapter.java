@@ -1,5 +1,7 @@
 package com.zmark.mytodo.model;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,43 +37,51 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TodoItem todoItem = todoList.get(position);
-        Log.i(TAG, "position: " + position + (todoItem.isDone() ? " 已完成" : " 未完成"));
-        holder.titleTextView.setText(todoItem.getTitle());
-        // 设置CheckBox的选中状态和事件
-        holder.checkBox.setChecked(todoItem.isDone());
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // 处理选中和取消选中事件
-            if (isChecked) {
-                Log.i(TAG, "onCheckedChanged: 选中");
-                // 处理选中事件
-                // 在此处执行你的操作
-                todoItem.changeToBeDone(); // 更新数据项的选中状态
+        if (!todoItem.isBinding()) {
+            Log.i(TAG, "position: " + position + (todoItem.isDone() ? " 已完成" : " 未完成"));
+            holder.titleTextView.setText(todoItem.getTitle());
+            // 设置CheckBox的选中状态和事件
+            holder.checkBox.setChecked(todoItem.isDone());
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // 处理选中和取消选中事件
+                if (isChecked) {
+                    Log.i(TAG, "onCheckedChanged: 选中");
+                    // 处理选中事件
+                    // 在此处执行你的操作
+                    todoItem.changeToBeDone(); // 更新数据项的选中状态
+                } else {
+                    Log.i(TAG, "onCheckedChanged: 取消选中");
+                    // 处理取消选中事件
+                    // 在此处执行你的操作
+                    todoItem.changeToBeUndone(); // 更新数据项的选中状态
+                }
+                // 通知Adapter刷新特定位置的项目
+                // 使用 Handler 延迟执行 notifyItemChanged
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    // 设置标志位，表示正在执行onBindViewHolder
+                    todoItem.setBinding(true);
+                    notifyItemChanged(position);
+                    // 重置标志位
+                    todoItem.setBinding(false);
+                });
+            });
+            // 显示标签
+            String tagsString = todoItem.getTagString();
+            if (!tagsString.isEmpty()) {
+                holder.tagsTextView.setText(tagsString);
             } else {
-                Log.i(TAG, "onCheckedChanged: 取消选中");
-                // 处理取消选中事件
-                // 在此处执行你的操作
-                todoItem.changeToBeUndone(); // 更新数据项的选中状态
+                holder.tagsTextView.setVisibility(View.GONE);
             }
-            // 通知Adapter刷新特定位置的项目
-            // TODO: 有bug，勾选后，向下拉动列表，会闪退
-//            notifyItemChanged(position);
-        });
-        // 显示标签
-        String tagsString = todoItem.getTagString();
-        if (!tagsString.isEmpty()) {
-            holder.tagsTextView.setText(tagsString);
-        } else {
-            holder.tagsTextView.setVisibility(View.GONE);
-        }
 
-        // 显示到期时间
-        holder.dueDateTextView.setText(todoItem.getDueDate());
+            // 显示到期时间
+            holder.dueDateTextView.setText(todoItem.getDueDate());
 
-        // 显示循环图标（如果是循环任务）
-        if (todoItem.isRecurring()) {
-            holder.recurringIconImageView.setVisibility(View.VISIBLE);
-        } else {
-            holder.recurringIconImageView.setVisibility(View.GONE);
+            // 显示循环图标（如果是循环任务）
+            if (todoItem.isRecurring()) {
+                holder.recurringIconImageView.setVisibility(View.VISIBLE);
+            } else {
+                holder.recurringIconImageView.setVisibility(View.GONE);
+            }
         }
     }
 
