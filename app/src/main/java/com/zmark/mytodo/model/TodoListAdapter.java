@@ -19,6 +19,7 @@ import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
@@ -27,7 +28,17 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     private final List<TodoItem> todoList;
 
     public TodoListAdapter(List<TodoItem> todoList) {
-        this.todoList = todoList;
+        this.todoList = new ArrayList<>();
+        todoList.sort((o1, o2) -> {
+            if (o1.isDone() && !o2.isDone()) {
+                return 1;
+            } else if (!o1.isDone() && o2.isDone()) {
+                return -1;
+            } else {
+                return o1.getDueDate().compareTo(o2.getDueDate());
+            }
+        });
+        this.todoList.addAll(todoList);
     }
 
     @NonNull
