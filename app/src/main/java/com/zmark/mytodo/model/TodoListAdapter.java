@@ -62,7 +62,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 continue;
             }
             if (tag.length() > 5) {
-                tag = tag.substring(0, 10) + "...";
+                tag = tag.substring(0, Math.min(tag.length() - 1, 10)) + "...";
             }
             if (tag.endsWith(",")) {
                 tag = tag.substring(0, tag.length() - 1);
