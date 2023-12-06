@@ -129,17 +129,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openLeftDrawer(View view) {
-        DrawerLayout drawerLayout = findViewById(R.id.top_left_nav_view);
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-
-    public void openPopupMenu(View view) {
-    }
-
     // 打开左侧抽屉菜单的方法
     private void openLeftDrawer() {
-        DrawerLayout drawerLayout = findViewById(R.id.top_left_nav_view);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.openDrawer(GravityCompat.START);
     }
 

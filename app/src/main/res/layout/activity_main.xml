@@ -1,8 +1,80 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- 主要内容布局 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 自定义顶部导航栏 -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/top_nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <!-- 左侧图标用于打开左侧抽屉菜单 -->
+                <ImageView
+                    android:id="@+id/icon_left"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_top_menu_left"
+                    android:contentDescription="@string/top_menu_left_des" />
+
+                <!-- 右侧图标用于打开普通菜单栏 -->
+                <ImageView
+                    android:id="@+id/icon_right"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_top_menu_right"
+                    android:contentDescription="@string/top_menu_right_des" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Content Container -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_nav_bar"
+            android:layout_above="@id/bottom_navigation"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <!-- Floating Action Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="70dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/add_todo_item"
+            android:src="@drawable/ic_add"
+            app:elevation="6dp"
+            tools:ignore="RelativeOverlap" />
+
+        <!-- Bottom Navigation View -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottom_navigation_menu" />
+    </RelativeLayout>
 
     <!-- 左侧抽屉菜单 -->
     <com.google.android.material.navigation.NavigationView
@@ -10,70 +82,5 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
         app:menu="@menu/top_left_nav_menu" />
-
-    <!-- 自定义顶部导航栏 -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways">
-
-            <!-- 左侧图标用于打开左侧抽屉菜单 -->
-            <ImageView
-                android:id="@+id/icon_left"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_top_menu_left"
-                android:contentDescription="@string/top_menu_left_des"
-                android:onClick="openLeftDrawer" />
-
-            <!-- 右侧图标用于打开普通菜单栏 -->
-            <ImageView
-                android:id="@+id/icon_right"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_top_menu_right"
-                android:contentDescription="@string/top_menu_right_des"
-                android:onClick="openPopupMenu" />
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Content Container -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_todo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="@string/add_todo_item"
-        android:src="@drawable/ic_add"
-        app:elevation="6dp"
-        tools:ignore="RelativeOverlap" />
-
-    <!-- Bottom Navigation View -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation_menu" />
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
