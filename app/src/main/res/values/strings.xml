@@ -14,4 +14,6 @@
     <string name="search">搜索</string>
     <string name="count_down">倒计时</string>
     <string name="tasks">任务</string>
+    <string name="top_menu_left_des">清单</string>
+    <string name="top_menu_right_des">筛选选项</string>
 </resources>
