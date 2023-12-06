@@ -1,7 +1,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- 左侧抽屉菜单 -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/top_left_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="gone"
+        app:menu="@menu/top_left_nav_menu" />
+
+    <!-- 自定义顶部导航栏 -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <!-- 左侧图标用于打开左侧抽屉菜单 -->
+            <ImageView
+                android:id="@+id/icon_left"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_top_menu_left"
+                android:contentDescription="@string/top_menu_left_des"
+                android:onClick="openLeftDrawer" />
+
+            <!-- 右侧图标用于打开普通菜单栏 -->
+            <ImageView
+                android:id="@+id/icon_right"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_top_menu_right"
+                android:contentDescription="@string/top_menu_right_des"
+                android:onClick="openPopupMenu" />
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Content Container -->
     <FrameLayout
@@ -22,7 +66,8 @@
         android:layout_marginEnd="20dp"
         android:contentDescription="@string/add_todo_item"
         android:src="@drawable/ic_add"
-        app:elevation="6dp" />
+        app:elevation="6dp"
+        tools:ignore="RelativeOverlap" />
 
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

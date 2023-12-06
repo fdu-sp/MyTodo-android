@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +29,7 @@ import com.zmark.mytodo.fragment.QuadrantViewFragment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 隐藏默认的ActionBar
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
+        // 注册顶部导航栏
+        this.registerTopNavigations();
         // 注册底部导航栏
         this.registerBottomNavigations();
         // 注册 FloatingActionButton
@@ -52,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    private void registerTopNavigations() {
+        ImageView iconLeft = findViewById(R.id.icon_left);
+        ImageView iconRight = findViewById(R.id.icon_right);
+
+        // 设置左侧图标的点击事件
+        iconLeft.setOnClickListener(view -> openLeftDrawer());
+
+        // 设置右侧图标的点击事件
+        iconRight.setOnClickListener(view -> openPopupMenu());
     }
 
     private void registerBottomNavigations() {
@@ -108,6 +127,26 @@ public class MainActivity extends AppCompatActivity {
 
             builder.show();
         });
+    }
+
+    public void openLeftDrawer(View view) {
+        DrawerLayout drawerLayout = findViewById(R.id.top_left_nav_view);
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    public void openPopupMenu(View view) {
+    }
+
+    // 打开左侧抽屉菜单的方法
+    private void openLeftDrawer() {
+        DrawerLayout drawerLayout = findViewById(R.id.top_left_nav_view);
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    // 打开普通菜单栏的方法
+    private void openPopupMenu() {
+        // 在这里实现打开普通菜单栏的逻辑
+        // 例如，使用 PopupMenu 或者显示一个自定义的菜单
     }
 
     private void loadFragment(Fragment fragment) {
