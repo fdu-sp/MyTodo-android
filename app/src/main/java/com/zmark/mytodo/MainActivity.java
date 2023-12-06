@@ -35,19 +35,30 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final Map<Integer, Fragment> navigationMap = new HashMap<>();
 
-    protected void registerNavigations() {
-        navigationMap.put(R.id.navigation_home, new HomeFragment());
-        navigationMap.put(R.id.navigation_my_day, new MyDayFragment());
-        navigationMap.put(R.id.navigation_calendar_view, new CalendarViewFragment());
-        navigationMap.put(R.id.navigation_four_quadrants_view, new QuadrantViewFragment());
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // 注册导航
-        this.registerNavigations();
+        // 注册底部导航栏
+        this.registerBottomNavigations();
+        // 注册 FloatingActionButton
+        this.registerFloatingActionButton();
+        // 加载默认的Fragment
+        this.loadFragment(new HomeFragment());
+        // 获取欢迎信息
+        this.fetchHelloMsg();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    private void registerBottomNavigations() {
+        navigationMap.put(R.id.navigation_home, new HomeFragment());
+        navigationMap.put(R.id.navigation_my_day, new MyDayFragment());
+        navigationMap.put(R.id.navigation_calendar_view, new CalendarViewFragment());
+        navigationMap.put(R.id.navigation_four_quadrants_view, new QuadrantViewFragment());
         // 设置底部导航的点击事件
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnItemSelectedListener(item -> {
@@ -59,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        // 获取 FloatingActionButton
-        FloatingActionButton fabAddTodo = findViewById(R.id.fab_add_todo);
+    }
 
+    private void registerFloatingActionButton() {
+        // 设置 FloatingActionButton 点击事件
+        FloatingActionButton fabAddTodo = findViewById(R.id.fab_add_todo);
         // 设置点击监听器
         fabAddTodo.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -95,16 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
             builder.show();
         });
-
-        // 加载默认的Fragment
-        loadFragment(new HomeFragment());
-
-        this.fetchHelloMsg();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void loadFragment(Fragment fragment) {
