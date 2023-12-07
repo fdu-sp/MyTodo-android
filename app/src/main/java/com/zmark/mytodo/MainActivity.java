@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.zmark.mytodo.api.ApiUtils;
 import com.zmark.mytodo.api.HelloService;
 import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.invariant.Msg;
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "onResponse: " + result.getCode());
                     Log.i(TAG, "onResponse: " + result.getObject());
                 } else {
-                    Log.w(TAG, "onResponse: " + response.errorBody());
+                    ApiUtils.handleResponseError(TAG, response);
                 }
             }
 
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Log.w(TAG, "onResponse: " + response.errorBody());
+                    ApiUtils.handleResponseError(TAG, response);
                 }
             }
 
