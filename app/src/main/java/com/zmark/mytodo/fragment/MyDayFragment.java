@@ -25,7 +25,7 @@ import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
-import com.zmark.mytodo.fragment.inner.BottomSheetFragment;
+import com.zmark.mytodo.fragment.inner.BottomSortSheetFragment;
 import com.zmark.mytodo.handler.ClickListener;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
@@ -113,15 +113,16 @@ public class MyDayFragment extends Fragment implements ClickListener {
     }
 
     private void showSortDialog() {
-        BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
-        bottomSheetFragment.setSortListener((choiceType, sortTypeE) -> {
+        BottomSortSheetFragment bottomSortSheetFragment = new BottomSortSheetFragment();
+        bottomSortSheetFragment.setSortListener((sortTypeE) -> {
             // 根据用户选择的分组方式和排序方式对todoList进行排序
             this.sortType = sortTypeE;
             this.sortData(TodoItemComparators.getComparator(this.sortType));
             // 更新UI
             this.updateUI();
         });
-        bottomSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomSheetFragment.getTag());
+        //  todo setGroupListener
+        bottomSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomSortSheetFragment.getTag());
     }
 
     private void fetchData() {
