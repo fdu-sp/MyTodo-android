@@ -4,10 +4,11 @@
     <item
         android:id="@+id/hide_or_show_details"
         android:icon="@drawable/ic_top_menu_left"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:title="@string/show_or_hide_details" />
     <item
         android:id="@+id/menu_task_sort"
         android:icon="@drawable/ic_top_menu_right"
-        android:title="@string/sort"
+        android:title="@string/group_and_sort"
         app:showAsAction="ifRoom" />
 </menu>

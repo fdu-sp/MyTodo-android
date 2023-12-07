@@ -29,7 +29,6 @@ import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
 import com.zmark.mytodo.fragment.inner.BottomSortSheetFragment;
-import com.zmark.mytodo.handler.ClickListener;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
@@ -44,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyDayFragment extends Fragment implements ClickListener {
+public class MyDayFragment extends Fragment {
     private static final String TAG = "MyDayFragment";
     private static final String PREF_NAME = "MyPrefs";
     private static final String KEY_GROUP_BY = "group_by";
@@ -89,20 +88,36 @@ public class MyDayFragment extends Fragment implements ClickListener {
         this.todoRecyclerView = view.findViewById(R.id.todoRecyclerView);
     }
 
+    private void initPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+        // 替换为自定义的菜单资源
+        popupMenu.inflate(R.menu.menu_myday);
+        // 设置菜单项-显示or隐藏细节
+        this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
+        popupMenu.setOnMenuItemClickListener(item -> {
+            MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
+            if (menuItemHandler != null) {
+                menuItemHandler.handle(item);
+            }
+            return true;
+        });
+        popupMenu.show();
+    }
+
     private void registerTopMenu() {
         this.menuHandlerMap.put(R.id.menu_task_sort, item -> {
-            showSortDialog();
-            Toast.makeText(getContext(), "排序待办事项", Toast.LENGTH_SHORT).show();
+            showGroupAndSortDialog();
         });
         this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
             // 切换状态
             detailsVisible = !detailsVisible;
             setDetailShowMenuItem(item);
+            // todo
             Toast.makeText(getContext(), "显示or隐藏细节", Toast.LENGTH_SHORT).show();
         });
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.setOnRightIconClickListener(this);
+            mainActivity.setOnRightIconClickListener(this::initPopupMenu);
         }
     }
 
@@ -123,7 +138,7 @@ public class MyDayFragment extends Fragment implements ClickListener {
         }
     }
 
-    private void showSortDialog() {
+    private void showGroupAndSortDialog() {
         BottomSortSheetFragment bottomSortSheetFragment =
                 new BottomSortSheetFragment(this.groupType, this.sortType);
         bottomSortSheetFragment.setSortListener((sortTypeE) -> {
@@ -201,23 +216,6 @@ public class MyDayFragment extends Fragment implements ClickListener {
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onRightIconClick(View view) {
-        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
-        // 替换为自定义的菜单资源
-        popupMenu.inflate(R.menu.menu_myday);
-        // 设置菜单项-显示or隐藏细节
-        this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
-        popupMenu.setOnMenuItemClickListener(item -> {
-            MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
-            if (menuItemHandler != null) {
-                menuItemHandler.handle(item);
-            }
-            return true;
-        });
-        popupMenu.show();
     }
 
     /**

@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         // 延迟 500ms 打开抽屉菜单
         drawerLayout.postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), 500);
-//        drawerLayout.openDrawer(GravityCompat.START);
     }
 
     // 打开普通菜单栏的方法
