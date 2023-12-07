@@ -11,6 +11,7 @@ public class TodoItem {
     private String description;
     private List<String> tags;
     private String dueDate;
+    private String expectedDate;
     private boolean isRecurring;
     private boolean isDone;
     /**
@@ -35,6 +36,7 @@ public class TodoItem {
         this.tags = new ArrayList<>();
         taskSimpleResp.getTags().forEach(tagSimpleResp -> this.tags.add(tagSimpleResp.getTagName()));
         this.dueDate = taskSimpleResp.getDueDate();
+        this.expectedDate = taskSimpleResp.getExpectedDate();
         this.isRecurring = false;
         this.isDone = taskSimpleResp.getCompleted();
         this.binding = false;
@@ -88,6 +90,10 @@ public class TodoItem {
 
     public String getDueDate() {
         return dueDate;
+    }
+
+    public String getExpectedDate() {
+        return expectedDate;
     }
 
     public boolean isRecurring() {

@@ -14,6 +14,7 @@ public class TaskSimpleResp {
     private String title;
     private String description;
     private String dueDate;
+    private String expectedDate;
     private Boolean completed;
     private String completedTime;
     private Boolean archived;
@@ -67,6 +68,10 @@ public class TaskSimpleResp {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getExpectedDate() {
+        return expectedDate;
     }
 
     public Boolean getCompleted() {
