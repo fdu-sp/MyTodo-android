@@ -28,6 +28,7 @@ import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.MyDayFragment;
 import com.zmark.mytodo.fragment.QuadrantViewFragment;
+import com.zmark.mytodo.handler.ClickListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final Map<Integer, Fragment> navigationMap = new HashMap<>();
-    
+    private ClickListener onRightIconClickListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    /**
+     * 设置右侧图标菜单的的点击事件
+     */
+    public void setOnRightIconClickListener(ClickListener listener) {
+        this.onRightIconClickListener = listener;
+    }
+
     private void registerTopNavigations() {
         ImageView iconLeft = findViewById(R.id.icon_left);
         ImageView iconRight = findViewById(R.id.icon_right);
@@ -72,7 +81,13 @@ public class MainActivity extends AppCompatActivity {
         iconLeft.setOnClickListener(view -> openLeftDrawer());
 
         // 设置右侧图标的点击事件
-        iconRight.setOnClickListener(view -> openPopupMenu());
+        iconRight.setOnClickListener(view -> {
+            if (this.onRightIconClickListener != null) {
+                this.onRightIconClickListener.onRightIconClick();
+            } else {
+                openPopupMenu();
+            }
+        });
     }
 
     private void registerBottomNavigations() {
@@ -158,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
+        this.setOnRightIconClickListener(null);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

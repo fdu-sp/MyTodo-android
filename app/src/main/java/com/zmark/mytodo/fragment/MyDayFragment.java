@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.api.TaskService;
@@ -20,6 +21,7 @@ import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
+import com.zmark.mytodo.handler.ClickListener;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
 
@@ -30,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyDayFragment extends Fragment {
+public class MyDayFragment extends Fragment implements ClickListener {
     private static final String TAG = "MyDayFragment";
 
     private RecyclerView todoRecyclerView;
@@ -47,12 +49,21 @@ public class MyDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myday, container, false);
         this.findViewAndInit(view);
+        // 注册顶部菜单的点击事件
+        this.registerTopMenu();
         this.fetchData();
         return view;
     }
 
     private void findViewAndInit(View view) {
         this.todoRecyclerView = view.findViewById(R.id.todoRecyclerView);
+    }
+
+    private void registerTopMenu() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.setOnRightIconClickListener(this);
+        }
     }
 
     private void fetchData() {
@@ -108,5 +119,10 @@ public class MyDayFragment extends Fragment {
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onRightIconClick() {
+        Toast.makeText(getContext(), "右侧图标被点击", Toast.LENGTH_SHORT).show();
     }
 }
