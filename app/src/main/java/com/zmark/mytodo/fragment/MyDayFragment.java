@@ -28,7 +28,7 @@ import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
-import com.zmark.mytodo.fragment.inner.BottomSortSheetFragment;
+import com.zmark.mytodo.fragment.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
@@ -57,7 +57,7 @@ public class MyDayFragment extends Fragment {
 
     private boolean detailsVisible;
 
-    private BottomSortSheetFragment.GroupTypeE groupType;
+    private BottomGroupAndSortSheetFragment.GroupTypeE groupType;
 
     private SortTypeE sortType;
 
@@ -139,9 +139,9 @@ public class MyDayFragment extends Fragment {
     }
 
     private void showGroupAndSortDialog() {
-        BottomSortSheetFragment bottomSortSheetFragment =
-                new BottomSortSheetFragment(this.groupType, this.sortType);
-        bottomSortSheetFragment.setSortListener((sortTypeE) -> {
+        BottomGroupAndSortSheetFragment bottomGroupAndSortSheetFragment =
+                new BottomGroupAndSortSheetFragment(this.groupType, this.sortType);
+        bottomGroupAndSortSheetFragment.setSortListener((sortTypeE) -> {
             // 根据用户选择的分组方式和排序方式对todoList进行排序
             this.sortType = sortTypeE;
             this.saveSelectedSortType(sortTypeE);
@@ -149,7 +149,7 @@ public class MyDayFragment extends Fragment {
             // 更新UI
             this.updateUI();
         });
-        bottomSortSheetFragment.setGroupListener((groupTypeE) -> {
+        bottomGroupAndSortSheetFragment.setGroupListener((groupTypeE) -> {
             // 根据用户选择的分组方式和排序方式对todoList进行排序
             this.groupType = groupTypeE;
             this.saveSelectGroupType(groupTypeE);
@@ -158,7 +158,7 @@ public class MyDayFragment extends Fragment {
             // 更新UI
 //            this.updateUI();
         });
-        bottomSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomSortSheetFragment.getTag());
+        bottomGroupAndSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomGroupAndSortSheetFragment.getTag());
     }
 
     private void fetchData() {
@@ -184,6 +184,8 @@ public class MyDayFragment extends Fragment {
                         }
                         todoList.clear();
                         todoList.addAll(TodoItem.from(taskList));
+                        // 根据用户选择的排序方式对todoList进行排序
+                        sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     } else {
                         Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
@@ -201,8 +203,6 @@ public class MyDayFragment extends Fragment {
     }
 
     private void updateUI() {
-        // 根据用户选择的排序方式对todoList进行排序
-        this.sortData(TodoItemComparators.getComparator(this.sortType));
         requireActivity().runOnUiThread(() -> {
             try {
                 // 创建RecyclerView的Adapter
@@ -221,16 +221,16 @@ public class MyDayFragment extends Fragment {
     /**
      * 从SharedPreferences获取保存的 GroupBy 状态
      */
-    private BottomSortSheetFragment.GroupTypeE getSavedGroupBy() {
+    private BottomGroupAndSortSheetFragment.GroupTypeE getSavedGroupBy() {
         Activity activity = getActivity();
         if (activity != null) {
             SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             // 从SharedPreferences获取保存的状态，默认为LIST
-            String groupBy = preferences.getString(KEY_GROUP_BY, BottomSortSheetFragment.GroupTypeE.LIST.getDesc());
-            return BottomSortSheetFragment.GroupTypeE.getByDesc(groupBy);
+            String groupBy = preferences.getString(KEY_GROUP_BY, BottomGroupAndSortSheetFragment.GroupTypeE.LIST.getDesc());
+            return BottomGroupAndSortSheetFragment.GroupTypeE.getByDesc(groupBy);
         }
         // 默认为LIST
-        return BottomSortSheetFragment.GroupTypeE.LIST;
+        return BottomGroupAndSortSheetFragment.GroupTypeE.LIST;
     }
 
     /**
@@ -248,7 +248,7 @@ public class MyDayFragment extends Fragment {
         return SortTypeE.DUE_DATE_FIRST;
     }
 
-    private void saveSelectGroupType(BottomSortSheetFragment.GroupTypeE groupType) {
+    private void saveSelectGroupType(BottomGroupAndSortSheetFragment.GroupTypeE groupType) {
         Activity activity = getActivity();
         if (activity != null) {
             SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 
@@ -14,7 +13,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 
-public class BottomSortSheetFragment extends BottomSheetDialogFragment {
+public class BottomGroupAndSortSheetFragment extends BottomSheetDialogFragment {
 
     private final static String TAG = "BottomSheetFragment";
 
@@ -88,7 +87,7 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
     private final GroupTypeE groupTypeE;
     private final SortTypeE sortTypeE;
 
-    public BottomSortSheetFragment(GroupTypeE groupTypeE, SortTypeE sortTypeE) {
+    public BottomGroupAndSortSheetFragment(GroupTypeE groupTypeE, SortTypeE sortTypeE) {
         this.groupTypeE = groupTypeE;
         this.sortTypeE = sortTypeE;
     }
@@ -172,17 +171,6 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
                 }
             }
         }
-    }
-
-    /**
-     * 辅助方法：获取选中的选项文本
-     */
-    private String getSelectedOptionText(int selectedId) {
-        RadioButton selectedRadioButton = requireView().findViewById(selectedId);
-        if (selectedRadioButton != null) {
-            return selectedRadioButton.getText().toString();
-        }
-        return "";
     }
 
     /**

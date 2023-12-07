@@ -15,10 +15,13 @@ public class TodoItemComparators {
     private static final Map<SortTypeE, Comparator<TodoItem>> sortComparatorMap = new HashMap<>();
 
     static {
-        sortComparatorMap.put(SortTypeE.TITLE_FIRST, titlePrecedence());
-        sortComparatorMap.put(SortTypeE.TAG_FIRST, tagPrecedence());
         sortComparatorMap.put(SortTypeE.DUE_DATE_FIRST, dueDatePrecedence());
         // todo ...
+//        sortComparatorMap.put(SortTypeE.PLAN_DATE_FIRST, dueDatePrecedence());
+        // todo ...
+//        sortComparatorMap.put(SortTypeE.PRIORITY_FIRST, dueDatePrecedence());
+        sortComparatorMap.put(SortTypeE.TITLE_FIRST, titlePrecedence());
+        sortComparatorMap.put(SortTypeE.TAG_FIRST, tagPrecedence());
     }
 
     public static Comparator<TodoItem> getComparator(SortTypeE sortType) {
