@@ -37,7 +37,6 @@ public class MyDayFragment extends Fragment {
 
     private List<TodoItem> todoList;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +45,7 @@ public class MyDayFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.todo_list_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_myday, container, false);
         this.findViewAndInit(view);
         this.fetchData();
         return view;

@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final Map<Integer, Fragment> navigationMap = new HashMap<>();
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // 注册 FloatingActionButton
         this.registerFloatingActionButton();
         // 加载默认的Fragment
-        this.loadFragment(new HomeFragment());
+        this.loadFragment(this.navigationMap.get(R.id.navigation_home));
         // 获取欢迎信息
         this.fetchHelloMsg();
     }
