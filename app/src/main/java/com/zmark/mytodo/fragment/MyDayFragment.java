@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -122,7 +123,11 @@ public class MyDayFragment extends Fragment implements ClickListener {
     }
 
     @Override
-    public void onRightIconClick() {
-        Toast.makeText(getContext(), "右侧图标被点击", Toast.LENGTH_SHORT).show();
+    public void onRightIconClick(View view) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+        // 替换为自定义的菜单资源
+        popupMenu.inflate(R.menu.menu_myday);
+//        popupMenu.getMenuInflater().inflate(R.menu.menu_myday, popupMenu.getMenu());
+        popupMenu.show();
     }
 }

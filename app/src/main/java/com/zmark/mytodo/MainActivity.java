@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final Map<Integer, Fragment> navigationMap = new HashMap<>();
     private ClickListener onRightIconClickListener;
+    private ImageView rightIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +75,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerTopNavigations() {
-        ImageView iconLeft = findViewById(R.id.icon_left);
-        ImageView iconRight = findViewById(R.id.icon_right);
+        ImageView leftIcon = findViewById(R.id.icon_left);
+        rightIcon = findViewById(R.id.icon_right);
 
         // 设置左侧图标的点击事件
-        iconLeft.setOnClickListener(view -> openLeftDrawer());
+        leftIcon.setOnClickListener(view -> openLeftDrawer());
 
         // 设置右侧图标的点击事件
-        iconRight.setOnClickListener(view -> {
+        rightIcon.setOnClickListener(view -> {
             if (this.onRightIconClickListener != null) {
-                this.onRightIconClickListener.onRightIconClick();
+                this.onRightIconClickListener.onRightIconClick(rightIcon);
             } else {
                 openPopupMenu();
             }
@@ -168,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 打开普通菜单栏的方法
     private void openPopupMenu() {
-        // 在这里实现打开普通菜单栏的逻辑
-        // 例如，使用 PopupMenu 或者显示一个自定义的菜单
+        // TODO: 2021/4/25 打开设置菜单？
+        Toast.makeText(MainActivity.this, "右侧图标被点击", Toast.LENGTH_SHORT).show();
     }
 
     private void loadFragment(Fragment fragment) {
