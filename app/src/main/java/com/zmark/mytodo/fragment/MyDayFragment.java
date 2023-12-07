@@ -23,12 +23,16 @@ import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
+import com.zmark.mytodo.comparator.task.SortTypeE;
+import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.fragment.inner.BottomSheetFragment;
 import com.zmark.mytodo.handler.ClickListener;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +51,8 @@ public class MyDayFragment extends Fragment implements ClickListener {
     private Map<Integer, MenuItemHandler> menuHandlerMap;
 
     private boolean detailsVisible;
+
+    private SortTypeE sortType;
 
     // todo: 切换细节的显示和隐藏
     // todo: 排序待办事项
@@ -74,6 +80,7 @@ public class MyDayFragment extends Fragment implements ClickListener {
 
     private void registerTopMenu() {
         this.menuHandlerMap.put(R.id.menu_task_sort, item -> {
+            showSortDialog();
             Toast.makeText(getContext(), "排序待办事项", Toast.LENGTH_SHORT).show();
         });
         this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
@@ -87,7 +94,11 @@ public class MyDayFragment extends Fragment implements ClickListener {
             mainActivity.setOnRightIconClickListener(this);
         }
     }
-    
+
+    private void sortData(Comparator<TodoItem> comparator) {
+        todoList.sort(comparator);
+    }
+
     private void setDetailShowMenuItem(MenuItem item) {
         // 根据当前状态进行设置
         if (detailsVisible) {
@@ -99,6 +110,18 @@ public class MyDayFragment extends Fragment implements ClickListener {
             item.setTitle("显示细节");
 //            item.setIcon(R.drawable.ic_hide_details); // 设置菜单项的图标
         }
+    }
+
+    private void showSortDialog() {
+        BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+        bottomSheetFragment.setSortListener((choiceType, sortTypeE) -> {
+            // 根据用户选择的分组方式和排序方式对todoList进行排序
+            this.sortType = sortTypeE;
+            this.sortData(TodoItemComparators.getComparator(this.sortType));
+            // 更新UI
+            this.updateUI();
+        });
+        bottomSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 
     private void fetchData() {
@@ -141,6 +164,8 @@ public class MyDayFragment extends Fragment implements ClickListener {
     }
 
     private void updateUI() {
+        // 根据用户选择的排序方式对todoList进行排序
+        this.sortData(TodoItemComparators.getComparator(this.sortType));
         requireActivity().runOnUiThread(() -> {
             try {
                 // 创建RecyclerView的Adapter

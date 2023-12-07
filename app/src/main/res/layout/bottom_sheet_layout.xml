@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 分组方式选择 -->
+    <RadioGroup
+        android:id="@+id/radioGroupGroupBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButtonList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="清单" />
+
+        <RadioButton
+            android:id="@+id/radioButtonTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="时间" />
+
+        <RadioButton
+            android:id="@+id/radioButtonTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标签" />
+
+        <RadioButton
+            android:id="@+id/radioButtonPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="优先级" />
+
+        <RadioButton
+            android:id="@+id/radioButtonNone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="无" />
+    </RadioGroup>
+
+    <!-- 排序方式选择 -->
+    <RadioGroup
+        android:id="@+id/radioGroupSortBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButtonDueDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="截止日期" />
+
+        <RadioButton
+            android:id="@+id/radioButtonTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标题" />
+
+        <RadioButton
+            android:id="@+id/radioButtonTagSort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标签" />
+    </RadioGroup>
+
+    <!-- 添加其他布局元素或按钮以供用户进一步交互 -->
+
+</LinearLayout>

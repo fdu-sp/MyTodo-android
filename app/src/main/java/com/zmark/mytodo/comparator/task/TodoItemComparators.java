@@ -4,12 +4,29 @@ import com.zmark.mytodo.model.TodoItem;
 
 import java.text.Collator;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 默认先按照状态排序
  */
 public class TodoItemComparators {
+    private static final Map<SortTypeE, Comparator<TodoItem>> sortComparatorMap = new HashMap<>();
+
+    static {
+        sortComparatorMap.put(SortTypeE.TITLE_FIRST, titlePrecedence());
+        sortComparatorMap.put(SortTypeE.TAG_FIRST, tagPrecedence());
+        sortComparatorMap.put(SortTypeE.DUE_DATE_FIRST, dueDatePrecedence());
+    }
+
+    public static Comparator<TodoItem> getComparator(SortTypeE sortType) {
+        Comparator<TodoItem> comparator = sortComparatorMap.get(sortType);
+        if (comparator == null) {
+            comparator = dueDatePrecedence();
+        }
+        return comparator;
+    }
 
     private static final Collator chinaCollator = Collator.getInstance(Locale.CHINA);
 
