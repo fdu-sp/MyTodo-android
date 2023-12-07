@@ -3,6 +3,7 @@ package com.zmark.mytodo;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.zmark.mytodo.api.HelloService;
 import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.invariant.Msg;
@@ -78,8 +80,16 @@ public class MainActivity extends AppCompatActivity {
         ImageView leftIcon = findViewById(R.id.icon_left);
         rightIcon = findViewById(R.id.icon_right);
 
-        // 设置左侧图标的点击事件
+        // 设置左侧图标的点击事件 -- 打开左侧抽屉菜单
         leftIcon.setOnClickListener(view -> openLeftDrawer());
+
+        // 设置抽屉菜单的最小宽度为屏幕宽度的85%
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
+        NavigationView navigationView = findViewById(R.id.top_left_nav_view);
+        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
+        params.width = (int) (screenWidth * 0.85);
+        navigationView.setLayoutParams(params);
 
         // 设置右侧图标的点击事件
         rightIcon.setOnClickListener(view -> {
