@@ -3,6 +3,7 @@ package com.zmark.mytodo.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -23,11 +24,14 @@ import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.api.vo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.handler.ClickListener;
+import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,10 +44,18 @@ public class MyDayFragment extends Fragment implements ClickListener {
 
     private List<TodoItem> todoList;
 
+    private Map<Integer, MenuItemHandler> menuHandlerMap;
+
+    private boolean detailsVisible;
+
+    // todo: 切换细节的显示和隐藏
+    // todo: 排序待办事项
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        todoList = new ArrayList<>();
+        this.todoList = new ArrayList<>();
+        this.menuHandlerMap = new HashMap<>();
+        this.detailsVisible = true;
     }
 
     @Override
@@ -61,9 +73,31 @@ public class MyDayFragment extends Fragment implements ClickListener {
     }
 
     private void registerTopMenu() {
+        this.menuHandlerMap.put(R.id.menu_task_sort, item -> {
+            Toast.makeText(getContext(), "排序待办事项", Toast.LENGTH_SHORT).show();
+        });
+        this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
+            // 切换状态
+            detailsVisible = !detailsVisible;
+            setDetailShowMenuItem(item);
+            Toast.makeText(getContext(), "显示or隐藏细节", Toast.LENGTH_SHORT).show();
+        });
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.setOnRightIconClickListener(this);
+        }
+    }
+    
+    private void setDetailShowMenuItem(MenuItem item) {
+        // 根据当前状态进行设置
+        if (detailsVisible) {
+            // 显示细节
+            item.setTitle("隐藏细节"); // 设置菜单项的 title
+//            item.setIcon(R.drawable.ic_show_details); // 设置菜单项的图标
+        } else {
+            // 隐藏细节
+            item.setTitle("显示细节");
+//            item.setIcon(R.drawable.ic_hide_details); // 设置菜单项的图标
         }
     }
 
@@ -127,7 +161,15 @@ public class MyDayFragment extends Fragment implements ClickListener {
         PopupMenu popupMenu = new PopupMenu(requireContext(), view);
         // 替换为自定义的菜单资源
         popupMenu.inflate(R.menu.menu_myday);
-//        popupMenu.getMenuInflater().inflate(R.menu.menu_myday, popupMenu.getMenu());
+        // 设置菜单项-显示or隐藏细节
+        this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
+        popupMenu.setOnMenuItemClickListener(item -> {
+            MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
+            if (menuItemHandler != null) {
+                menuItemHandler.handle(item);
+            }
+            return true;
+        });
         popupMenu.show();
     }
 }

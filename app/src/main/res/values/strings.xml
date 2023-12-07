@@ -16,4 +16,6 @@
     <string name="tasks">任务</string>
     <string name="top_menu_left_des">清单</string>
     <string name="top_menu_right_des">筛选选项</string>
+    <string name="sort">排序</string>
+    <string name="hide_or_show_details">隐藏or显示详细信息</string>
 </resources>
