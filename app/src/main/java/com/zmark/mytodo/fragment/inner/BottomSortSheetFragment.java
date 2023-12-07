@@ -20,7 +20,11 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
 
     public enum GroupTypeE {
         LIST(0, "清单"),
-        TAG(1, "截止时间");
+        TAG(1, "标签"),
+        DUE_DATE(2, "截止日期"),
+        PLAN_DATE(3, "规划日期"),
+        PRIORITY(4, "优先级"),
+        NONE(5, "无");
 
         private final int code;
         private final String desc;
