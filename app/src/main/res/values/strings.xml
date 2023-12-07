@@ -27,4 +27,6 @@
     <string name="none">无</string>
     <string name="sort_by">排序方式</string>
     <string name="title">标题</string>
+    <string name="avatar">头像</string>
+    <string name="username">ZMark</string>
 </resources>
