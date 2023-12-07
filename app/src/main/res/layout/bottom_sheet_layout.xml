@@ -66,7 +66,4 @@
             android:layout_height="wrap_content"
             android:text="标签" />
     </RadioGroup>
-
-    <!-- 添加其他布局元素或按钮以供用户进一步交互 -->
-
 </LinearLayout>

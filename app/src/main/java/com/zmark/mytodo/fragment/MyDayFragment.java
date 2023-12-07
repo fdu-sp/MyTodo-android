@@ -1,5 +1,8 @@
 package com.zmark.mytodo.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +46,9 @@ import retrofit2.Response;
 
 public class MyDayFragment extends Fragment implements ClickListener {
     private static final String TAG = "MyDayFragment";
+    private static final String PREF_NAME = "MyPrefs";
+    private static final String KEY_GROUP_BY = "group_by";
+    private static final String KEY_SORT_BY = "sort_by";
 
     private RecyclerView todoRecyclerView;
 
@@ -52,7 +58,10 @@ public class MyDayFragment extends Fragment implements ClickListener {
 
     private boolean detailsVisible;
 
+    private BottomSortSheetFragment.GroupTypeE groupType;
+
     private SortTypeE sortType;
+
 
     // todo: 切换细节的显示和隐藏
     // todo: 排序待办事项
@@ -62,6 +71,8 @@ public class MyDayFragment extends Fragment implements ClickListener {
         this.todoList = new ArrayList<>();
         this.menuHandlerMap = new HashMap<>();
         this.detailsVisible = true;
+        this.groupType = getSavedGroupBy();
+        this.sortType = getSavedSortBy();
     }
 
     @Override
@@ -113,15 +124,25 @@ public class MyDayFragment extends Fragment implements ClickListener {
     }
 
     private void showSortDialog() {
-        BottomSortSheetFragment bottomSortSheetFragment = new BottomSortSheetFragment();
+        BottomSortSheetFragment bottomSortSheetFragment =
+                new BottomSortSheetFragment(this.groupType, this.sortType);
         bottomSortSheetFragment.setSortListener((sortTypeE) -> {
             // 根据用户选择的分组方式和排序方式对todoList进行排序
             this.sortType = sortTypeE;
+            this.saveSelectedSortType(sortTypeE);
             this.sortData(TodoItemComparators.getComparator(this.sortType));
             // 更新UI
             this.updateUI();
         });
-        //  todo setGroupListener
+        bottomSortSheetFragment.setGroupListener((groupTypeE) -> {
+            // 根据用户选择的分组方式和排序方式对todoList进行排序
+            this.groupType = groupTypeE;
+            this.saveSelectGroupType(groupTypeE);
+            //  todo setGroupListener
+//            this.sortData(TodoItemComparators.getComparator(this.sortType));
+            // 更新UI
+//            this.updateUI();
+        });
         bottomSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomSortSheetFragment.getTag());
     }
 
@@ -197,5 +218,55 @@ public class MyDayFragment extends Fragment implements ClickListener {
             return true;
         });
         popupMenu.show();
+    }
+
+    /**
+     * 从SharedPreferences获取保存的 GroupBy 状态
+     */
+    private BottomSortSheetFragment.GroupTypeE getSavedGroupBy() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            // 从SharedPreferences获取保存的状态，默认为LIST
+            String groupBy = preferences.getString(KEY_GROUP_BY, BottomSortSheetFragment.GroupTypeE.LIST.getDesc());
+            return BottomSortSheetFragment.GroupTypeE.getByDesc(groupBy);
+        }
+        // 默认为LIST
+        return BottomSortSheetFragment.GroupTypeE.LIST;
+    }
+
+    /**
+     * 从SharedPreferences获取保存的 SortBy 状态
+     */
+    private SortTypeE getSavedSortBy() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            // 从SharedPreferences获取保存的状态，默认为DUE_DATE_FIRST
+            String sortBy = preferences.getString(KEY_SORT_BY, SortTypeE.DUE_DATE_FIRST.getDesc());
+            return SortTypeE.getByDesc(sortBy);
+        }
+        // 默认为DUE_DATE_FIRST
+        return SortTypeE.DUE_DATE_FIRST;
+    }
+
+    private void saveSelectGroupType(BottomSortSheetFragment.GroupTypeE groupType) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_GROUP_BY, groupType.getDesc());
+            editor.apply();
+        }
+    }
+
+    private void saveSelectedSortType(SortTypeE sortType) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_SORT_BY, sortType.getDesc());
+            editor.apply();
+        }
     }
 }

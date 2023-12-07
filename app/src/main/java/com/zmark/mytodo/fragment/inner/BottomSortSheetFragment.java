@@ -17,7 +17,6 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
 
     private final static String TAG = "BottomSheetFragment";
 
-
     public enum GroupTypeE {
         LIST(0, "清单"),
         TAG(1, "标签"),
@@ -85,20 +84,52 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
      */
     private SortSelectionListener sortListener;
 
+    private final GroupTypeE groupTypeE;
+    private final SortTypeE sortTypeE;
+
+    public BottomSortSheetFragment(GroupTypeE groupTypeE, SortTypeE sortTypeE) {
+        this.groupTypeE = groupTypeE;
+        this.sortTypeE = sortTypeE;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
+        // 注册表单选项
+        this.registerSelectionRadio(view);
+        return view;
+    }
 
-        // 分组监听器
+    private void registerSelectionRadio(View view) {
         RadioGroup groupByRadioGroup = view.findViewById(R.id.radioGroupGroupBy);
+
+        for (int i = 0; i < groupByRadioGroup.getChildCount(); i++) {
+            View child = groupByRadioGroup.getChildAt(i);
+            if (child instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) child;
+                if (String.valueOf(radioButton.getText()).equals(groupTypeE.getDesc())) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+            }
+        }
+        // 分组监听器
         groupByRadioGroup.setOnCheckedChangeListener(this::handleGroupSelection);
 
-        // 排序监听器
         RadioGroup sortByRadioGroup = view.findViewById(R.id.radioGroupSortBy);
+        for (int i = 0; i < sortByRadioGroup.getChildCount(); i++) {
+            View child = sortByRadioGroup.getChildAt(i);
+            if (child instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) child;
+                if (String.valueOf(radioButton.getText()).equals(sortTypeE.getDesc())) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+            }
+        }
+        // 排序监听器
         sortByRadioGroup.setOnCheckedChangeListener(this::handleSortSelection);
-
-        return view;
     }
 
     private void handleGroupSelection(RadioGroup radioGroup, int checkedId) {

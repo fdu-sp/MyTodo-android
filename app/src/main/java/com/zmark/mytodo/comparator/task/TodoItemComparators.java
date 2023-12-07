@@ -18,6 +18,7 @@ public class TodoItemComparators {
         sortComparatorMap.put(SortTypeE.TITLE_FIRST, titlePrecedence());
         sortComparatorMap.put(SortTypeE.TAG_FIRST, tagPrecedence());
         sortComparatorMap.put(SortTypeE.DUE_DATE_FIRST, dueDatePrecedence());
+        // todo ...
     }
 
     public static Comparator<TodoItem> getComparator(SortTypeE sortType) {

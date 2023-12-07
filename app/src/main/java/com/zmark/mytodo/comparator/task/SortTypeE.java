@@ -2,8 +2,10 @@ package com.zmark.mytodo.comparator.task;
 
 public enum SortTypeE {
     DUE_DATE_FIRST(0, "截止日期"),
-    TITLE_FIRST(1, "标题"),
-    TAG_FIRST(2, "标签");
+    PLAN_DATE_FIRST(1, "规划日期"),
+    PRIORITY_FIRST(2, "优先级"),
+    TITLE_FIRST(3, "标题"),
+    TAG_FIRST(4, "标签");
 
     private final int code;
     private final String desc;
