@@ -3,67 +3,95 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <!-- 分组方式标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分组方式"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
     <!-- 分组方式选择 -->
-    <RadioGroup
-        android:id="@+id/radioGroupGroupBy"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupGroupBy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radioButtonList"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipList"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="清单" />
 
-        <RadioButton
-            android:id="@+id/radioButtonTime"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTime"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="时间" />
 
-        <RadioButton
-            android:id="@+id/radioButtonTag"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTag"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="标签" />
 
-        <RadioButton
-            android:id="@+id/radioButtonPriority"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPriority"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="优先级" />
 
-        <RadioButton
-            android:id="@+id/radioButtonNone"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipNone"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="无" />
-    </RadioGroup>
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- 排序方式标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="排序方式"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
 
     <!-- 排序方式选择 -->
-    <RadioGroup
-        android:id="@+id/radioGroupSortBy"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupSortBy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radioButtonDueDate"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDueDate"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="截止日期" />
 
-        <RadioButton
-            android:id="@+id/radioButtonTitle"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTitle"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="标题" />
 
-        <RadioButton
-            android:id="@+id/radioButtonTagSort"
-            android:layout_width="match_parent"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTagSort"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="标签" />
-    </RadioGroup>
+    </com.google.android.material.chip.ChipGroup>
 </LinearLayout>

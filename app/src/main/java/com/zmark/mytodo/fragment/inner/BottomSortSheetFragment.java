@@ -5,11 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 
@@ -97,56 +98,79 @@ public class BottomSortSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
         // 注册表单选项
-        this.registerSelectionRadio(view);
+        this.registerSelectionChips(view);
         return view;
     }
 
-    private void registerSelectionRadio(View view) {
-        RadioGroup groupByRadioGroup = view.findViewById(R.id.radioGroupGroupBy);
+    private void registerSelectionChips(View view) {
+        // 分组方式选择
+        ChipGroup chipGroupGroupBy = view.findViewById(R.id.chipGroupGroupBy);
+        for (int i = 0; i < chipGroupGroupBy.getChildCount(); i++) {
+            View child = chipGroupGroupBy.getChildAt(i);
+            if (child instanceof Chip) {
+                Chip chip = (Chip) child;
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        // 取消其他Chip的选中状态
+                        uncheckOtherChips(chipGroupGroupBy, chip);
+                        handleGroupSelection(chip);
+                    }
+                });
 
-        for (int i = 0; i < groupByRadioGroup.getChildCount(); i++) {
-            View child = groupByRadioGroup.getChildAt(i);
-            if (child instanceof RadioButton) {
-                RadioButton radioButton = (RadioButton) child;
-                if (String.valueOf(radioButton.getText()).equals(groupTypeE.getDesc())) {
-                    radioButton.setChecked(true);
-                    break;
+                if (chip.getText().equals(groupTypeE.getDesc())) {
+                    chip.setChecked(true);
                 }
             }
         }
-        // 分组监听器
-        groupByRadioGroup.setOnCheckedChangeListener(this::handleGroupSelection);
 
-        RadioGroup sortByRadioGroup = view.findViewById(R.id.radioGroupSortBy);
-        for (int i = 0; i < sortByRadioGroup.getChildCount(); i++) {
-            View child = sortByRadioGroup.getChildAt(i);
-            if (child instanceof RadioButton) {
-                RadioButton radioButton = (RadioButton) child;
-                if (String.valueOf(radioButton.getText()).equals(sortTypeE.getDesc())) {
-                    radioButton.setChecked(true);
-                    break;
+        // 排序方式选择
+        ChipGroup chipGroupSortBy = view.findViewById(R.id.chipGroupSortBy);
+        for (int i = 0; i < chipGroupSortBy.getChildCount(); i++) {
+            View child = chipGroupSortBy.getChildAt(i);
+            if (child instanceof Chip) {
+                Chip chip = (Chip) child;
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        // 取消其他Chip的选中状态
+                        uncheckOtherChips(chipGroupSortBy, chip);
+                        handleSortSelection(chip);
+                    }
+                });
+
+                if (chip.getText().equals(sortTypeE.getDesc())) {
+                    chip.setChecked(true);
                 }
             }
         }
-        // 排序监听器
-        sortByRadioGroup.setOnCheckedChangeListener(this::handleSortSelection);
     }
 
-    private void handleGroupSelection(RadioGroup radioGroup, int checkedId) {
+    private void handleGroupSelection(Chip chip) {
         // 获取选中的排序方式
-        String groupType = getSelectedOptionText(checkedId);
+        String groupType = String.valueOf(chip.getText());
         // 调用回调函数，将选项传递给调用者
         if (groupListener != null) {
             groupListener.onOptionsSelected(GroupTypeE.getByDesc(groupType));
         }
     }
 
-    private void handleSortSelection(RadioGroup radioGroup, int checkedId) {
+    private void handleSortSelection(Chip chip) {
         // 获取选中的排序方式
-        String sortType = getSelectedOptionText(checkedId);
+        String sortType = String.valueOf(chip.getText());
         // 调用回调函数，将选项传递给调用者
         if (sortListener != null) {
             sortListener.onOptionsSelected(SortTypeE.getByDesc(sortType));
+        }
+    }
+
+    private void uncheckOtherChips(ChipGroup chipGroup, Chip selectedChip) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            View child = chipGroup.getChildAt(i);
+            if (child instanceof Chip) {
+                Chip chip = (Chip) child;
+                if (chip != selectedChip) {
+                    chip.setChecked(false);
+                }
+            }
         }
     }
 
