@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView iconLeft = findViewById(R.id.icon_left);
         this.animateIcon(iconLeft);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        // 延迟 500ms 打开抽屉菜单
-        drawerLayout.postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), 500);
+        // 延迟（ms）打开抽屉菜单
+        drawerLayout.postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), 250);
     }
 
     // 打开普通菜单栏的方法
