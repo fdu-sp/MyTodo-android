@@ -43,13 +43,12 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     static class TaskGroupViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView groupNameTextView;
-        private final RecyclerView taskGroupItemRecyclerView;
         private final TaskListAdapter taskListAdapter;
 
         public TaskGroupViewHolder(@NonNull View itemView) {
             super(itemView);
             groupNameTextView = itemView.findViewById(R.id.groupNameTextView);
-            taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
+            RecyclerView taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
 
             // Create a TaskAdapter for the nested RecyclerView
             taskListAdapter = new TaskListAdapter(new ArrayList<>());
