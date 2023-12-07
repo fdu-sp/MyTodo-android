@@ -1,5 +1,7 @@
 package com.zmark.mytodo;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -129,10 +131,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void animateIcon(ImageView icon) {
+        // 通过属性动画实现旋转效果
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(icon, "rotation", 0f, 180f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(rotation);
+        animatorSet.setDuration(500);  // 设置动画时长
+        animatorSet.start();
+    }
+
     // 打开左侧抽屉菜单的方法
     private void openLeftDrawer() {
+        ImageView iconLeft = findViewById(R.id.icon_left);
+        this.animateIcon(iconLeft);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        drawerLayout.openDrawer(GravityCompat.START);
+        // 延迟 500ms 打开抽屉菜单
+        drawerLayout.postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), 500);
+//        drawerLayout.openDrawer(GravityCompat.START);
     }
 
     // 打开普通菜单栏的方法
