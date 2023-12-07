@@ -15,6 +15,8 @@ public class TaskSimpleResp {
     private String description;
     private String dueDate;
     private String expectedDate;
+    private Boolean isImportant;
+    private Boolean isUrgent;
     private Boolean completed;
     private String completedTime;
     private Boolean archived;
@@ -22,11 +24,14 @@ public class TaskSimpleResp {
     private String createTime;
     private String updateTime;
 
-    public TaskSimpleResp(Long id, String title, String description, String dueDate, Boolean completed, String completedTime, Boolean archived, List<TagSimpleResp> tags, String createTime, String updateTime) {
+    public TaskSimpleResp(Long id, String title, String description, String dueDate, String expectedDate, Boolean isImportant, Boolean isUrgent, Boolean completed, String completedTime, Boolean archived, List<TagSimpleResp> tags, String createTime, String updateTime) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.expectedDate = expectedDate;
+        this.isImportant = isImportant;
+        this.isUrgent = isUrgent;
         this.completed = completed;
         this.completedTime = completedTime;
         this.archived = archived;
@@ -72,6 +77,26 @@ public class TaskSimpleResp {
 
     public String getExpectedDate() {
         return expectedDate;
+    }
+
+    public void setExpectedDate(String expectedDate) {
+        this.expectedDate = expectedDate;
+    }
+
+    public Boolean getImportant() {
+        return isImportant;
+    }
+
+    public void setImportant(Boolean important) {
+        isImportant = important;
+    }
+
+    public Boolean getUrgent() {
+        return isUrgent;
+    }
+
+    public void setUrgent(Boolean urgent) {
+        isUrgent = urgent;
     }
 
     public Boolean getCompleted() {

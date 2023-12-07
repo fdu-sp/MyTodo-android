@@ -12,6 +12,8 @@ public class TodoItem {
     private List<String> tags;
     private String dueDate;
     private String expectedDate;
+    private Boolean isImportant;
+    private Boolean isUrgent;
     private boolean isRecurring;
     private boolean isDone;
     /**
@@ -37,6 +39,8 @@ public class TodoItem {
         taskSimpleResp.getTags().forEach(tagSimpleResp -> this.tags.add(tagSimpleResp.getTagName()));
         this.dueDate = taskSimpleResp.getDueDate();
         this.expectedDate = taskSimpleResp.getExpectedDate();
+        this.isImportant = taskSimpleResp.getImportant();
+        this.isUrgent = taskSimpleResp.getUrgent();
         this.isRecurring = false;
         this.isDone = taskSimpleResp.getCompleted();
         this.binding = false;
@@ -94,6 +98,14 @@ public class TodoItem {
 
     public String getExpectedDate() {
         return expectedDate;
+    }
+
+    public Boolean getImportant() {
+        return isImportant;
+    }
+
+    public Boolean getUrgent() {
+        return isUrgent;
     }
 
     public boolean isRecurring() {

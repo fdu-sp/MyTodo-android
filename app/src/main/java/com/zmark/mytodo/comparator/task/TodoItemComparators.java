@@ -17,8 +17,7 @@ public class TodoItemComparators {
     static {
         sortComparatorMap.put(SortTypeE.DUE_DATE_FIRST, dueDatePrecedence());
         sortComparatorMap.put(SortTypeE.PLAN_DATE_FIRST, planDatePrecedence());
-        // todo ...
-//        sortComparatorMap.put(SortTypeE.PRIORITY_FIRST, dueDatePrecedence());
+        sortComparatorMap.put(SortTypeE.PRIORITY_FIRST, priorityPrecedence());
         sortComparatorMap.put(SortTypeE.TITLE_FIRST, titlePrecedence());
         sortComparatorMap.put(SortTypeE.TAG_FIRST, tagPrecedence());
     }
@@ -85,6 +84,22 @@ public class TodoItemComparators {
         return item1.getExpectedDate().compareTo(item2.getExpectedDate());
     }
 
+    private static int compareByPriority(TodoItem item1, TodoItem item2) {
+        if (item1.getUrgent() && !item2.getUrgent()) {
+            return -1;
+        } else if (!item1.getUrgent() && item2.getUrgent()) {
+            return 1;
+        } else {
+            if (item1.getImportant() && !item2.getImportant()) {
+                return -1;
+            } else if (!item1.getImportant() && item2.getImportant()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
     /**
      * 先按照状态排序，再截止日期优先
      */
@@ -121,6 +136,19 @@ public class TodoItemComparators {
                 return statusCompare;
             }
             return compareByExpectedDate(o1, o2);
+        };
+    }
+
+    /**
+     * 先按照状态排序，再优先级优先
+     */
+    public static Comparator<TodoItem> priorityPrecedence() {
+        return (o1, o2) -> {
+            int statusCompare = compareByStatus(o1, o2);
+            if (statusCompare != 0) {
+                return statusCompare;
+            }
+            return compareByPriority(o1, o2);
         };
     }
 
