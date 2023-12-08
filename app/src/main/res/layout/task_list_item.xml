@@ -32,5 +32,13 @@
         android:id="@+id/taskListCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="18sp"
+        android:layout_height="18sp"
+        android:src="@drawable/ic_arrow_down"
+        android:contentDescription="@string/list" />
 </LinearLayout>
