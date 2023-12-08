@@ -105,9 +105,7 @@ public class MyDayFragment extends Fragment {
     }
 
     private void registerTopMenu() {
-        this.menuHandlerMap.put(R.id.menu_task_sort, item -> {
-            showGroupAndSortDialog();
-        });
+        this.menuHandlerMap.put(R.id.menu_task_sort, item -> showGroupAndSortDialog());
         this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
             // 切换状态
             detailsVisible = !detailsVisible;
