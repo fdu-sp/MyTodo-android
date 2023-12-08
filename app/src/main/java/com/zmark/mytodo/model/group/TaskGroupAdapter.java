@@ -1,5 +1,6 @@
 package com.zmark.mytodo.model.group;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     }
 
     static class TaskGroupViewHolder extends RecyclerView.ViewHolder {
-
+        // todo count
         private final TextView groupNameTextView;
         private final TaskListAdapter taskListAdapter;
 
@@ -56,11 +57,12 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             taskGroupItemRecyclerView.setAdapter(taskListAdapter);
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void bind(TaskGroup taskGroup) {
-            groupNameTextView.setText(taskGroup.getGroupName());
+            groupNameTextView.setText(taskGroup.getName());
 
             // Update the task list in the nested RecyclerView
-            taskListAdapter.setTasks(taskGroup.getTaskListNameList());
+            taskListAdapter.setTasks(taskGroup.getTaskListSimpleList());
             taskListAdapter.notifyDataSetChanged();
         }
     }

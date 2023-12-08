@@ -14,9 +14,9 @@ import java.util.List;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
-    private final List<String> tasks;
+    private final List<TaskListSimple> tasks;
 
-    public TaskListAdapter(List<String> tasks) {
+    public TaskListAdapter(List<TaskListSimple> tasks) {
         this.tasks = tasks;
     }
 
@@ -29,7 +29,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        String task = tasks.get(position);
+        TaskListSimple task = tasks.get(position);
         holder.bind(task);
     }
 
@@ -38,12 +38,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         return tasks.size();
     }
 
-    public void setTasks(List<String> tasks) {
+    public void setTasks(List<TaskListSimple> tasks) {
         this.tasks.clear();
         this.tasks.addAll(tasks);
     }
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
+        // todo count
+        // todo 绑定点击事件
 
         private final TextView taskTitleView;
 
@@ -52,8 +54,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskTitleView = itemView.findViewById(R.id.task_list_item_title);
         }
 
-        public void bind(String task) {
-            taskTitleView.setText(task);
+        public void bind(TaskListSimple taskList) {
+            taskTitleView.setText(taskList.getName());
         }
     }
 }
