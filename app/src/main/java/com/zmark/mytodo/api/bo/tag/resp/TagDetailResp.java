@@ -1,4 +1,4 @@
-package com.zmark.mytodo.api.vo.tag.resp;
+package com.zmark.mytodo.api.bo.tag.resp;
 
 import java.util.List;
 

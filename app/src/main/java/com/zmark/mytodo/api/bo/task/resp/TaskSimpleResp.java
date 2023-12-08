@@ -1,7 +1,7 @@
-package com.zmark.mytodo.api.vo.task.resp;
+package com.zmark.mytodo.api.bo.task.resp;
 
 
-import com.zmark.mytodo.api.vo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.api.bo.tag.resp.TagSimpleResp;
 
 import java.util.List;
 

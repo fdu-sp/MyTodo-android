@@ -1,4 +1,4 @@
-package com.zmark.mytodo.api.vo.task.req;
+package com.zmark.mytodo.api.bo.task.req;
 
 import java.sql.Date;
 import java.sql.Time;
