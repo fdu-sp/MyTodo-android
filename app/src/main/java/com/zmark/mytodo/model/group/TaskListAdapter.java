@@ -44,18 +44,19 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     }
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
-        // todo count
         // todo 绑定点击事件
-
         private final TextView taskTitleView;
+        private final TextView taskCountView;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskTitleView = itemView.findViewById(R.id.task_list_item_title);
+            taskTitleView = itemView.findViewById(R.id.taskListTitleTextView);
+            taskCountView = itemView.findViewById(R.id.taskListCountTextView);
         }
 
         public void bind(TaskListSimple taskList) {
             taskTitleView.setText(taskList.getName());
+            taskCountView.setText(String.valueOf(taskList.getCount()));
         }
     }
 }
