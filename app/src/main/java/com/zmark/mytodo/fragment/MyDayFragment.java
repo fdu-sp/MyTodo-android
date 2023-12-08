@@ -77,14 +77,14 @@ public class MyDayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myday, container, false);
-        this.findViewAndInit(view);
+        this.findView(view);
         // 注册顶部菜单的点击事件
         this.registerTopMenu();
-        this.fetchData();
+        this.fetchDataAndUpdateUI();
         return view;
     }
 
-    private void findViewAndInit(View view) {
+    private void findView(View view) {
         this.todoRecyclerView = view.findViewById(R.id.todoRecyclerView);
     }
 
@@ -161,7 +161,7 @@ public class MyDayFragment extends Fragment {
         bottomGroupAndSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomGroupAndSortSheetFragment.getTag());
     }
 
-    private void fetchData() {
+    private void fetchDataAndUpdateUI() {
         TaskService taskService = MainApplication.getTaskService();
         // 获取待办事项列表数据
         Call<Result<List<TaskSimpleResp>>> call = taskService.getAllTasksWithSimpleInfo();
