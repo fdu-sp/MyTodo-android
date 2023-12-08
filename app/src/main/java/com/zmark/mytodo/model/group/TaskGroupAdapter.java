@@ -42,14 +42,16 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     }
 
     static class TaskGroupViewHolder extends RecyclerView.ViewHolder {
-        // todo count
+        // todo 点击事件
         private final TextView groupNameTextView;
+        private final TextView groupListCountTextView;
         private final TaskListAdapter taskListAdapter;
 
         public TaskGroupViewHolder(@NonNull View itemView) {
             super(itemView);
             groupNameTextView = itemView.findViewById(R.id.groupNameTextView);
             RecyclerView taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
+            groupListCountTextView = itemView.findViewById(R.id.groupListCountTextView);
 
             // Create a TaskAdapter for the nested RecyclerView
             taskListAdapter = new TaskListAdapter(new ArrayList<>());
@@ -60,6 +62,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
         @SuppressLint("NotifyDataSetChanged")
         public void bind(TaskGroup taskGroup) {
             groupNameTextView.setText(taskGroup.getName());
+            groupListCountTextView.setText(String.valueOf(taskGroup.getTaskListSimpleList().size()));
 
             // Update the task list in the nested RecyclerView
             taskListAdapter.setTasks(taskGroup.getTaskListSimpleList());
