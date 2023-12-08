@@ -23,6 +23,8 @@ public class TaskCreatReq {
      */
     private String description = "";
 
+    private Long taskListId;
+
     /**
      * priority info
      */
