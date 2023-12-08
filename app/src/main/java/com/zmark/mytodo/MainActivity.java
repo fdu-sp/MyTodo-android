@@ -197,16 +197,17 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Result<String>>() {
             @Override
             public void onResponse(@NonNull Call<Result<String>> call, @NonNull Response<Result<String>> response) {
-                if (response.isSuccessful()) {
-                    Result<String> result = response.body();
-                    assert result != null;
-                    Toast.makeText(MainActivity.this, result.getObject(), Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "onResponse: " + result.getMsg());
-                    Log.i(TAG, "onResponse: " + result.getCode());
-                    Log.i(TAG, "onResponse: " + result.getObject());
-                } else {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
                     ApiUtils.handleResponseError(TAG, response);
+                    return;
                 }
+                Result<String> result = response.body();
+                assert result != null;
+                Toast.makeText(MainActivity.this, result.getObject(), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onResponse: " + result.getMsg());
+                Log.i(TAG, "onResponse: " + result.getCode());
+                Log.i(TAG, "onResponse: " + result.getObject());
             }
 
             @Override

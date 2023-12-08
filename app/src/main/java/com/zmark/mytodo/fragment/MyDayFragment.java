@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.api.ApiUtils;
 import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.api.invariant.Msg;
@@ -166,29 +167,32 @@ public class MyDayFragment extends Fragment {
         call.enqueue(new Callback<Result<List<TaskSimpleResp>>>() {
             @Override
             public void onResponse(@NonNull Call<Result<List<TaskSimpleResp>>> call, @NonNull Response<Result<List<TaskSimpleResp>>> response) {
-                if (response.isSuccessful()) {
-                    Result<List<TaskSimpleResp>> result = response.body();
-                    if (result == null) {
-                        Log.w(TAG, "result is null");
-                        Toast.makeText(getContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                    ApiUtils.handleResponseError(TAG, response);
+                    return;
+                }
+                Result<List<TaskSimpleResp>> result = response.body();
+                if (result == null) {
+                    Log.w(TAG, "result is null");
+                    Toast.makeText(getContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (result.getCode() == ResultCode.SUCCESS.getCode()) {
+                    List<TaskSimpleResp> taskList = result.getObject();
+                    if (taskList == null || taskList.isEmpty()) {
+                        Log.w(TAG, "taskSimpleResp is null");
+                        Toast.makeText(getContext(), Msg.NO_TASKS_TODAY, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
-                        List<TaskSimpleResp> taskList = result.getObject();
-                        if (taskList == null || taskList.isEmpty()) {
-                            Log.w(TAG, "taskSimpleResp is null");
-                            Toast.makeText(getContext(), Msg.NO_TASKS_TODAY, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        todoList.clear();
-                        todoList.addAll(TodoItem.from(taskList));
-                        // 根据用户选择的排序方式对todoList进行排序
-                        sortData(TodoItemComparators.getComparator(sortType));
-                        updateUI();
-                    } else {
-                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
-                        Toast.makeText(getContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
-                    }
+                    todoList.clear();
+                    todoList.addAll(TodoItem.from(taskList));
+                    // 根据用户选择的排序方式对todoList进行排序
+                    sortData(TodoItemComparators.getComparator(sortType));
+                    updateUI();
+                } else {
+                    Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                    Toast.makeText(getContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
