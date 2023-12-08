@@ -1,26 +1,96 @@
 package com.zmark.mytodo.model.group;
 
+import com.zmark.mytodo.api.bo.group.resp.TaskGroupSimpleResp;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 分组：包含多个清单
  *
- * @see TaskList
+ * @see TaskListSimple
  */
 public class TaskGroup {
-    private final String groupName;
-    private final List<String> taskListNameList;
+    Long id;
+    String name;
+    String description;
+    Long count;
+    List<TaskListSimple> taskListSimpleList;
+    String createTime;
+    String updateTime;
 
-    public TaskGroup(String groupName, List<String> taskListNameList) {
-        this.groupName = groupName;
-        this.taskListNameList = taskListNameList;
+    public TaskGroup() {
     }
 
-    public String getGroupName() {
-        return groupName;
+    public static TaskGroup from(TaskGroupSimpleResp simpleResp) {
+        TaskGroup taskGroup = new TaskGroup();
+        taskGroup.id = simpleResp.getId();
+        taskGroup.name = simpleResp.getName();
+        taskGroup.description = simpleResp.getDescription();
+        taskGroup.count = simpleResp.getCount();
+        taskGroup.taskListSimpleList =
+                simpleResp.getTaskLists()
+                        .stream()
+                        .map(TaskListSimple::from)
+                        .collect(Collectors.toList());
+        taskGroup.createTime = simpleResp.getCreateTime();
+        taskGroup.updateTime = simpleResp.getUpdateTime();
+        return taskGroup;
     }
 
-    public List<String> getTaskListNameList() {
-        return taskListNameList;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public List<TaskListSimple> getTaskListSimpleList() {
+        return taskListSimpleList;
+    }
+
+    public void setTaskListSimpleList(List<TaskListSimple> taskListSimpleList) {
+        this.taskListSimpleList = taskListSimpleList;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }
