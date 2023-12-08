@@ -38,6 +38,10 @@ public class TaskGroup {
         return taskGroup;
     }
 
+    public static List<TaskGroup> from(List<TaskGroupSimpleResp> simpleRespList) {
+        return simpleRespList.stream().map(TaskGroup::from).collect(Collectors.toList());
+    }
+
     public Long getId() {
         return id;
     }
