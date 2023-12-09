@@ -1,4 +1,4 @@
-package com.zmark.mytodo.fragment.inner;
+package com.zmark.mytodo.fragment.list.inner;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

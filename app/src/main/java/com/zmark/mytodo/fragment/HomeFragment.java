@@ -22,6 +22,7 @@ import com.zmark.mytodo.api.bo.group.resp.TaskGroupSimpleResp;
 import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
+import com.zmark.mytodo.fragment.list.ListDetailFragment;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;

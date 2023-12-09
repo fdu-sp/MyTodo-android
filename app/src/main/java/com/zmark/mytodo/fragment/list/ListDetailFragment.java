@@ -1,4 +1,4 @@
-package com.zmark.mytodo.fragment;
+package com.zmark.mytodo.fragment.list;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,7 +28,7 @@ import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
-import com.zmark.mytodo.fragment.inner.BottomGroupAndSortSheetFragment;
+import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
