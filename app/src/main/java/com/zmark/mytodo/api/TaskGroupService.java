@@ -12,9 +12,9 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface TaskGroupService {
-    @GET("/api/task-group/simple/get-all")
+    @GET("task-group/simple/get-all")
     Call<Result<List<TaskGroupSimpleResp>>> getAllTaskGroup();
 
-    @POST("/api/task-group/create")
+    @POST("task-group/create")
     Call<Result<TaskGroupSimpleResp>> createNew(@Body TaskGroupCreateReq createReq);
 }

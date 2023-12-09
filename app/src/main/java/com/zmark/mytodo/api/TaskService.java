@@ -16,12 +16,12 @@ public interface TaskService {
     @GET("task/simple/get-all-tasks")
     Call<Result<List<TaskSimpleResp>>> getAllTasksWithSimpleInfo();
 
-    @POST("/api/task/complete/{task-id}")
+    @POST("task/complete/{task-id}")
     Call<Result<String>> completeTask(@Path("task-id") Long taskId);
 
-    @POST("/api/task/un-complete/{task-id}")
+    @POST("task/un-complete/{task-id}")
     Call<Result<String>> unCompleteTask(@Path("task-id") Long taskId);
 
-    @POST("/api/task/create-new-task")
+    @POST("task/create-new-task")
     Call<Result<Object>> createNewTask(@Body TaskCreatReq taskCreatReq);
 }
