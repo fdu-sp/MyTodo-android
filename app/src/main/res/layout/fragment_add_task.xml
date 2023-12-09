@@ -31,6 +31,50 @@
             android:inputType="text"
             android:autofillHints="" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/listTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/default_list" />
+
+            <TextView
+                android:id="@+id/endDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/priorityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/tagTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/reminderTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp" />
+
+        </LinearLayout>
+
         <!-- Operation bar-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,13 +121,6 @@
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_list"
                 android:contentDescription="@string/setList" />
-
-            <TextView
-                android:id="@+id/listShowEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="23dp"
-                android:layout_marginStart="5dp"
-                android:text="@string/default_list" />
 
             <View
                 android:layout_width="0dp"

@@ -1,7 +1,5 @@
 package com.zmark.mytodo.api.bo.task.req;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +32,61 @@ public class TaskCreatReq {
     /**
      * time info
      */
-    private Date endDate;
-    private Time endTime;
+    private String endDate;
+    private String endTime;
     private Boolean activateCountdown;
-    private Date expectedExecutionDate;
-    private Time expectedExecutionStartPeriod;
-    private Time expectedExecutionEndPeriod;
+    private String expectedExecutionDate;
+    private String expectedExecutionStartPeriod;
+    private String expectedExecutionEndPeriod;
 
-    public TaskCreatReq(String todoTitle, String description) {
-        this.title = todoTitle;
+    public TaskCreatReq() {
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTagNames(List<String> tagNames) {
+        this.tagNames = tagNames;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setTaskListId(Long taskListId) {
+        this.taskListId = taskListId;
+    }
+
+    public void setImportant(Boolean important) {
+        isImportant = important;
+    }
+
+    public void setUrgent(Boolean urgent) {
+        isUrgent = urgent;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setActivateCountdown(Boolean activateCountdown) {
+        this.activateCountdown = activateCountdown;
+    }
+
+    public void setExpectedExecutionDate(String expectedExecutionDate) {
+        this.expectedExecutionDate = expectedExecutionDate;
+    }
+
+    public void setExpectedExecutionStartPeriod(String expectedExecutionStartPeriod) {
+        this.expectedExecutionStartPeriod = expectedExecutionStartPeriod;
+    }
+
+    public void setExpectedExecutionEndPeriod(String expectedExecutionEndPeriod) {
+        this.expectedExecutionEndPeriod = expectedExecutionEndPeriod;
     }
 }
