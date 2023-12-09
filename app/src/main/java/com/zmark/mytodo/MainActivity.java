@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final String NAV_TOP_TITLE = "主页";
     private final Map<Integer, NavFragmentFactory> navFragmentFactoryMap = new HashMap<>();
+    private TextView navTopTitleView;
     private ClickListener onRightIconClickListener;
     private ImageView rightIcon;
 
@@ -72,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 设置顶部导航栏的标题
+     */
+    public void setNavTopTitleView(String title) {
+        this.navTopTitleView.setText(title);
+    }
+
+    /**
      * 设置右侧图标菜单的的点击事件
      */
     public void setOnRightIconClickListener(ClickListener listener) {
@@ -81,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
     private void registerTopNavigations() {
         ImageView leftIcon = findViewById(R.id.icon_left);
         rightIcon = findViewById(R.id.icon_right);
+        navTopTitleView = findViewById(R.id.nav_top_title);
+
+        // 设置顶部导航栏的标题
+        this.setNavTopTitleView(NAV_TOP_TITLE);
 
         // 设置左侧图标的点击事件 -- 打开左侧抽屉菜单
         leftIcon.setOnClickListener(view -> openLeftDrawer());
