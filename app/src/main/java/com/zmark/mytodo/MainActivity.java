@@ -5,14 +5,11 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,6 +27,7 @@ import com.zmark.mytodo.api.bo.task.req.TaskCreatReq;
 import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
+import com.zmark.mytodo.fragment.AddTaskBottomSheetFragment;
 import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.ListDetailFragment;
@@ -40,7 +38,6 @@ import com.zmark.mytodo.handler.ClickListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -161,39 +158,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fabAddTodo = findViewById(R.id.fab_add_todo);
         // 设置点击监听器
         fabAddTodo.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("新建待办事项");
-
-            // 设置对话框布局
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_todo, null);
-            builder.setView(dialogView);
-
-            // 获取对话框中的 EditText
-            EditText newTaskTitleInput = dialogView.findViewById(R.id.newTaskTitleInput);
-            EditText newTaskDescriptionInput = dialogView.findViewById(R.id.newTaskDescriptionInput);
-
-            // 设置对话框按钮
-            builder.setPositiveButton("确定", (dialog, which) -> {
-                // 处理用户点击确定按钮的逻辑
-                if (newTaskTitleInput.getText().toString().isEmpty()) {
-                    // 如果待办事项为空，则不执行添加操作
-                    dialog.cancel();
-                }
-                String title = newTaskTitleInput.getText().toString();
-                String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
-                // 执行添加待办事项的操作
-                TaskCreatReq createReq = new TaskCreatReq(title, description);
-                createNewTask(createReq);
-                // 关闭对话框
-                dialog.dismiss();
-            });
-
-            builder.setNegativeButton("取消", (dialog, which) -> {
-                // 处理用户点击取消按钮的逻辑
-                dialog.cancel();
-            });
-
-            builder.show();
+            AddTaskBottomSheetFragment addTaskBottomSheetFragment = new AddTaskBottomSheetFragment();
+            addTaskBottomSheetFragment.show(getSupportFragmentManager(), addTaskBottomSheetFragment.getTag());
         });
     }
 

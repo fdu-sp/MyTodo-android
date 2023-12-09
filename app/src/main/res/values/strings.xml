@@ -31,4 +31,7 @@
     <string name="username">ZMark</string>
     <string name="enter_new_task_title">新的待办事项</string>
     <string name="description">描述</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="default_list">默认清单</string>
 </resources>

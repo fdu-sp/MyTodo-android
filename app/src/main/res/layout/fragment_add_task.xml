@@ -1,0 +1,95 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- EditText for user input -->
+        <EditText
+            android:id="@+id/newTaskTitleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_new_task_title"
+            android:textSize="25sp"
+            android:inputType="text"
+            android:autofillHints="" />
+
+        <EditText
+            android:id="@+id/newTaskDescriptionInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
+            android:textSize="20sp"
+            android:inputType="text"
+            android:autofillHints="" />
+
+        <!-- Operation bar-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/timeSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_calendar_2"
+                android:contentDescription="@string/confirm" />
+
+            <ImageView
+                android:id="@+id/prioritySetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_priority"
+                android:contentDescription="@string/confirm" />
+
+            <ImageView
+                android:id="@+id/tagSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_tag"
+                android:contentDescription="@string/confirm" />
+
+            <ImageView
+                android:id="@+id/listSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_list"
+                android:contentDescription="@string/confirm" />
+
+            <TextView
+                android:id="@+id/listShowEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:layout_marginStart="5dp"
+                android:text="@string/default_list" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/confirmButton"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_send"
+                android:contentDescription="@string/confirm" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
