@@ -29,4 +29,6 @@
     <string name="title">标题</string>
     <string name="avatar">头像</string>
     <string name="username">ZMark</string>
+    <string name="enter_new_task_title">新的待办事项</string>
+    <string name="description">描述</string>
 </resources>

@@ -40,6 +40,7 @@ import com.zmark.mytodo.handler.ClickListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,18 +169,21 @@ public class MainActivity extends AppCompatActivity {
             builder.setView(dialogView);
 
             // 获取对话框中的 EditText
-            EditText editTextTodo = dialogView.findViewById(R.id.editTextTodo);
+            EditText newTaskTitleInput = dialogView.findViewById(R.id.newTaskTitleInput);
+            EditText newTaskDescriptionInput = dialogView.findViewById(R.id.newTaskDescriptionInput);
 
             // 设置对话框按钮
             builder.setPositiveButton("确定", (dialog, which) -> {
                 // 处理用户点击确定按钮的逻辑
-                if (editTextTodo.getText().toString().isEmpty()) {
+                if (newTaskTitleInput.getText().toString().isEmpty()) {
                     // 如果待办事项为空，则不执行添加操作
                     dialog.cancel();
                 }
-                String todoText = editTextTodo.getText().toString();
+                String title = newTaskTitleInput.getText().toString();
+                String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
                 // 执行添加待办事项的操作
-                createNewTask(new TaskCreatReq(todoText));
+                TaskCreatReq createReq = new TaskCreatReq(title, description);
+                createNewTask(createReq);
                 // 关闭对话框
                 dialog.dismiss();
             });

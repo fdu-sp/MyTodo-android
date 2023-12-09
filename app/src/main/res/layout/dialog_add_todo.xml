@@ -6,10 +6,21 @@
 
     <!-- EditText for user input -->
     <EditText
-        android:id="@+id/editTextTodo"
+        android:id="@+id/newTaskTitleInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入新的待办事项"
-        android:inputType="text" />
+        android:hint="@string/enter_new_task_title"
+        android:textSize="25sp"
+        android:inputType="text"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/newTaskDescriptionInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/description"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:autofillHints="" />
 
 </LinearLayout>

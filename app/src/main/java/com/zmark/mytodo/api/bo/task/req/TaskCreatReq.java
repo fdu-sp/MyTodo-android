@@ -41,7 +41,8 @@ public class TaskCreatReq {
     private Time expectedExecutionStartPeriod;
     private Time expectedExecutionEndPeriod;
 
-    public TaskCreatReq(String todoTitle) {
+    public TaskCreatReq(String todoTitle, String description) {
         this.title = todoTitle;
+        this.description = description;
     }
 }
