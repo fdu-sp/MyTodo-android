@@ -126,6 +126,10 @@ public class HomeFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         // 开启事务
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // 添加自定义过渡动画
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+
         // 替换Fragment
         fragmentTransaction.replace(R.id.fragment_container, myDayFragment);
         // 添加到回退栈
@@ -133,4 +137,5 @@ public class HomeFragment extends Fragment {
         // 提交事务
         fragmentTransaction.commit();
     }
+
 }
