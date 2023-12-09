@@ -22,17 +22,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.zmark.mytodo.api.ApiUtils;
 import com.zmark.mytodo.api.HelloService;
-import com.zmark.mytodo.api.TaskService;
-import com.zmark.mytodo.api.bo.task.req.TaskCreatReq;
 import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
-import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.fragment.AddTaskBottomSheetFragment;
 import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
-import com.zmark.mytodo.fragment.ListDetailFragment;
 import com.zmark.mytodo.fragment.QuadrantViewFragment;
 import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
+import com.zmark.mytodo.fragment.list.ListDetailFragment;
 import com.zmark.mytodo.handler.ClickListener;
 
 import java.util.HashMap;
@@ -217,35 +214,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Result<String>> call, @NonNull Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-                Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void createNewTask(TaskCreatReq taskCreatReq) {
-        TaskService taskService = MainApplication.getTaskService();
-        Call<Result<Object>> call = taskService.createNewTask(taskCreatReq);
-        call.enqueue(new Callback<Result<Object>>() {
-            @Override
-            public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
-                if (response.isSuccessful()) {
-                    Result<Object> result = response.body();
-                    assert result != null;
-                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
-                        Log.i(TAG, "onResponse: 任务创建成功");
-                        Toast.makeText(MainActivity.this, "任务创建成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
-                        Toast.makeText(MainActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    ApiUtils.handleResponseError(TAG, response);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Result<Object>> call, @NonNull Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }

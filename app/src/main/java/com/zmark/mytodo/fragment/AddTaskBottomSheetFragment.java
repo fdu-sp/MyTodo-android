@@ -2,19 +2,35 @@ package com.zmark.mytodo.fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.api.ApiUtils;
+import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.bo.task.req.TaskCreatReq;
+import com.zmark.mytodo.api.invariant.Msg;
+import com.zmark.mytodo.api.result.Result;
+import com.zmark.mytodo.api.result.ResultCode;
 
 import java.util.Objects;
+import java.util.Optional;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
+    private static final String TAG = "AddTaskBottomSheetFragment";
 
     public AddTaskBottomSheetFragment() {
         // Required empty public constructor
@@ -28,23 +44,41 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         EditText newTaskTitleInput = bottomSheetView.findViewById(R.id.newTaskTitleInput);
         EditText newTaskDescriptionInput = bottomSheetView.findViewById(R.id.newTaskDescriptionInput);
 
-        // 设置底部抽屉中的确定按钮
+        bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> {
+            // todo 处理用户点击设置时间的逻辑
+            Toast.makeText(requireContext(), "设置时间", Toast.LENGTH_SHORT).show();
+        });
+        bottomSheetView.findViewById(R.id.prioritySetImageView).setOnClickListener(view -> {
+            // todo 处理用户点击设置优先级的逻辑
+            Toast.makeText(requireContext(), "设置重复", Toast.LENGTH_SHORT).show();
+        });
+        bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> {
+            // todo 处理用户点击设置标签的逻辑
+            Toast.makeText(requireContext(), "设置标签", Toast.LENGTH_SHORT).show();
+        });
+        bottomSheetView.findViewById(R.id.reminderSetImageView).setOnClickListener(view -> {
+            // todo 处理用户点击设置提醒的逻辑
+            Toast.makeText(requireContext(), "设置提醒", Toast.LENGTH_SHORT).show();
+        });
+        bottomSheetView.findViewById(R.id.listSetImageView).setOnClickListener(view -> {
+            // todo 处理用户点击设置清单的逻辑
+            Toast.makeText(requireContext(), "设置重复", Toast.LENGTH_SHORT).show();
+        });
         bottomSheetView.findViewById(R.id.confirmButton).setOnClickListener(view -> {
-            // 处理用户点击确定按钮的逻辑
+            // 处理用户点击发送按钮的逻辑
             if (newTaskTitleInput.getText().toString().isEmpty()) {
                 // 如果待办事项为空，则不执行添加操作
                 dismiss(); // 关闭底部抽屉
             }
             String title = newTaskTitleInput.getText().toString();
-            String description = newTaskDescriptionInput.getText().toString();
+            String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
             // 执行添加待办事项的操作
             TaskCreatReq createReq = new TaskCreatReq(title, description);
-            // todo
-            // createNewTask(createReq);
+            createNewTask(createReq);
             // 关闭底部抽屉
             dismiss();
         });
-        
+
         // 在输入法弹出时调整窗口的大小
         Dialog dialog = getDialog();
         if (dialog != null) {
@@ -52,5 +86,34 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
         return bottomSheetView;
+    }
+
+    private void createNewTask(TaskCreatReq taskCreatReq) {
+        TaskService taskService = MainApplication.getTaskService();
+        Call<Result<Object>> call = taskService.createNewTask(taskCreatReq);
+        call.enqueue(new Callback<Result<Object>>() {
+            @Override
+            public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
+                if (response.isSuccessful()) {
+                    Result<Object> result = response.body();
+                    assert result != null;
+                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
+                        Log.i(TAG, "onResponse: 任务创建成功");
+                        Toast.makeText(requireContext(), "任务创建成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                        Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    ApiUtils.handleResponseError(TAG, response);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Result<Object>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
