@@ -2,7 +2,9 @@ package com.zmark.mytodo.fragment.taskadd;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private EditText newTaskDescriptionInput;
     private TextView listTextView;
     private TextView endDateTextView;
+    private TextView endTimeTextView;
     private TextView priorityTextView;
     private TextView tagTextView;
     private TextView reminderTimeTextView;
@@ -52,7 +55,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         View bottomSheetView = inflater.inflate(R.layout.fragment_add_task, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
         bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> {
-            this.handleDueDatePicker();
+            this.handleDueDateTimePicker();
         });
         bottomSheetView.findViewById(R.id.prioritySetImageView).setOnClickListener(view -> {
             // todo 处理用户点击设置优先级的逻辑
@@ -79,12 +82,14 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             }
             String title = newTaskTitleInput.getText().toString();
             String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
-            String endDate = Optional.of(endDateTextView.getText().toString()).orElse("");
+            String endDate = Optional.of(endDateTextView.getText().toString()).orElse(null);
+            String endTime = Optional.of(endTimeTextView.getText().toString()).orElse(null);
             // 执行添加待办事项的操作
             TaskCreatReq createReq = new TaskCreatReq();
             createReq.setTitle(title);
             createReq.setDescription(description);
             createReq.setEndDate(endDate);
+            createReq.setEndTime(endTime);
             createNewTask(createReq);
         });
 
@@ -97,19 +102,35 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         return bottomSheetView;
     }
 
-    private void handleDueDatePicker() {
-        // 获取当前日期
+    private void handleDueDateTimePicker() {
+        // 获取当前日期和时间
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
 
         // 创建日期选择器对话框
         DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
                 (view, selectedYear, monthOfYear, dayOfMonth1) -> {
-                    // 处理用户选择的日期
-                    String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, monthOfYear + 1, dayOfMonth1);
-                    endDateTextView.setText(selectedDate);
+                    // 在日期选择后，创建时间选择器对话框
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
+                            (view1, selectedHourOfDay, selectedMinute) -> {
+                                // 处理用户选择的日期和时间
+
+                                String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d",
+                                        selectedYear, monthOfYear + 1, dayOfMonth1);
+
+                                String selectedTime = String.format(Locale.getDefault(), "%02d:%02d",
+                                        selectedHourOfDay, selectedMinute);
+
+                                endDateTextView.setText(selectedDate);
+                                endTimeTextView.setText(selectedTime);
+                            }, hourOfDay, minute, DateFormat.is24HourFormat(requireContext()));
+
+                    // 显示时间选择器对话框
+                    timePickerDialog.show();
                 }, year, month, dayOfMonth);
 
         // 显示日期选择器对话框
@@ -152,6 +173,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         newTaskDescriptionInput = view.findViewById(R.id.newTaskDescriptionInput);
         listTextView = view.findViewById(R.id.listTextView);
         endDateTextView = view.findViewById(R.id.endDateTextView);
+        endTimeTextView = view.findViewById(R.id.endTimeTextView);
         priorityTextView = view.findViewById(R.id.priorityTextView);
         tagTextView = view.findViewById(R.id.tagTextView);
         reminderTimeTextView = view.findViewById(R.id.reminderTimeTextView);

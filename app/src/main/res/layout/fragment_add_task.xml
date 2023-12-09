@@ -53,6 +53,13 @@
                 android:layout_marginStart="5dp" />
 
             <TextView
+                android:id="@+id/endTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="2dp" />
+
+            <TextView
                 android:id="@+id/priorityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
