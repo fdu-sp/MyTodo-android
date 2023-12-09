@@ -69,8 +69,11 @@ public class HomeFragment extends Fragment {
 
     private void registerClickListener(View view) {
         // 注册上部视图的点击事件
-        view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToListDetailFragment(ListDetailFragment.MyDayInstance()));
+        view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToFragment(ListDetailFragment.MyDayInstance()));
         // todo more
+//        view.findViewById(R.id.calendarViewItem).setOnClickListener(v -> navigateToListDetailFragment());
+//        view.findViewById(R.id.countdownItem).setOnClickListener(v -> navigateToListDetailFragment());
+//        view.findViewById(R.id.allTasksItem).setOnClickListener(v -> navigateToListDetailFragment());
     }
 
     private void fetchDataAndUpdateUI() {
@@ -131,10 +134,10 @@ public class HomeFragment extends Fragment {
 
     private void navigateToListDetailFragment(TaskListSimple taskListSimple) {
         ListDetailFragment listDetailFragment = new ListDetailFragment(taskListSimple);
-        this.navigateToListDetailFragment(listDetailFragment);
+        this.navigateToFragment(listDetailFragment);
     }
 
-    private void navigateToListDetailFragment(ListDetailFragment listDetailFragment) {
+    private void navigateToFragment(Fragment fragment) {
         // 获取FragmentManager
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         // 开启事务
@@ -142,7 +145,7 @@ public class HomeFragment extends Fragment {
         // 添加自定义过渡动画
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         // 替换Fragment
-        fragmentTransaction.replace(R.id.fragment_container, listDetailFragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
         // 添加到回退栈
         fragmentTransaction.addToBackStack(null);
         // 提交事务
