@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.R;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +19,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class CalendarViewFragment extends Fragment {
-
+    private final static String TAG = "CalendarViewFragment";
+    private static final String NAV_TOP_TITLE = "日历视图";
     private GridLayout calendarGrid;
     private TextView monthYearTextView;
 
@@ -33,10 +35,17 @@ public class CalendarViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // 注册顶部菜单
+        this.registerTopMenu();
         // 初始化日历视图
         Calendar today = Calendar.getInstance();
         updateCalendar(today);
+    }
+
+    private void registerTopMenu() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
+        // todo  注册右侧菜单的点击事件
     }
 
     private void updateCalendar(Calendar calendar) {

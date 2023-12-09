@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.QuadrantAdapter;
 
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuadrantViewFragment extends Fragment {
-
+    private final static String TAG = "QuadrantViewFragment";
+    private static final String NAV_TOP_TITLE = "四象限视图";
     private RecyclerView urgentImportantRecyclerView;
     private RecyclerView notUrgentImportantRecyclerView;
     private RecyclerView urgentNotImportantRecyclerView;
@@ -33,6 +35,8 @@ public class QuadrantViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // 注册顶部菜单
+        this.registerTopMenu();
 
         urgentImportantRecyclerView = view.findViewById(R.id.urgentImportantRecyclerView);
         notUrgentImportantRecyclerView = view.findViewById(R.id.notUrgentImportantRecyclerView);
@@ -54,6 +58,12 @@ public class QuadrantViewFragment extends Fragment {
         setQuadrantAdapter(view, notUrgentImportantRecyclerView, notUrgentImportantTasks, R.id.notUrgentImportantEmptyTextView);
         setQuadrantAdapter(view, urgentNotImportantRecyclerView, urgentNotImportantTasks, R.id.urgentNotImportantEmptyTextView);
         setQuadrantAdapter(view, notUrgentNotImportantRecyclerView, notUrgentNotImportantTasks, R.id.notUrgentNotImportantEmptyTextView);
+    }
+
+    private void registerTopMenu() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
+        // todo  注册右侧菜单的点击事件
     }
 
     private void setupQuadrantRecyclerView(RecyclerView recyclerView) {

@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.api.ApiUtils;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     private final static String TAG = "HomeFragment";
+    private static final String NAV_TOP_TITLE = "主页";
     private RecyclerView containerView;
     private List<TaskGroup> taskGroups;
 
@@ -55,12 +57,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // 注册顶部菜单
+        this.registerTopMenu();
         // 注册上部视图的点击事件
         this.registerClickListener(view);
-        // todo 注册顶部菜单的点击事件
         // 获取分组数据并更新UI
         this.fetchDataAndUpdateUI();
+    }
 
+    private void registerTopMenu() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
+        // todo  注册右侧菜单的点击事件
     }
 
     private void findView(View view) {

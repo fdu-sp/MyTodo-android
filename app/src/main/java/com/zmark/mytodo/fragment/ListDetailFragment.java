@@ -95,7 +95,7 @@ public class ListDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myday, container, false);
         this.findView(view);
-        // 注册顶部菜单的点击事件
+        // 注册顶部菜单
         this.registerTopMenu();
         this.fetchDataAndUpdateUI();
         return view;
@@ -122,7 +122,6 @@ public class ListDetailFragment extends Fragment {
     }
 
     private void registerTopMenu() {
-        // todo 显示标题
         this.menuHandlerMap.put(R.id.menu_task_sort, item -> showGroupAndSortDialog());
         this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
             // 切换状态
@@ -134,6 +133,7 @@ public class ListDetailFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+            mainActivity.setNavTopTitleView(taskListSimple.getName());
         }
     }
 

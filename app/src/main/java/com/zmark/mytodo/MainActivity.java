@@ -45,7 +45,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private static final String NAV_TOP_TITLE = "主页";
     private final Map<Integer, NavFragmentFactory> navFragmentFactoryMap = new HashMap<>();
     private TextView navTopTitleView;
     private ClickListener onRightIconClickListener;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // 注册 FloatingActionButton
         this.registerFloatingActionButton();
         // 加载默认的Fragment
-        this.loadFragment(this.navFragmentFactoryMap.get(R.id.navigation_home).createFragment());
+        this.loadFragment(Objects.requireNonNull(this.navFragmentFactoryMap.get(R.id.navigation_home)).createFragment());
         // 获取欢迎信息
         this.fetchHelloMsg();
     }
@@ -92,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView leftIcon = findViewById(R.id.icon_left);
         rightIcon = findViewById(R.id.icon_right);
         navTopTitleView = findViewById(R.id.nav_top_title);
-
-        // 设置顶部导航栏的标题
-        this.setNavTopTitleView(NAV_TOP_TITLE);
 
         // 设置左侧图标的点击事件 -- 打开左侧抽屉菜单
         leftIcon.setOnClickListener(view -> openLeftDrawer());
