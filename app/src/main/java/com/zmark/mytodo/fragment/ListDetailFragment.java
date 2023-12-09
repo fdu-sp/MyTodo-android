@@ -50,8 +50,8 @@ public class ListDetailFragment extends Fragment {
     private static final String KEY_SORT_BY = "sort_by";
     private RecyclerView todoRecyclerView;
     private TaskListSimple taskListSimple;
-    private String perfName = "MyPrefs";
-    private Call<Result<List<TaskSimpleResp>>> call;
+    private final String perfName;
+    private final Call<Result<List<TaskSimpleResp>>> call;
     private List<TodoItem> todoList;
     private Map<Integer, MenuItemHandler> menuHandlerMap;
     private boolean detailsVisible;
@@ -61,7 +61,7 @@ public class ListDetailFragment extends Fragment {
     public ListDetailFragment(TaskListSimple taskListSimple) {
         this.taskListSimple = taskListSimple;
         this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
-        this.call = MainApplication.getTaskListService().getAllTasksWithSimpleInfo(taskListSimple.getId());
+        this.call = MainApplication.getTaskService().getAllTasksWithSimpleInfoByList(taskListSimple.getId());
     }
 
     private ListDetailFragment(TaskListSimple taskListSimple, Call<Result<List<TaskSimpleResp>>> call) {

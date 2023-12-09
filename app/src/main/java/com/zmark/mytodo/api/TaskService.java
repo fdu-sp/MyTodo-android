@@ -16,6 +16,9 @@ public interface TaskService {
     @GET("task/simple/get-all-tasks")
     Call<Result<List<TaskSimpleResp>>> getAllTasksWithSimpleInfo();
 
+    @GET("task/simple/get-all-tasks-by-list/{task-list-id}")
+    Call<Result<List<TaskSimpleResp>>> getAllTasksWithSimpleInfoByList(@Path("task-list-id") Long taskListId);
+
     @POST("task/complete/{task-id}")
     Call<Result<String>> completeTask(@Path("task-id") Long taskId);
 
