@@ -65,6 +65,30 @@
                 android:paddingEnd="4dp" />
         </LinearLayout>
 
+        <!-- four_quadrants_view -->
+        <LinearLayout
+            android:id="@+id/fourQuadrantsItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_four_quadrants" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/four_quadrants_view"
+                android:textSize="20sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
+        </LinearLayout>
+
         <!-- 倒计时 -->
         <LinearLayout
             android:id="@+id/countdownItem"
@@ -89,29 +113,7 @@
                 android:paddingEnd="4dp" />
         </LinearLayout>
 
-        <!-- 任务 -->
-        <LinearLayout
-            android:id="@+id/allTasksItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_home" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tasks"
-                android:textSize="20sp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp" />
-        </LinearLayout>
     </LinearLayout>
 
     <!-- 底部任务组 -->

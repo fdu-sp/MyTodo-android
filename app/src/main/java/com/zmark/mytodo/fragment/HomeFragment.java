@@ -79,9 +79,9 @@ public class HomeFragment extends Fragment {
         // 注册上部视图的点击事件
         view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToFragment(ListDetailFragment.MyDayInstance()));
         // todo more
-//        view.findViewById(R.id.calendarViewItem).setOnClickListener(v -> navigateToListDetailFragment());
-//        view.findViewById(R.id.countdownItem).setOnClickListener(v -> navigateToListDetailFragment());
-//        view.findViewById(R.id.allTasksItem).setOnClickListener(v -> navigateToListDetailFragment());
+        view.findViewById(R.id.calendarViewItem).setOnClickListener(v -> navigateToFragment(new CalendarViewFragment()));
+        view.findViewById(R.id.fourQuadrantsItem).setOnClickListener(v -> navigateToFragment(new QuadrantViewFragment()));
+//        view.findViewById(R.id.countdownItem).setOnClickListener(v -> navigateToFragment(new CountdownFragment()));
     }
 
     private void fetchDataAndUpdateUI() {
