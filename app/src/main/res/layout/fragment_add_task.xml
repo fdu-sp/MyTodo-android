@@ -1,10 +1,32 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="5dp"
     app:cardElevation="10dp"
     app:cardBackgroundColor="@color/white">
+    <!-- Operation bar-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:padding="5dp">
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/confirmButton"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:src="@drawable/ic_send"
+            android:contentDescription="@string/confirm" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +34,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- EditText for user input -->
         <EditText
             android:id="@+id/newTaskTitleInput"
             android:layout_width="match_parent"
@@ -34,120 +55,138 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:rowCount="2"
+            android:columnCount="1"
+            android:rowCount="4"
             android:layout_marginTop="5dp"
             android:padding="5dp">
 
-            <TextView
-                android:id="@+id/listTextView"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/default_list"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:padding="2dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:id="@+id/endDateTextView"
+                <ImageView
+                    android:id="@+id/listSetImageView"
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_list"
+                    android:contentDescription="@string/setList" />
+
+                <TextView
+                    android:id="@+id/listTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25sp"
+                    android:layout_marginStart="7dp"
+                    android:textSize="20sp"
+                    android:text="@string/default_list" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:padding="2dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:id="@+id/endTimeTextView"
+                <ImageView
+                    android:id="@+id/prioritySetImageView"
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_priority"
+                    android:contentDescription="@string/setPriority" />
+
+                <TextView
+                    android:id="@+id/priorityTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:textSize="20sp"
+                    android:text="@string/default_priority" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginStart="2dp"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:padding="2dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/priorityTextView"
+                <ImageView
+                    android:id="@+id/timeSetImageView"
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_calendar_2"
+                    android:contentDescription="@string/setTime" />
+
+                <TextView
+                    android:id="@+id/endDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/endTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/default_priority"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:padding="2dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:id="@+id/tagTextView"
+                <ImageView
+                    android:id="@+id/tagSetImageView"
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_tag"
+                    android:contentDescription="@string/setTags" />
+
+                <TextView
+                    android:id="@+id/tagTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginStart="5dp"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:padding="2dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:id="@+id/reminderTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginStart="5dp"
-                android:layout_columnWeight="1" />
+                <ImageView
+                    android:id="@+id/reminderSetImageView"
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_remind_cancel"
+                    android:contentDescription="@string/setReminder" />
+                <!-- android:src="@drawable/ic_remind_padding" -->
 
+                <TextView
+                    android:id="@+id/reminderTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </GridLayout>
-
-        <!-- Operation bar-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/timeSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_calendar_2"
-                android:contentDescription="@string/setTime" />
-
-            <ImageView
-                android:id="@+id/prioritySetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_priority"
-                android:contentDescription="@string/setPriority" />
-
-            <ImageView
-                android:id="@+id/tagSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_tag"
-                android:contentDescription="@string/setTags" />
-
-            <ImageView
-                android:id="@+id/reminderSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_remind_cancel"
-                android:contentDescription="@string/setReminder" />
-            <!-- android:src="@drawable/ic_remind_padding" -->
-            <ImageView
-                android:id="@+id/listSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_list"
-                android:contentDescription="@string/setList" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/confirmButton"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_send"
-                android:contentDescription="@string/confirm" />
-        </LinearLayout>
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
