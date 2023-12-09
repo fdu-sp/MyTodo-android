@@ -31,10 +31,11 @@
             android:inputType="text"
             android:autofillHints="" />
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:columnCount="3"
+            android:rowCount="2"
             android:layout_marginTop="5dp"
             android:padding="5dp">
 
@@ -43,44 +44,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="@string/default_list" />
+                android:text="@string/default_list"
+                android:layout_columnWeight="1" />
 
             <TextView
                 android:id="@+id/endDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp" />
+                android:layout_columnWeight="1" />
 
             <TextView
                 android:id="@+id/endTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginStart="2dp" />
+                android:layout_marginStart="2dp"
+                android:layout_columnWeight="1" />
 
             <TextView
                 android:id="@+id/priorityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp" />
+                android:text="@string/default_priority"
+                android:layout_columnWeight="1" />
 
             <TextView
                 android:id="@+id/tagTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp" />
+                android:layout_marginStart="5dp"
+                android:layout_columnWeight="1" />
 
             <TextView
                 android:id="@+id/reminderTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp" />
+                android:layout_marginStart="5dp"
+                android:layout_columnWeight="1" />
 
-        </LinearLayout>
+        </GridLayout>
 
         <!-- Operation bar-->
         <LinearLayout
