@@ -9,12 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnListClickListener;
 
 import java.util.List;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
     private final List<TaskListSimple> tasks;
+
+    private OnListClickListener onListClickListener;
+
+    public void setOnItemClickListener(OnListClickListener listener) {
+        this.onListClickListener = listener;
+    }
 
     public TaskListAdapter(List<TaskListSimple> tasks) {
         this.tasks = tasks;
@@ -31,6 +38,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskListSimple task = tasks.get(position);
         holder.bind(task);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onListClickListener != null) {
+                onListClickListener.onItemClick(task);
+            }
+        });
     }
 
     @Override
@@ -44,7 +57,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     }
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
-        // todo 绑定点击事件
         private final TextView taskTitleView;
         private final TextView taskCountView;
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnListClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,12 @@ import java.util.List;
 public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.TaskGroupViewHolder> {
 
     private final List<TaskGroup> taskGroups;
+
+    private OnListClickListener onListClickListener;
+
+    public void setOnItemClickListener(OnListClickListener listener) {
+        this.onListClickListener = listener;
+    }
 
     public TaskGroupAdapter(List<TaskGroup> taskGroups) {
         this.taskGroups = taskGroups;
@@ -27,7 +34,13 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     @Override
     public TaskGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_group_item, parent, false);
-        return new TaskGroupViewHolder(view);
+        TaskGroupViewHolder viewHolder = new TaskGroupViewHolder(view);
+        viewHolder.setOnItemClickListener(task -> {
+            if (onListClickListener != null) {
+                onListClickListener.onItemClick(task);
+            }
+        });
+        return viewHolder;
     }
 
     @Override
@@ -42,10 +55,15 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     }
 
     static class TaskGroupViewHolder extends RecyclerView.ViewHolder {
-        // todo 点击事件
         private final TextView groupNameTextView;
         private final TextView groupListCountTextView;
         private final TaskListAdapter taskListAdapter;
+
+        private OnListClickListener onListClickListener;
+
+        public void setOnItemClickListener(OnListClickListener listener) {
+            this.onListClickListener = listener;
+        }
 
         public TaskGroupViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +75,11 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             taskListAdapter = new TaskListAdapter(new ArrayList<>());
             taskGroupItemRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             taskGroupItemRecyclerView.setAdapter(taskListAdapter);
+            taskListAdapter.setOnItemClickListener(task -> {
+                if (onListClickListener != null) {
+                    onListClickListener.onItemClick(task);
+                }
+            });
         }
 
         @SuppressLint("NotifyDataSetChanged")

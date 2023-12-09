@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
+import com.zmark.mytodo.model.group.TaskListSimple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,10 +112,25 @@ public class HomeFragment extends Fragment {
                 TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
                 containerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 containerView.setAdapter(taskGroupAdapter);
+                taskGroupAdapter.setOnItemClickListener(this::navigateToListDetailFragment);
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(requireContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void navigateToListDetailFragment(TaskListSimple taskListSimple) {
+        MyDayFragment myDayFragment = new MyDayFragment();
+        // 获取FragmentManager
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        // 开启事务
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // 替换Fragment
+        fragmentTransaction.replace(R.id.fragment_container, myDayFragment);
+        // 添加到回退栈
+        fragmentTransaction.addToBackStack(null);
+        // 提交事务
+        fragmentTransaction.commit();
     }
 }
