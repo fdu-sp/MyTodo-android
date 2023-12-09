@@ -63,6 +63,14 @@
                 android:contentDescription="@string/confirm" />
 
             <ImageView
+                android:id="@+id/countDownSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_remind_empty"
+                android:contentDescription="@string/confirm" />
+            <!-- android:src="@drawable/ic_remind_padding" -->
+            <ImageView
                 android:id="@+id/listSetImageView"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
