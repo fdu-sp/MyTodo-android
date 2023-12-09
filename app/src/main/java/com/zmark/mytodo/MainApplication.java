@@ -9,6 +9,9 @@ import com.zmark.mytodo.api.TaskListService;
 import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.config.Config;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,8 +28,13 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: Application started");
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.SECONDS)
+                .readTimeout(1, TimeUnit.SECONDS)
+                .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(Config.getRearBaseUrl())
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
