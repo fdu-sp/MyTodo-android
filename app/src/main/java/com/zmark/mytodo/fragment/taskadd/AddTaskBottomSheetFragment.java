@@ -1,5 +1,6 @@
 package com.zmark.mytodo.fragment.taskadd;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -37,6 +38,8 @@ import retrofit2.Response;
 
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
+    private Boolean isImportant = false;
+    private Boolean isUrgent = false;
     private EditText newTaskTitleInput;
     private EditText newTaskDescriptionInput;
     private TextView listTextView;
@@ -54,12 +57,9 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View bottomSheetView = inflater.inflate(R.layout.fragment_add_task, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
-        bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> {
-            this.handleDueDateTimePicker();
-        });
+        bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> this.handleDueDateTimePicker());
         bottomSheetView.findViewById(R.id.prioritySetImageView).setOnClickListener(view -> {
-            // todo 处理用户点击设置优先级的逻辑
-            Toast.makeText(requireContext(), "设置优先级", Toast.LENGTH_SHORT).show();
+            this.handlePrioritySet();
         });
         bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> {
             // todo 处理用户点击设置标签的逻辑
@@ -90,6 +90,8 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             createReq.setDescription(description);
             createReq.setEndDate(endDate);
             createReq.setEndTime(endTime);
+            createReq.setImportant(isImportant);
+            createReq.setUrgent(isUrgent);
             createNewTask(createReq);
         });
 
@@ -137,6 +139,41 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         datePickerDialog.show();
     }
 
+    private void handlePrioritySet() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("设置优先级");
+        String[] priorityArray = {"重要且紧急", "重要不紧急", "紧急不重要", "不重要不紧急"};
+
+        builder.setSingleChoiceItems(priorityArray, 0, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    isImportant = true;
+                    isUrgent = true;
+                    priorityTextView.setText("重要且紧急");
+                    break;
+                case 1:
+                    isImportant = true;
+                    isUrgent = false;
+                    priorityTextView.setText("重要不紧急");
+                    break;
+                case 2:
+                    isImportant = false;
+                    isUrgent = true;
+                    priorityTextView.setText("紧急不重要");
+                    break;
+                case 3:
+                    isImportant = false;
+                    isUrgent = false;
+                    priorityTextView.setText("不重要不紧急");
+                    break;
+                default:
+                    break;
+            }
+            dialog.dismiss();
+        });
+        builder.show();
+    }
+    
     private void createNewTask(TaskCreatReq taskCreatReq) {
         TaskService taskService = MainApplication.getTaskService();
         Call<Result<Object>> call = taskService.createNewTask(taskCreatReq);
