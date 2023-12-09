@@ -39,6 +39,6 @@
     <ImageView
         android:layout_width="18sp"
         android:layout_height="18sp"
-        android:src="@drawable/ic_arrow_down"
+        android:src="@drawable/ic_arrow_right"
         android:contentDescription="@string/list" />
 </LinearLayout>
