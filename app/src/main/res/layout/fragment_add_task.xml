@@ -67,7 +67,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/ic_remind_empty"
+                android:src="@drawable/ic_remind_cancel"
                 android:contentDescription="@string/confirm" />
             <!-- android:src="@drawable/ic_remind_padding" -->
             <ImageView
