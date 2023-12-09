@@ -44,7 +44,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:src="@drawable/ic_calendar_2"
-                android:contentDescription="@string/confirm" />
+                android:contentDescription="@string/setTime" />
 
             <ImageView
                 android:id="@+id/prioritySetImageView"
@@ -52,7 +52,7 @@
                 android:layout_height="23dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_priority"
-                android:contentDescription="@string/confirm" />
+                android:contentDescription="@string/setPriority" />
 
             <ImageView
                 android:id="@+id/tagSetImageView"
@@ -60,15 +60,15 @@
                 android:layout_height="23dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_tag"
-                android:contentDescription="@string/confirm" />
+                android:contentDescription="@string/setTags" />
 
             <ImageView
-                android:id="@+id/countDownSetImageView"
+                android:id="@+id/reminderSetImageView"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_remind_cancel"
-                android:contentDescription="@string/confirm" />
+                android:contentDescription="@string/setReminder" />
             <!-- android:src="@drawable/ic_remind_padding" -->
             <ImageView
                 android:id="@+id/listSetImageView"
@@ -76,7 +76,7 @@
                 android:layout_height="23dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_list"
-                android:contentDescription="@string/confirm" />
+                android:contentDescription="@string/setList" />
 
             <TextView
                 android:id="@+id/listShowEditText"

@@ -34,4 +34,9 @@
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="default_list">默认清单</string>
+    <string name="setTime">设置时间</string>
+    <string name="setPriority">设置优先级</string>
+    <string name="setTags">设置标签</string>
+    <string name="setReminder">设置提醒</string>
+    <string name="setList">设置清单</string>
 </resources>
