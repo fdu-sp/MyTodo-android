@@ -10,8 +10,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -146,17 +144,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void navigateToFragment(Fragment fragment) {
-        // 获取FragmentManager
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        // 开启事务
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        // 添加自定义过渡动画
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        // 替换Fragment
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        // 添加到回退栈
-        fragmentTransaction.addToBackStack(null);
-        // 提交事务
-        fragmentTransaction.commit();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.navigateToFragment(fragment);
     }
 }
