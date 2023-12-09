@@ -22,7 +22,6 @@ import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.api.ApiUtils;
-import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.api.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.api.invariant.Msg;
 import com.zmark.mytodo.api.result.Result;
@@ -33,6 +32,7 @@ import com.zmark.mytodo.fragment.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
+import com.zmark.mytodo.model.group.TaskListSimple;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,24 +44,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyDayFragment extends Fragment {
-    private static final String TAG = "MyDayFragment";
-    private static final String PREF_NAME = "MyPrefs";
+public class ListDetailFragment extends Fragment {
+    private static final String TAG = "ListDetailFragment";
     private static final String KEY_GROUP_BY = "group_by";
     private static final String KEY_SORT_BY = "sort_by";
-
     private RecyclerView todoRecyclerView;
-
+    private TaskListSimple taskListSimple;
+    private String perfName = "MyPrefs";
+    private Call<Result<List<TaskSimpleResp>>> call;
     private List<TodoItem> todoList;
-
     private Map<Integer, MenuItemHandler> menuHandlerMap;
-
     private boolean detailsVisible;
-
     private BottomGroupAndSortSheetFragment.GroupTypeE groupType;
-
     private SortTypeE sortType;
 
+    public ListDetailFragment(TaskListSimple taskListSimple) {
+        this.taskListSimple = taskListSimple;
+        this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
+        this.call = MainApplication.getTaskListService().getAllTasksWithSimpleInfo(taskListSimple.getId());
+    }
+
+    private ListDetailFragment(TaskListSimple taskListSimple, Call<Result<List<TaskSimpleResp>>> call) {
+        this.taskListSimple = taskListSimple;
+        this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
+        this.call = call;
+    }
+
+    public static ListDetailFragment MyDayInstance() {
+        // todo: 2021/4/25 对接服务器api-getMyDayTasksWithSimpleInfo
+        Call<Result<List<TaskSimpleResp>>> myDayCall = MainApplication.getTaskService().getAllTasksWithSimpleInfo();
+        TaskListSimple myDay = new TaskListSimple();
+        myDay.setId(0L);
+        myDay.setName("我的一天");
+        return new ListDetailFragment(myDay, myDayCall);
+    }
 
     // todo: 切换细节的显示和隐藏
     // todo: 排序待办事项
@@ -106,6 +122,7 @@ public class MyDayFragment extends Fragment {
     }
 
     private void registerTopMenu() {
+        // todo 显示标题
         this.menuHandlerMap.put(R.id.menu_task_sort, item -> showGroupAndSortDialog());
         this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
             // 切换状态
@@ -161,9 +178,16 @@ public class MyDayFragment extends Fragment {
     }
 
     private void fetchDataAndUpdateUI() {
-        TaskService taskService = MainApplication.getTaskService();
-        // 获取待办事项列表数据
-        Call<Result<List<TaskSimpleResp>>> call = taskService.getAllTasksWithSimpleInfo();
+        if (call == null) {
+            Log.e(TAG, "fetchDataAndUpdateUI: call is null");
+            Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (call.isExecuted()) {
+            Log.e(TAG, "fetchDataAndUpdateUI: call is executed");
+            Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR + "is " + this.todoList.size(), Toast.LENGTH_SHORT).show();
+            return;
+        }
         call.enqueue(new Callback<Result<List<TaskSimpleResp>>>() {
             @Override
             public void onResponse(@NonNull Call<Result<List<TaskSimpleResp>>> call, @NonNull Response<Result<List<TaskSimpleResp>>> response) {
@@ -182,7 +206,7 @@ public class MyDayFragment extends Fragment {
                     List<TaskSimpleResp> taskList = result.getObject();
                     if (taskList == null || taskList.isEmpty()) {
                         Log.w(TAG, "taskSimpleResp is null");
-                        Toast.makeText(getContext(), Msg.NO_TASKS_TODAY, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), Msg.NO_TASKS_IN_LIST, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     todoList.clear();
@@ -226,7 +250,7 @@ public class MyDayFragment extends Fragment {
     private BottomGroupAndSortSheetFragment.GroupTypeE getSavedGroupBy() {
         Activity activity = getActivity();
         if (activity != null) {
-            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
             // 从SharedPreferences获取保存的状态，默认为LIST
             String groupBy = preferences.getString(KEY_GROUP_BY, BottomGroupAndSortSheetFragment.GroupTypeE.LIST.getDesc());
             return BottomGroupAndSortSheetFragment.GroupTypeE.getByDesc(groupBy);
@@ -241,7 +265,7 @@ public class MyDayFragment extends Fragment {
     private SortTypeE getSavedSortBy() {
         Activity activity = getActivity();
         if (activity != null) {
-            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
             // 从SharedPreferences获取保存的状态，默认为DUE_DATE_FIRST
             String sortBy = preferences.getString(KEY_SORT_BY, SortTypeE.DUE_DATE_FIRST.getDesc());
             return SortTypeE.getByDesc(sortBy);
@@ -253,7 +277,7 @@ public class MyDayFragment extends Fragment {
     private void saveSelectGroupType(BottomGroupAndSortSheetFragment.GroupTypeE groupType) {
         Activity activity = getActivity();
         if (activity != null) {
-            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(KEY_GROUP_BY, groupType.getDesc());
             editor.apply();
@@ -263,7 +287,7 @@ public class MyDayFragment extends Fragment {
     private void saveSelectedSortType(SortTypeE sortType) {
         Activity activity = getActivity();
         if (activity != null) {
-            SharedPreferences preferences = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(KEY_SORT_BY, sortType.getDesc());
             editor.apply();

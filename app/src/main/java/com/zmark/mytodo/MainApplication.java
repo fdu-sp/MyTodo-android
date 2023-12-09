@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.zmark.mytodo.api.HelloService;
 import com.zmark.mytodo.api.TaskGroupService;
+import com.zmark.mytodo.api.TaskListService;
 import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.config.Config;
 
@@ -13,15 +14,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainApplication extends Application {
     private static final String TAG = "MainApplication";
+    private static Retrofit retrofit;
     private static HelloService helloService;
     private static TaskService taskService;
     private static TaskGroupService taskGroupService;
+    private static TaskListService taskListService;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: Application started");
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(Config.getRearBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -29,6 +33,7 @@ public class MainApplication extends Application {
         helloService = retrofit.create(HelloService.class);
         taskService = retrofit.create(TaskService.class);
         taskGroupService = retrofit.create(TaskGroupService.class);
+        taskListService = retrofit.create(TaskListService.class);
     }
 
     public static HelloService getHelloService() {
@@ -41,5 +46,9 @@ public class MainApplication extends Application {
 
     public static TaskGroupService getTaskGroupService() {
         return taskGroupService;
+    }
+
+    public static TaskListService getTaskListService() {
+        return taskListService;
     }
 }

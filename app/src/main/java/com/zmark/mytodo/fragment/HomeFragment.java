@@ -55,13 +55,22 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // 注册上部视图的点击事件
+        this.registerClickListener(view);
         // todo 注册顶部菜单的点击事件
         // 获取分组数据并更新UI
         this.fetchDataAndUpdateUI();
+
     }
 
     private void findView(View view) {
         containerView = view.findViewById(R.id.taskGroupRecyclerView);
+    }
+
+    private void registerClickListener(View view) {
+        // 注册上部视图的点击事件
+        view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToListDetailFragment(ListDetailFragment.MyDayInstance()));
+        // todo more
     }
 
     private void fetchDataAndUpdateUI() {
@@ -121,21 +130,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void navigateToListDetailFragment(TaskListSimple taskListSimple) {
-        MyDayFragment myDayFragment = new MyDayFragment();
+        ListDetailFragment listDetailFragment = new ListDetailFragment(taskListSimple);
+        this.navigateToListDetailFragment(listDetailFragment);
+    }
+
+    private void navigateToListDetailFragment(ListDetailFragment listDetailFragment) {
         // 获取FragmentManager
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         // 开启事务
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         // 添加自定义过渡动画
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-
         // 替换Fragment
-        fragmentTransaction.replace(R.id.fragment_container, myDayFragment);
+        fragmentTransaction.replace(R.id.fragment_container, listDetailFragment);
         // 添加到回退栈
         fragmentTransaction.addToBackStack(null);
         // 提交事务
         fragmentTransaction.commit();
     }
-
 }

@@ -29,8 +29,9 @@ import com.zmark.mytodo.api.result.Result;
 import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
-import com.zmark.mytodo.fragment.MyDayFragment;
+import com.zmark.mytodo.fragment.ListDetailFragment;
 import com.zmark.mytodo.fragment.QuadrantViewFragment;
+import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
 import com.zmark.mytodo.handler.ClickListener;
 
 import java.util.HashMap;
@@ -43,7 +44,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private final Map<Integer, Fragment> navigationMap = new HashMap<>();
+    private final Map<Integer, NavFragmentFactory> navFragmentFactoryMap = new HashMap<>();
     private ClickListener onRightIconClickListener;
     private ImageView rightIcon;
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // 注册 FloatingActionButton
         this.registerFloatingActionButton();
         // 加载默认的Fragment
-        this.loadFragment(this.navigationMap.get(R.id.navigation_home));
+        this.loadFragment(this.navFragmentFactoryMap.get(R.id.navigation_home).createFragment());
         // 获取欢迎信息
         this.fetchHelloMsg();
     }
@@ -103,21 +104,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerBottomNavigations() {
-        navigationMap.put(R.id.navigation_home, new HomeFragment());
-        navigationMap.put(R.id.navigation_my_day, new MyDayFragment());
-        navigationMap.put(R.id.navigation_calendar_view, new CalendarViewFragment());
-        navigationMap.put(R.id.navigation_four_quadrants_view, new QuadrantViewFragment());
+        navFragmentFactoryMap.put(R.id.navigation_home, HomeFragment::new);
+        navFragmentFactoryMap.put(R.id.navigation_my_day, ListDetailFragment::MyDayInstance);
+        navFragmentFactoryMap.put(R.id.navigation_calendar_view, CalendarViewFragment::new);
+        navFragmentFactoryMap.put(R.id.navigation_four_quadrants_view, QuadrantViewFragment::new);
         // 设置底部导航的点击事件
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnItemSelectedListener(item -> {
             int menuItemId = item.getItemId();
-            if (navigationMap.containsKey(menuItemId)) {
-                loadFragment(navigationMap.get(menuItemId));
+            if (navFragmentFactoryMap.containsKey(menuItemId)) {
+                loadFragment(getFragmentById(menuItemId));
                 return true;
             } else {
                 return false;
             }
         });
+    }
+
+    public Fragment getFragmentById(int id) {
+        return Objects.requireNonNull(navFragmentFactoryMap.get(id)).createFragment();
     }
 
     private void registerFloatingActionButton() {
