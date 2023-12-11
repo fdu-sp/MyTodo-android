@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.zmark.mytodo.api.HelloService;
+import com.zmark.mytodo.api.MyDayTaskService;
 import com.zmark.mytodo.api.TaskGroupService;
 import com.zmark.mytodo.api.TaskListService;
 import com.zmark.mytodo.api.TaskService;
@@ -22,7 +23,7 @@ public class MainApplication extends Application {
     private static TaskService taskService;
     private static TaskGroupService taskGroupService;
     private static TaskListService taskListService;
-
+    private static MyDayTaskService myDayTaskService;
 
     @Override
     public void onCreate() {
@@ -42,6 +43,7 @@ public class MainApplication extends Application {
         taskService = retrofit.create(TaskService.class);
         taskGroupService = retrofit.create(TaskGroupService.class);
         taskListService = retrofit.create(TaskListService.class);
+        myDayTaskService = retrofit.create(MyDayTaskService.class);
     }
 
     public static HelloService getHelloService() {
@@ -58,5 +60,9 @@ public class MainApplication extends Application {
 
     public static TaskListService getTaskListService() {
         return taskListService;
+    }
+
+    public static MyDayTaskService getMyDayTaskService() {
+        return myDayTaskService;
     }
 }
