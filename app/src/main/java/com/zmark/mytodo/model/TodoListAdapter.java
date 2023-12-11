@@ -98,6 +98,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         }
     }
 
+    @Override
+    public int getItemCount() {
+        return todoList.size();
+    }
+
     private void completeTask(Long taskId) {
         TaskService taskService = MainApplication.getTaskService();
         taskService.completeTask(taskId).enqueue(new retrofit2.Callback<Result<String>>() {
@@ -148,11 +153,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 Log.e(TAG, "onFailure: ", t);
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return todoList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
