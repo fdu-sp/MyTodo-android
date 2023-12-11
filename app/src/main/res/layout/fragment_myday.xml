@@ -30,14 +30,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="5dp"
+            android:padding="8dp"
             android:orientation="horizontal"
             android:gravity="center"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="23dp"
-                android:layout_height="23dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_inspiration_white"
                 android:contentDescription="@string/suggestion" />
 
@@ -47,7 +47,7 @@
                 android:layout_marginStart="3dp"
                 android:text="@string/suggestion"
                 android:textColor="#FFFFFF"
-                android:textSize="23sp"
+                android:textSize="20sp"
                 android:background="@android:color/transparent" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
