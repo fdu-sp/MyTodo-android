@@ -11,6 +11,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/noTaskMsgView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="200dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:src="@drawable/ic_no_task"
+            android:contentDescription="@string/NO_TASK_IN_LIST" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NO_TASK_IN_LIST"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/fab_recommend_button"
         android:layout_width="wrap_content"

@@ -49,6 +49,7 @@ public class ListDetailFragment extends Fragment {
     private static final String TAG = "ListDetailFragment";
     private static final String KEY_GROUP_BY = "group_by";
     private static final String KEY_SORT_BY = "sort_by";
+    private View containerView;
     private RecyclerView todoRecyclerView;
     private final TaskListSimple taskListSimple;
     private final boolean isMyDay;
@@ -96,19 +97,19 @@ public class ListDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_myday, container, false);
-        this.findView(view);
+        containerView = inflater.inflate(R.layout.fragment_myday, container, false);
+        this.findView(containerView);
         // 注册顶部菜单
         this.registerTopMenu();
         // 注册底部图标
-        this.registerBottomIcon(view);
+        this.registerBottomIcon();
         // 获取数据并更新UI
         this.fetchDataAndUpdateUI();
-        return view;
+        return containerView;
     }
 
-    private void registerBottomIcon(View view) {
-        CardView cardView = view.findViewById(R.id.fab_recommend_button);
+    private void registerBottomIcon() {
+        CardView cardView = containerView.findViewById(R.id.fab_recommend_button);
         if (isMyDay) {
             cardView.setOnClickListener(v -> {
                 // todo
@@ -224,7 +225,8 @@ public class ListDetailFragment extends Fragment {
                     List<TaskSimpleResp> taskList = result.getObject();
                     if (taskList == null || taskList.isEmpty()) {
                         Log.w(TAG, "taskSimpleResp is null");
-                        Toast.makeText(getContext(), Msg.NO_TASKS_IN_LIST, Toast.LENGTH_SHORT).show();
+                        View noTaskMsgView = containerView.findViewById(R.id.noTaskMsgView);
+                        noTaskMsgView.setVisibility(View.VISIBLE);
                         return;
                     }
                     todoList.clear();

@@ -41,4 +41,5 @@
     <string name="setList">设置清单</string>
     <string name="default_priority">不重要不紧急</string>
     <string name="suggestion">建议</string>
+    <string name="NO_TASK_IN_LIST">该清单空空如也，为它添加一些任务吧~</string>
 </resources>
