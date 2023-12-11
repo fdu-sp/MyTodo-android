@@ -4,8 +4,7 @@ public class Config {
     private static final String AGREEMENT = "http://";
 
     //    private static final String SERVER_IP = "10.223.225.42";
-    //    private static final String SERVER_IP = "192.168.31.61";
-    private static final String SERVER_IP = "192.168.3.29";
+    private static final String SERVER_IP = "192.168.31.61";
 
     private static final String SERVER_PORT = "8787";
 
