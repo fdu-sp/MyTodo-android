@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="20dp"
-    android:background="@color/blue_bg"
+    android:background="@color/cornflower_blue"
     tools:ignore="UseCompoundDrawables">
 
     <!-- 头像 -->

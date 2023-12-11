@@ -8,8 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <!-- 新增资源 -->
-    <color name="blue_bg">#5172fd</color>
-    <color name="blue_icon">#5172fd</color>
+    <color name="cornflower_blue">#5172fd</color>
     <color name="blue_bg_light">#6e8bf8</color>
     <color name="blue_bg_dark">#3a4e9b</color>
     <color name="ivory">#FFFFF0</color><!--象牙色 -->

@@ -88,7 +88,7 @@
             android:src="@drawable/ic_add_white"
             app:elevation="6dp"
             app:tint="@color/white"
-            app:backgroundTint="@color/blue_bg"
+            app:backgroundTint="@color/cornflower_blue"
             tools:ignore="RelativeOverlap" />
 
         <!-- Bottom Navigation View -->
