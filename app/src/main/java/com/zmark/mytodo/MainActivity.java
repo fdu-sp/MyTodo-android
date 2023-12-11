@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 隐藏默认的ActionBar
-        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
         // 注册顶部导航栏
         this.registerTopNavigations();
@@ -103,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerTopNavigations() {
+        // 隐藏默认的ActionBar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         ImageView leftIcon = findViewById(R.id.icon_left);
         rightIcon = findViewById(R.id.icon_right);
         navTopTitleView = findViewById(R.id.nav_top_title);
