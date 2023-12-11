@@ -40,4 +40,5 @@
     <string name="setReminder">设置提醒</string>
     <string name="setList">设置清单</string>
     <string name="default_priority">不重要不紧急</string>
+    <string name="suggestion">建议</string>
 </resources>
