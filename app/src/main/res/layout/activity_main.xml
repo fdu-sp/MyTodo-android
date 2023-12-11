@@ -85,8 +85,10 @@
             android:layout_marginBottom="70dp"
             android:layout_marginEnd="20dp"
             android:contentDescription="@string/add_todo_item"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_add_white"
             app:elevation="6dp"
+            app:tint="@color/white"
+            app:backgroundTint="@color/blue_bg"
             tools:ignore="RelativeOverlap" />
 
         <!-- Bottom Navigation View -->
