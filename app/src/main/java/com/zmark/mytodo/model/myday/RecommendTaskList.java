@@ -24,6 +24,11 @@ public class RecommendTaskList {
         }
     }
 
+    public RecommendTaskList() {
+        this.title = "";
+        this.taskSimpleRespList = new ArrayList<>();
+    }
+
     public int getSize() {
         return taskSimpleRespList.size();
     }

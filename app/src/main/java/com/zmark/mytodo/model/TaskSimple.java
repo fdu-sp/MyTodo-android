@@ -20,6 +20,11 @@ public class TaskSimple {
     private String createTime;
     private String updateTime;
 
+    /**
+     * 是否处于更新中
+     */
+    private boolean binding = false;
+
     public TaskSimple(Long id, String title, String description, String dueDate, String expectedDate, Boolean isImportant, Boolean isUrgent, Boolean completed, String completedTime, Boolean archived, List<TagSimpleResp> tags, String createTime, String updateTime) {
         this.id = id;
         this.title = title;
@@ -157,5 +162,42 @@ public class TaskSimple {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public boolean isBinding() {
+        return binding;
+    }
+
+    public void setBinding(boolean binding) {
+        this.binding = binding;
+    }
+
+    public String getTagString() {
+        StringBuilder tagsStringBuilder = new StringBuilder();
+        for (TagSimpleResp tagSimpleResp : this.getTags()) {
+            String tag = tagSimpleResp.getTagName();
+            if (tag.isEmpty()) {
+                continue;
+            }
+            if (tag.length() > 5) {
+                tag = tag.substring(0, Math.min(tag.length() - 1, 10)) + "...";
+            }
+            if (tag.endsWith(",")) {
+                tag = tag.substring(0, tag.length() - 1);
+            }
+            if (tag.startsWith(",")) {
+                tag = tag.substring(1);
+            }
+            if (this.getTags().indexOf(tagSimpleResp) == this.getTags().size() - 1) {
+                tagsStringBuilder.append(tag);
+            } else {
+                tagsStringBuilder.append(tag).append(", ");
+            }
+        }
+        return tagsStringBuilder.toString().trim();
+    }
+
+    public boolean isRecurring() {
+        return false;
     }
 }
