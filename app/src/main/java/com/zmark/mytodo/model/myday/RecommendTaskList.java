@@ -33,6 +33,10 @@ public class RecommendTaskList {
         return taskSimpleRespList.size();
     }
 
+    public boolean isEmpty() {
+        return taskSimpleRespList == null || taskSimpleRespList.isEmpty();
+    }
+
     public String getTitle() {
         return title;
     }

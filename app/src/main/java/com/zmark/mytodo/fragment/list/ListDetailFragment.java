@@ -33,6 +33,7 @@ import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
+import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TodoItem;
 import com.zmark.mytodo.model.TodoListAdapter;
@@ -151,7 +152,8 @@ public class ListDetailFragment extends Fragment {
         CardView cardView = containerView.findViewById(R.id.fab_recommend_button);
         if (isMyDay) {
             cardView.setOnClickListener(v -> {
-                addClickAnimation(cardView);
+                this.addClickAnimation(cardView);
+                this.showMyDayRecommendBottomSheet();
             });
         } else {
             cardView.setVisibility(View.GONE);
@@ -173,6 +175,11 @@ public class ListDetailFragment extends Fragment {
             item.setTitle("显示细节");
 //            item.setIcon(R.drawable.ic_hide_details); // 设置菜单项的图标
         }
+    }
+
+    private void showMyDayRecommendBottomSheet() {
+        RecommendMyDayBottomSheetFragment fragment = new RecommendMyDayBottomSheetFragment();
+        fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
     }
 
     private void showGroupAndSortDialog() {

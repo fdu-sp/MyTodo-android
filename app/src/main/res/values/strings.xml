@@ -42,4 +42,6 @@
     <string name="default_priority">不重要不紧急</string>
     <string name="suggestion">建议</string>
     <string name="NO_TASK_IN_LIST">该清单空空如也，为它添加一些任务吧~</string>
+    <string name="add_to_my_day">添加到我的一天</string>
+    <string name="no_tasks_here">暂无任务~</string>
 </resources>
