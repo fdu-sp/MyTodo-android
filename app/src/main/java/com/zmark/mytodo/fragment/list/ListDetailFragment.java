@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +50,8 @@ public class ListDetailFragment extends Fragment {
     private static final String KEY_GROUP_BY = "group_by";
     private static final String KEY_SORT_BY = "sort_by";
     private RecyclerView todoRecyclerView;
-    private TaskListSimple taskListSimple;
+    private final TaskListSimple taskListSimple;
+    private final boolean isMyDay;
     private final String perfName;
     private final Call<Result<List<TaskSimpleResp>>> call;
     private List<TodoItem> todoList;
@@ -62,12 +64,14 @@ public class ListDetailFragment extends Fragment {
         this.taskListSimple = taskListSimple;
         this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
         this.call = MainApplication.getTaskService().getAllTasksWithSimpleInfoByList(taskListSimple.getId());
+        this.isMyDay = false;
     }
 
     private ListDetailFragment(TaskListSimple taskListSimple, Call<Result<List<TaskSimpleResp>>> call) {
         this.taskListSimple = taskListSimple;
         this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
         this.call = call;
+        this.isMyDay = true;
     }
 
     public static ListDetailFragment MyDayInstance() {
@@ -96,8 +100,23 @@ public class ListDetailFragment extends Fragment {
         this.findView(view);
         // 注册顶部菜单
         this.registerTopMenu();
+        // 注册底部图标
+        this.registerBottomIcon(view);
+        // 获取数据并更新UI
         this.fetchDataAndUpdateUI();
         return view;
+    }
+
+    private void registerBottomIcon(View view) {
+        CardView cardView = view.findViewById(R.id.fab_recommend_button);
+        if (isMyDay) {
+            cardView.setOnClickListener(v -> {
+                // todo
+                Toast.makeText(getContext(), "推荐", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            cardView.setVisibility(View.GONE);
+        }
     }
 
     private void findView(View view) {
