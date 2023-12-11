@@ -71,10 +71,9 @@ public class ListDetailFragment extends Fragment {
     }
 
     public static ListDetailFragment MyDayInstance() {
-        // todo: 2021/4/25 对接服务器api-getMyDayTasksWithSimpleInfo
-        Call<Result<List<TaskSimpleResp>>> myDayCall = MainApplication.getTaskService().getAllTasksWithSimpleInfo();
+        Call<Result<List<TaskSimpleResp>>> myDayCall = MainApplication.getMyDayTaskService().getMyDayListWithSimpleInfo();
         TaskListSimple myDay = new TaskListSimple();
-        myDay.setId(0L);
+        // 设置必要的字段
         myDay.setName("我的一天");
         return new ListDetailFragment(myDay, myDayCall);
     }
