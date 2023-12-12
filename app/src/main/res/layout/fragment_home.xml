@@ -118,9 +118,9 @@
 
     <!-- 底部任务分组和清单 -->
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskGroupRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/taskGroupRecyclerView"
         android:layout_below="@id/centerListLayout"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
