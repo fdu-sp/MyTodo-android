@@ -33,7 +33,7 @@ public class MyDayTaskServiceImpl {
         void onServerInternalError();
     }
 
-    private static void doRequest(@NonNull Call<Result<Object>> call, @NonNull Long taskId, @NonNull Callbacks callbacks) {
+    private static void doRequest(@NonNull Call<Result<Object>> call, @NonNull Callbacks callbacks) {
         call.enqueue(new Callback<Result<Object>>() {
             @Override
             public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
@@ -60,11 +60,11 @@ public class MyDayTaskServiceImpl {
 
     public static void addTaskToMyDay(Long taskId, Callbacks callbacks) {
         Call<Result<Object>> call = MainApplication.getMyDayTaskService().addTaskToMyDay(taskId);
-        doRequest(call, taskId, callbacks);
+        doRequest(call, callbacks);
     }
 
     public static void removeFromMyDayList(Long taskId, Callbacks callbacks) {
         Call<Result<Object>> call = MainApplication.getMyDayTaskService().removeFromMyDayList(taskId);
-        doRequest(call, taskId, callbacks);
+        doRequest(call, callbacks);
     }
 }
