@@ -72,9 +72,7 @@ public class RecommendMyDayBottomSheetFragment extends BottomSheetDialogFragment
                 }
                 RecommendMyDayResp recommendMyDayResp = result.getObject();
                 if (recommendMyDayResp == null) {
-                    // todo 优化没有推荐任务的提示，不使用toast，而是更新界面
-                    Log.w(TAG, "recommendMyDayResp is null");
-                    Toast.makeText(getContext(), Msg.NO_RECOMMEND_TASKS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 updateUI(recommendMyDayResp);
