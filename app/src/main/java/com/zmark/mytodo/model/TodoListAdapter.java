@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.api.TaskService;
-import com.zmark.mytodo.api.result.Result;
-import com.zmark.mytodo.api.result.ResultCode;
+import com.zmark.mytodo.service.api.TaskService;
+import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.service.result.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;

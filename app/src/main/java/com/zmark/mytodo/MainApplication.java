@@ -3,12 +3,12 @@ package com.zmark.mytodo;
 import android.app.Application;
 import android.util.Log;
 
-import com.zmark.mytodo.api.HelloService;
-import com.zmark.mytodo.api.MyDayTaskService;
-import com.zmark.mytodo.api.TaskGroupService;
-import com.zmark.mytodo.api.TaskListService;
-import com.zmark.mytodo.api.TaskService;
 import com.zmark.mytodo.config.Config;
+import com.zmark.mytodo.service.api.HelloService;
+import com.zmark.mytodo.service.api.MyDayTaskService;
+import com.zmark.mytodo.service.api.TaskGroupService;
+import com.zmark.mytodo.service.api.TaskListService;
+import com.zmark.mytodo.service.api.TaskService;
 
 import java.util.concurrent.TimeUnit;
 

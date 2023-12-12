@@ -1,6 +1,6 @@
 package com.zmark.mytodo.model.group;
 
-import com.zmark.mytodo.api.bo.group.resp.TaskGroupSimpleResp;
+import com.zmark.mytodo.service.bo.group.resp.TaskGroupSimpleResp;
 
 import java.util.List;
 import java.util.stream.Collectors;

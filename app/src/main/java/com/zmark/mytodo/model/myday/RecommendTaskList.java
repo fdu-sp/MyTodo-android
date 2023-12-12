@@ -1,8 +1,8 @@
 package com.zmark.mytodo.model.myday;
 
-import com.zmark.mytodo.api.bo.list.resp.RecommendTaskListResp;
-import com.zmark.mytodo.api.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.model.TaskSimple;
+import com.zmark.mytodo.service.bo.list.resp.RecommendTaskListResp;
+import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 
 import java.util.ArrayList;
 import java.util.List;

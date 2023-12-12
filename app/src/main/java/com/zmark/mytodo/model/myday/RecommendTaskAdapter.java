@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.api.bo.TaskServiceImpl;
 import com.zmark.mytodo.model.TaskSimple;
+import com.zmark.mytodo.service.impl.TaskServiceImpl;
 
 import java.util.List;
 

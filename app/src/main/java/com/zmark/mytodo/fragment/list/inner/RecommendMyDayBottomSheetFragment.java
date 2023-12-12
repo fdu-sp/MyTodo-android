@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.api.ApiUtils;
-import com.zmark.mytodo.api.bo.list.resp.RecommendMyDayResp;
-import com.zmark.mytodo.api.invariant.Msg;
-import com.zmark.mytodo.api.result.Result;
-import com.zmark.mytodo.api.result.ResultCode;
 import com.zmark.mytodo.model.myday.RecommendTaskList;
 import com.zmark.mytodo.model.myday.RecommendTaskListAdapter;
+import com.zmark.mytodo.service.ApiUtils;
+import com.zmark.mytodo.service.bo.list.resp.RecommendMyDayResp;
+import com.zmark.mytodo.service.invariant.Msg;
+import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.service.result.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;

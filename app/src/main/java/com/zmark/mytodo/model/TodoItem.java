@@ -1,6 +1,6 @@
 package com.zmark.mytodo.model;
 
-import com.zmark.mytodo.api.bo.task.resp.TaskSimpleResp;
+import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 
 import java.util.ArrayList;
 import java.util.List;
