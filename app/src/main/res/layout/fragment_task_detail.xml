@@ -20,8 +20,27 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="清单名称" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            <!-- 添加返回图标 -->
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="@string/back" />
+
+            <!-- 添加标题（清单名称） -->
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="@string/title"
+                android:textSize="23sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

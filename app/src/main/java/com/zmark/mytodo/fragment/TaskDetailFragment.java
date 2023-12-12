@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.TaskDetail;
+import com.zmark.mytodo.model.group.TaskListSimple;
 
+/**
+ * 任务详情页
+ */
 public class TaskDetailFragment extends BottomSheetDialogFragment {
     private static final String TAG = "TaskDetailFragment";
     /**
@@ -20,11 +24,14 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
      */
     private final TaskDetail taskDetail;
 
-    private Toolbar toolbar;
+    private final TaskListSimple taskListSimple;
+
+    private TextView taskListNameTextView;
 
 
-    public TaskDetailFragment(TaskDetail taskDetail) {
+    public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
+        this.taskListSimple = taskListSimple;
         this.taskDetail = taskDetail;
     }
 
@@ -39,11 +46,11 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.toolbar.setTitle(taskDetail.getTitle());
+        this.taskListNameTextView.setText(taskListSimple.getName());
     }
 
     private void findViews(View view) {
-        this.toolbar = view.findViewById(R.id.taskDetailToolbar);
+        this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
 
         // 设置图标的选中状态
 //        ImageView iconImageView = findViewById(R.id.iconImageView);

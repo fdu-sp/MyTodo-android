@@ -316,7 +316,7 @@ public class ListDetailFragment extends Fragment {
                         Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(new TaskDetail(taskDetail));
+                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(taskListSimple, new TaskDetail(taskDetail));
                     taskDetailFragment.show(requireActivity().getSupportFragmentManager(), taskDetailFragment.getTag());
                 }
             }
