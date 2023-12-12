@@ -14,6 +14,19 @@ public class TaskListSimple {
     String createTime;
     String updateTime;
 
+    public TaskListSimple() {
+    }
+
+    public TaskListSimple(TaskListSimpleResp simpleResp) {
+        this.id = simpleResp.getId();
+        this.name = simpleResp.getName();
+        this.count = simpleResp.getCount();
+        this.description = simpleResp.getDescription();
+        this.groupId = simpleResp.getGroupId();
+        this.createTime = simpleResp.getCreateTime();
+        this.updateTime = simpleResp.getUpdateTime();
+    }
+
     public static TaskListSimple from(TaskListSimpleResp simpleResp) {
         TaskListSimple taskListSimple = new TaskListSimple();
         taskListSimple.id = simpleResp.getId();
