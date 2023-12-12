@@ -194,6 +194,7 @@
 
             <!-- 重复 -->
             <LinearLayout
+                android:id="@+id/repeatedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -206,6 +207,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/repeatedImageView"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginStart="12dp"
@@ -213,6 +215,7 @@
                     android:src="@drawable/ic_recurring" />
 
                 <TextView
+                    android:id="@+id/repeatedTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

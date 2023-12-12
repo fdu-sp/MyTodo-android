@@ -67,6 +67,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView dueDateImageView;
     private TextView dueDateTextView;
 
+    private LinearLayout repeatedLayout;
+    private ImageView repeatedImageView;
+    private TextView repeatedTextView;
+
     private LinearLayout tagLayout;
     private ImageView tagImageView;
     private TextView tagTextView;
@@ -110,6 +114,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
         this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
         this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
+
+        this.repeatedLayout = view.findViewById(R.id.repeatedLayout);
+        this.repeatedImageView = view.findViewById(R.id.repeatedImageView);
+        this.repeatedTextView = view.findViewById(R.id.repeatedTextView);
 
         this.tagLayout = view.findViewById(R.id.tagLayout);
         this.tagImageView = view.findViewById(R.id.tagImageView);
@@ -209,11 +217,25 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         });
         this.updateDueDateUI();
 
+        // 设置 repeated
+        this.repeatedLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateRepeatedUI();
+
         // 设置 tag
         this.tagLayout.setOnClickListener(v -> {
             // todo
         });
         this.updateTagUI();
+    }
+
+    private void updateRepeatedUI() {
+        requireActivity().runOnUiThread(() -> {
+            // todo
+            repeatedTextView.setTextColor(unCheckedColorStateList);
+            repeatedImageView.setImageTintList(unCheckedColorStateList);
+        });
     }
 
     private void updateReminderUI() {
