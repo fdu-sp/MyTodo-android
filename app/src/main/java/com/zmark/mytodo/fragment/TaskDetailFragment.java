@@ -63,6 +63,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView dueDateImageView;
     private TextView dueDateTextView;
 
+    private LinearLayout tagLayout;
+    private ImageView tagImageView;
+    private TextView tagTextView;
+
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
@@ -81,7 +85,6 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-
     private void findViews(View view) {
         checkedColorStateList =
                 ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
@@ -91,12 +94,18 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.backButton = view.findViewById(R.id.backButton);
         this.checkBox = view.findViewById(R.id.checkBox);
         this.taskTitle = view.findViewById(R.id.taskTitle);
+
         this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
         this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
         this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+
         this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
         this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
         this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
+
+        this.tagLayout = view.findViewById(R.id.tagLayout);
+        this.tagImageView = view.findViewById(R.id.tagImageView);
+        this.tagTextView = view.findViewById(R.id.tagTextView);
     }
 
     @Override
@@ -122,7 +131,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.checkBox.setChecked(taskDetail.getCompleted());
         // 设置任务标题
         this.taskTitle.setText(taskDetail.getTitle());
-        // 设置 添加到我的一天的 点击事件
+
+        // 设置 添加到我的一天
         // todo 如果是 我的一天 任务列表，需要通知上层更新
         this.addToMyDayLayout.setOnClickListener(v -> {
             if (taskDetail.isInMyDay()) {
@@ -177,13 +187,34 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
                 });
             }
         });
-        // 设置 添加到我的一天 的UI
         this.updateAddToMyDayUI();
-        // 设置 due date 的点击事件
+
+        // 设置 due date
         this.dueDateLayout.setOnClickListener(v -> {
             // todo
         });
         this.updateDueDateUI();
+
+        // 设置 tag
+        this.tagLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateTagUI();
+    }
+
+    private void updateTagUI() {
+        requireActivity().runOnUiThread(() -> {
+            if (taskDetail.getTags() == null || taskDetail.getTags().isEmpty()) {
+                tagTextView.setText(R.string.setTags);
+                tagTextView.setTextColor(unCheckedColorStateList);
+                tagImageView.setImageTintList(unCheckedColorStateList);
+            } else {
+                String tagStr = taskDetail.getDetailTagString();
+                tagTextView.setText(tagStr);
+                tagTextView.setTextColor(checkedColorStateList);
+                tagImageView.setImageTintList(checkedColorStateList);
+            }
+        });
     }
 
     private void updateAddToMyDayUI() {

@@ -90,6 +90,14 @@ public class TaskDetail {
         return tags;
     }
 
+    public String getDetailTagString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TagSimpleResp tag : tags) {
+            stringBuilder.append(tag.getTagName()).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
     public void setTags(List<TagSimpleResp> tags) {
         this.tags = tags;
     }
