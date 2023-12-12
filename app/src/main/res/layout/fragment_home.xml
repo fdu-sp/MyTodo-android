@@ -116,7 +116,7 @@
 
     </LinearLayout>
 
-    <!-- 底部任务组 -->
+    <!-- 底部任务分组和清单 -->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
