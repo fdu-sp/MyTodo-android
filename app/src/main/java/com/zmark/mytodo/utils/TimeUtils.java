@@ -33,10 +33,10 @@ public class TimeUtils {
      * 否则返回日期
      */
     public static String getFormattedDateStr(Date date) {
-        if (date.equals(today())) {
+        if (dateEquals(date, today())) {
             return "今天";
         }
-        if (date.equals(afterDays(1))) {
+        if (dateEquals(date, afterDays(1))) {
             return "明天";
         }
         return date.toString();
@@ -75,6 +75,12 @@ public class TimeUtils {
         return getFormattedDateStrFromTimeStamp(getTimestampFromStr(timeStamp));
     }
 
+    public static boolean dateEquals(Date date1, Date date2) {
+        String dateStr1 = date1.toString();
+        String dateStr2 = date2.toString();
+        return dateStr1.equals(dateStr2);
+    }
+
     /**
      * 返回`日期 周几`
      * <p>
@@ -82,7 +88,7 @@ public class TimeUtils {
      */
     public static String getFormattedDateStrFromTimeStamp(Timestamp timeStamp) {
         Date date = new Date(timeStamp.getTime());
-        if (date.equals(today())) {
+        if (dateEquals(date, today())) {
             return "今天";
         }
         String dayOfWeek = getDayOfWeek(timeStamp);
