@@ -1,18 +1,18 @@
 package com.zmark.mytodo.comparator.task;
 
-import com.zmark.mytodo.model.TodoItem;
+import com.zmark.mytodo.model.TaskSimple;
 
 /**
- * @see TodoItemComparator
+ * @see TaskSimpleComparator
  */
-public class StatusComparator implements TodoItemComparator {
-    private TodoItemComparator nextComparator;
+public class StatusComparator implements TaskSimpleComparator {
+    private TaskSimpleComparator nextComparator;
 
     @Override
-    public int compare(TodoItem item1, TodoItem item2) {
-        if (item1.isDone() && !item2.isDone()) {
+    public int compare(TaskSimple item1, TaskSimple item2) {
+        if (item1.getCompleted() && !item2.getCompleted()) {
             return 1;
-        } else if (!item1.isDone() && item2.isDone()) {
+        } else if (!item1.getCompleted() && item2.getCompleted()) {
             return -1;
         } else {
             return nextComparator != null ? nextComparator.compare(item1, item2) : 0;
@@ -20,7 +20,7 @@ public class StatusComparator implements TodoItemComparator {
     }
 
     @Override
-    public void setNextComparator(TodoItemComparator nextComparator) {
+    public void setNextComparator(TaskSimpleComparator nextComparator) {
         this.nextComparator = nextComparator;
     }
 }

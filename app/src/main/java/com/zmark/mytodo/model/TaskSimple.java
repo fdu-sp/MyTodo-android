@@ -3,6 +3,7 @@ package com.zmark.mytodo.model;
 import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskSimple {
@@ -58,6 +59,12 @@ public class TaskSimple {
         this.tags = resp.getTags();
         this.createTime = resp.getCreateTime();
         this.updateTime = resp.getUpdateTime();
+    }
+
+    public static List<TaskSimple> from(List<TaskSimpleResp> taskSimpleRespList) {
+        List<TaskSimple> todoItemList = new ArrayList<>();
+        taskSimpleRespList.forEach(taskSimpleResp -> todoItemList.add(new TaskSimple(taskSimpleResp)));
+        return todoItemList;
     }
 
     public Long getId() {
@@ -199,5 +206,13 @@ public class TaskSimple {
 
     public boolean isRecurring() {
         return false;
+    }
+
+    public void changeToBeDone() {
+        this.setCompleted(true);
+    }
+
+    public void changeToBeUndone() {
+        this.setCompleted(false);
     }
 }

@@ -30,7 +30,7 @@ import com.zmark.mytodo.comparator.task.TodoItemComparators;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
-import com.zmark.mytodo.model.TodoItem;
+import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.model.TodoListAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.ApiUtils;
@@ -59,7 +59,7 @@ public class ListDetailFragment extends Fragment {
     private final boolean isMyDay;
     private final String perfName;
     private final Call<Result<List<TaskSimpleResp>>> call;
-    private List<TodoItem> todoList;
+    private List<TaskSimple> todoList;
     private Map<Integer, MenuItemHandler> menuHandlerMap;
     private boolean detailsVisible;
     private BottomGroupAndSortSheetFragment.GroupTypeE groupType;
@@ -160,7 +160,7 @@ public class ListDetailFragment extends Fragment {
         }
     }
 
-    private void sortData(Comparator<TodoItem> comparator) {
+    private void sortData(Comparator<TaskSimple> comparator) {
         todoList.sort(comparator);
     }
 
@@ -239,7 +239,7 @@ public class ListDetailFragment extends Fragment {
                         return;
                     }
                     todoList.clear();
-                    todoList.addAll(TodoItem.from(taskList));
+                    todoList.addAll(TaskSimple.from(taskList));
                     // 根据用户选择的排序方式对todoList进行排序
                     sortData(TodoItemComparators.getComparator(sortType));
                     updateUI();
