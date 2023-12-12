@@ -148,6 +148,7 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
 
                 @Override
                 public void onFailure(Integer code, String msg) {
+                    Log.w(TAG, "onFailure: " + code + " " + msg);
                     Toast.makeText(itemView.getContext(), msg, Toast.LENGTH_SHORT).show();
                 }
 
