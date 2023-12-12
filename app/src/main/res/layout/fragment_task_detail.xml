@@ -82,6 +82,7 @@
         android:layout_below="@id/checkBoxAndTitleLayout"
         android:orientation="vertical"
         android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/white">
 
@@ -120,6 +121,7 @@
         android:layout_below="@id/addToMyDayCardView"
         android:orientation="vertical"
         android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/white">
 
@@ -194,6 +196,7 @@
         android:layout_below="@id/timeRelatedCardView"
         android:orientation="vertical"
         android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/white">
 
