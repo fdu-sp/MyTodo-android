@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,11 +60,13 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     }
 
     static class TaskGroupViewHolder extends RecyclerView.ViewHolder {
+        private final LinearLayout groupItemContainer;
         private final TextView groupNameTextView;
         private final TextView groupListCountTextView;
-        private final TaskListAdapter taskListAdapter;
         private final ImageView groupFoldImageView;
         private final RecyclerView taskGroupItemRecyclerView;
+
+        private final TaskListAdapter taskListAdapter;
 
         private OnListClickListener onListClickListener;
 
@@ -73,10 +76,11 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
 
         public TaskGroupViewHolder(@NonNull View itemView) {
             super(itemView);
+            groupItemContainer = itemView.findViewById(R.id.groupItemContainer);
             groupNameTextView = itemView.findViewById(R.id.groupNameTextView);
-            taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
             groupListCountTextView = itemView.findViewById(R.id.groupListCountTextView);
             groupFoldImageView = itemView.findViewById(R.id.groupFoldImageView);
+            taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
 
             // Create a TaskAdapter for the nested RecyclerView
             taskListAdapter = new TaskListAdapter(new ArrayList<>());
@@ -94,7 +98,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             groupNameTextView.setText(taskGroup.getName());
             groupListCountTextView.setText(String.valueOf(taskGroup.getTaskListSimpleList().size()));
 
-            groupFoldImageView.setOnClickListener(v -> {
+            groupItemContainer.setOnClickListener(v -> {
                 // 处理点击事件
                 handleGroupFoldClick(taskGroup);
             });
