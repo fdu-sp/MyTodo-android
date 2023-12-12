@@ -81,6 +81,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
     private TextView timeCreateShowTextView;
 
+    private ImageView deleteImageView;
+
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
@@ -134,6 +136,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.tagTextView = view.findViewById(R.id.tagTextView);
 
         this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
+
+        this.deleteImageView = view.findViewById(R.id.deleteImageView);
     }
 
     @Override
@@ -250,6 +254,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         // 设置创建时间
         this.updateTimeCreateUI();
 
+        // 设置删除
+        this.deleteImageView.setOnClickListener(v -> {
+            // todo
+        });
     }
 
     private void updateTimeCreateUI() {
