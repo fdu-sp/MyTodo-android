@@ -53,7 +53,7 @@
         android:layout_below="@id/taskDetailBarLayout"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <!-- 左侧圆形勾选框 -->
         <CheckBox
@@ -92,7 +92,7 @@
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:padding="10dp"
+            android:padding="15dp"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -128,21 +128,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:orientation="vertical">
             <!-- 提醒 -->
             <LinearLayout
                 android:id="@+id/reminderLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dp"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="17sp"
                     android:layout_height="17sp"
+                    android:layout_marginStart="10dp"
                     android:src="@drawable/ic_remind_empty"
                     android:contentDescription="@string/setReminder" />
 
@@ -156,34 +159,59 @@
 
             <!-- 到期时间 -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="17sp"
+                    android:layout_height="17sp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/due_date"
+                    android:src="@drawable/ic_calendar_3" />
 
                 <TextView
+                    android:id="@+id/dueDateTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="17sp"
+                    android:text="@string/due_today" />
             </LinearLayout>
 
             <!-- 重复 -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="17sp"
+                    android:layout_height="17sp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/isRecurring"
+                    android:src="@drawable/ic_recurring" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="17sp"
+                    android:text="@string/repeated" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -203,111 +231,128 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:orientation="vertical">
             <!-- 迁移清单 -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="17sp"
+                    android:layout_height="17sp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/move"
+                    android:src="@drawable/ic_list" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="17sp"
+                    android:text="@string/move" />
             </LinearLayout>
 
             <!-- 标签 -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="17sp"
+                    android:layout_height="17sp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/tag"
+                    android:src="@drawable/ic_tag" />
 
                 <TextView
+                    android:id="@+id/tagTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="17sp"
+                    android:text="@string/tag" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <!-- 描述 -->
-    <EditText
-        android:id="@+id/editTextMultiLine"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/editTextMultiLineCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/listAndTagCardView"
-        android:hint="@string/add_description"
-        android:inputType="textMultiLine"
-        android:gravity="top|start"
-        android:minLines="6"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        android:overScrollMode="ifContentScrolls"
-        android:autofillHints="" />
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
 
+        <EditText
+            android:id="@+id/editTextMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="214dp"
+            android:autofillHints=""
+            android:background="@android:color/transparent"
+            android:gravity="top|start"
+            android:hint="@string/add_description"
+            android:inputType="textMultiLine"
+            android:maxLines="15"
+            android:minLines="6"
+            android:overScrollMode="ifContentScrolls"
+            android:padding="15dp"
+            android:scrollbars="vertical" />
+    </androidx.cardview.widget.CardView>
 
     <!-- 底部，时间信息、删除按钮 -->
-    <LinearLayout
-        android:id="@+id/bottomLayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
 
-        <TextView
-            android:id="@+id/timeShowTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-        <!-- 使用android:gravity="center_vertical确保垂直居中对齐-->
-        <!-- 左侧，标签和到期时间 -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:padding="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/tagLayout"
+                android:id="@+id/timeShowTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20sp"
+                android:text="@string/create_timestamp" />
+            <!-- 使用一个空的view来占位 -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/dueDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginStart="8dp" />
+            <ImageView
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/ic_delete" />
         </LinearLayout>
-
-        <!-- 右侧，循环图标 -->
-        <ImageView
-            android:id="@+id/recurringIcon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_recurring"
-            android:layout_marginStart="8dp"
-            android:visibility="gone"
-            android:contentDescription="@string/isRecurring" />
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -46,4 +46,9 @@
     <string name="no_tasks_here">暂无任务~</string>
     <string name="add_description">添加描述或备注</string>
     <string name="back">返回</string>
+    <string name="due_today">今天到期</string>
+    <string name="repeated">重复</string>
+    <string name="move">迁移</string>
+    <string name="delete">删除</string>
+    <string name="create_timestamp">创建时间</string>
 </resources>
