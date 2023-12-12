@@ -31,7 +31,7 @@ import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.TaskSimple;
-import com.zmark.mytodo.model.TodoListAdapter;
+import com.zmark.mytodo.model.TaskSimpleAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
@@ -261,11 +261,11 @@ public class ListDetailFragment extends Fragment {
         requireActivity().runOnUiThread(() -> {
             try {
                 // 创建RecyclerView的Adapter
-                TodoListAdapter todoListAdapter = new TodoListAdapter(todoList);
+                TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoList);
                 // 设置RecyclerView的LayoutManager
                 todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 // 将Adapter设置给RecyclerView
-                todoRecyclerView.setAdapter(todoListAdapter);
+                todoRecyclerView.setAdapter(taskSimpleAdapter);
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();

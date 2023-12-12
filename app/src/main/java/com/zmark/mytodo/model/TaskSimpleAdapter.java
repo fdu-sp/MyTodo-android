@@ -22,12 +22,12 @@ import com.zmark.mytodo.service.result.ResultCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
-    private static final String TAG = "TodoListAdapter";
+public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> {
+    private static final String TAG = "TaskSimpleAdapter";
 
     private final List<TaskSimple> todoList;
 
-    public TodoListAdapter(List<TaskSimple> todoList) {
+    public TaskSimpleAdapter(List<TaskSimple> todoList) {
         this.todoList = new ArrayList<>();
         this.todoList.addAll(todoList);
     }
