@@ -52,4 +52,5 @@
     <string name="delete">删除</string>
     <string name="create_timestamp">创建时间</string>
     <string name="already_in_my_day">已添加到\"我的一天\"</string>
+    <string name="add_due_date">添加截止日期</string>
 </resources>

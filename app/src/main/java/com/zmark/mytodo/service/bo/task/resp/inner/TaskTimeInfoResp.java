@@ -12,4 +12,52 @@ public class TaskTimeInfoResp {
     private String expectedExecutionDate;
     private String expectedExecutionStartPeriod;
     private String expectedExecutionEndPeriod;
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public Boolean getActivateCountdown() {
+        return activateCountdown;
+    }
+
+    public void setActivateCountdown(Boolean activateCountdown) {
+        this.activateCountdown = activateCountdown;
+    }
+
+    public String getExpectedExecutionDate() {
+        return expectedExecutionDate;
+    }
+
+    public void setExpectedExecutionDate(String expectedExecutionDate) {
+        this.expectedExecutionDate = expectedExecutionDate;
+    }
+
+    public String getExpectedExecutionStartPeriod() {
+        return expectedExecutionStartPeriod;
+    }
+
+    public void setExpectedExecutionStartPeriod(String expectedExecutionStartPeriod) {
+        this.expectedExecutionStartPeriod = expectedExecutionStartPeriod;
+    }
+
+    public String getExpectedExecutionEndPeriod() {
+        return expectedExecutionEndPeriod;
+    }
+
+    public void setExpectedExecutionEndPeriod(String expectedExecutionEndPeriod) {
+        this.expectedExecutionEndPeriod = expectedExecutionEndPeriod;
+    }
 }

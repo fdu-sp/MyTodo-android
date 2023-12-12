@@ -25,6 +25,7 @@ import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
 import com.zmark.mytodo.service.impl.TaskServiceImpl;
+import com.zmark.mytodo.utils.TimeUtils;
 
 /**
  * 任务详情页
@@ -37,6 +38,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     }
 
     private OnTaskCompleteStateListener onTaskCompleteStateListener;
+
+    private ColorStateList checkedColorStateList;
+
+    private ColorStateList unCheckedColorStateList;
 
     /**
      * model
@@ -53,6 +58,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private LinearLayout addToMyDayLayout;
     private ImageView addToMyDayImageView;
     private TextView addToMyDayTextView;
+
+    private LinearLayout dueDateLayout;
+    private ImageView dueDateImageView;
+    private TextView dueDateTextView;
 
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
@@ -74,6 +83,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
 
     private void findViews(View view) {
+        checkedColorStateList =
+                ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
+        unCheckedColorStateList =
+                ContextCompat.getColorStateList(requireContext(), R.color.black);
         this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
         this.backButton = view.findViewById(R.id.backButton);
         this.checkBox = view.findViewById(R.id.checkBox);
@@ -81,6 +94,9 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
         this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
         this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+        this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
+        this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
+        this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
     }
 
     @Override
@@ -114,7 +130,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onSuccess() {
                         taskDetail.setInMyDay(false);
-                        setAddToMyDayUI(false);
+                        updateAddToMyDayUI();
                     }
 
                     @Override
@@ -139,7 +155,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onSuccess() {
                         taskDetail.setInMyDay(true);
-                        setAddToMyDayUI(true);
+                        updateAddToMyDayUI();
                     }
 
                     @Override
@@ -162,22 +178,43 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
             }
         });
         // 设置 添加到我的一天 的UI
-        setAddToMyDayUI(taskDetail.isInMyDay());
+        this.updateAddToMyDayUI();
+        // 设置 due date 的点击事件
+        this.dueDateLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateDueDateUI();
     }
 
-    private void setAddToMyDayUI(boolean inMyDay) {
-        if (inMyDay) {
-            addToMyDayTextView.setText(R.string.already_in_my_day);
-            ColorStateList colorStateList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
-            addToMyDayTextView.setTextColor(colorStateList);
-            addToMyDayImageView.setImageTintList(colorStateList);
-        } else {
-            addToMyDayTextView.setText(R.string.add_to_my_day);
-            ColorStateList colorStateList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.black);
-            addToMyDayTextView.setTextColor(colorStateList);
-            addToMyDayImageView.setImageTintList(colorStateList);
-        }
+    private void updateAddToMyDayUI() {
+        requireActivity().runOnUiThread(() -> {
+            if (taskDetail.isInMyDay()) {
+                addToMyDayTextView.setText(R.string.already_in_my_day);
+                addToMyDayTextView.setTextColor(checkedColorStateList);
+                addToMyDayImageView.setImageTintList(checkedColorStateList);
+            } else {
+                addToMyDayTextView.setText(R.string.add_to_my_day);
+                addToMyDayTextView.setTextColor(unCheckedColorStateList);
+                addToMyDayImageView.setImageTintList(unCheckedColorStateList);
+            }
+        });
+    }
+
+    private void updateDueDateUI() {
+        requireActivity().runOnUiThread(() -> {
+            if (taskDetail.getTaskTimeInfo() == null ||
+                    taskDetail.getTaskTimeInfo().getEndDate() == null) {
+                dueDateTextView.setText(R.string.add_due_date);
+                dueDateTextView.setTextColor(unCheckedColorStateList);
+                dueDateImageView.setImageTintList(unCheckedColorStateList);
+            } else {
+                String dueDateStr = taskDetail.getTaskTimeInfo().getEndDate();
+                String formattedDateStr = TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(dueDateStr))
+                        + " 到期";
+                dueDateTextView.setText(formattedDateStr);
+                dueDateTextView.setTextColor(checkedColorStateList);
+                dueDateImageView.setImageTintList(checkedColorStateList);
+            }
+        });
     }
 }

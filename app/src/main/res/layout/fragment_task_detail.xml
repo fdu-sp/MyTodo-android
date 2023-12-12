@@ -161,6 +161,7 @@
 
             <!-- 到期时间 -->
             <LinearLayout
+                android:id="@+id/dueDateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -173,6 +174,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/dueDateImageView"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginStart="12dp"
