@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.myday.RecommendTaskList;
 import com.zmark.mytodo.model.myday.RecommendTaskListAdapter;
 import com.zmark.mytodo.service.ApiUtils;
@@ -31,6 +32,12 @@ import retrofit2.Call;
 public class RecommendMyDayBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "RecommendMyDayBottomSheetFragment";
     private RecyclerView recommendListView;
+
+    private OnTaskSimpleAddedListener onTaskSimpleAddedListener;
+
+    public void setOnTaskAddedListener(OnTaskSimpleAddedListener listener) {
+        this.onTaskSimpleAddedListener = listener;
+    }
 
     @Nullable
     @Override
@@ -92,6 +99,7 @@ public class RecommendMyDayBottomSheetFragment extends BottomSheetDialogFragment
                 recommendTaskLists.add(new RecommendTaskList(recommendMyDayResp.getLatestCreatedTasks()));
                 RecommendTaskListAdapter recommendTaskListAdapter
                         = new RecommendTaskListAdapter(recommendTaskLists);
+                recommendTaskListAdapter.setOnTaskAddedListener(onTaskSimpleAddedListener);
                 recommendListView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 recommendListView.setAdapter(recommendTaskListAdapter);
             } catch (Exception e) {

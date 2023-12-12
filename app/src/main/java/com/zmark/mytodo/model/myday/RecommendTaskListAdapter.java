@@ -12,12 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 
 import java.util.List;
 
 public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTaskListAdapter.ViewHolder> {
     private final static String TAG = "RecommendTaskListAdapter";
     private final List<RecommendTaskList> recommendTaskLists;
+
+    private OnTaskSimpleAddedListener onTaskSimpleAddedListener;
+
+    public void setOnTaskAddedListener(OnTaskSimpleAddedListener listener) {
+        this.onTaskSimpleAddedListener = listener;
+    }
 
     public RecommendTaskListAdapter(List<RecommendTaskList> recommendTaskLists) {
         this.recommendTaskLists = recommendTaskLists;
@@ -43,7 +50,7 @@ public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTask
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final RecommendTaskAdapter taskAdapter;
         private final TextView recommendListTitle;
 
@@ -57,6 +64,7 @@ public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTask
 
             // Create a RecommendTaskAdapter for the nested RecyclerView
             taskAdapter = new RecommendTaskAdapter();
+            taskAdapter.setOnTaskAddedListener(onTaskSimpleAddedListener);
             recommendListView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             recommendListView.setAdapter(taskAdapter);
         }

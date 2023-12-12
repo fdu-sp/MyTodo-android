@@ -179,6 +179,11 @@ public class ListDetailFragment extends Fragment {
 
     private void showMyDayRecommendBottomSheet() {
         RecommendMyDayBottomSheetFragment fragment = new RecommendMyDayBottomSheetFragment();
+        fragment.setOnTaskAddedListener(taskSimple -> {
+            this.todoList.add(taskSimple);
+            this.sortData(TodoItemComparators.getComparator(this.sortType));
+            this.updateUI();
+        });
         fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
     }
 

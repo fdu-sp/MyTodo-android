@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.service.impl.TaskServiceImpl;
 import com.zmark.mytodo.service.result.Result;
@@ -33,6 +34,12 @@ import retrofit2.Response;
 public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdapter.ViewHolder> {
     private final static String TAG = "RecommendTaskAdapter";
     private RecommendTaskList recommendTaskList;
+
+    private OnTaskSimpleAddedListener onTaskSimpleAddedListener;
+
+    public void setOnTaskAddedListener(OnTaskSimpleAddedListener listener) {
+        this.onTaskSimpleAddedListener = listener;
+    }
 
     public RecommendTaskAdapter() {
         this.recommendTaskList = new RecommendTaskList();
@@ -125,12 +132,13 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                 checkBox.setChecked(taskSimple.getCompleted());
                 // 设置添加到我的一天的按钮
                 addToMyDayLayoutButton.setOnClickListener(v -> {
-                    addTaskToMyDay(taskSimple.getId());
+                    addTaskToMyDay(taskSimple);
                 });
             }
         }
 
-        private void addTaskToMyDay(Long taskId) {
+        private void addTaskToMyDay(TaskSimple taskSimple) {
+            Long taskId = taskSimple.getId();
             Call<Result<Object>> call = MainApplication.getMyDayTaskService().addTaskToMyDay(taskId);
             call.enqueue(new Callback<Result<Object>>() {
                 @Override
@@ -152,6 +160,10 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                         recommendTaskList.removeTask(taskId);
                         // 2. 通知 Adapter 刷新
                         notifyItemRemoved(getAdapterPosition());
+                        // 3. 通知 Listener 刷新
+                        if (onTaskSimpleAddedListener != null) {
+                            onTaskSimpleAddedListener.onTaskAdded(taskSimple);
+                        }
                     }
                 }
 
