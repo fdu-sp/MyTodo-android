@@ -55,6 +55,7 @@ public class ListDetailFragment extends Fragment {
     private static final String KEY_SORT_BY = "sort_by";
     private View containerView;
     private RecyclerView todoRecyclerView;
+    private View noTaskMsgView;
     private final TaskListSimple taskListSimple;
     private final boolean isMyDay;
     private final String perfName;
@@ -113,6 +114,7 @@ public class ListDetailFragment extends Fragment {
 
     private void findView(View view) {
         this.todoRecyclerView = view.findViewById(R.id.todoRecyclerView);
+        this.noTaskMsgView = containerView.findViewById(R.id.noTaskMsgView);
     }
 
     private void initPopupMenu(View view) {
@@ -236,10 +238,8 @@ public class ListDetailFragment extends Fragment {
                 }
                 if (result.getCode() == ResultCode.SUCCESS.getCode()) {
                     List<TaskSimpleResp> taskList = result.getObject();
-                    if (taskList == null || taskList.isEmpty()) {
-                        Log.w(TAG, "taskSimpleResp is null");
-                        View noTaskMsgView = containerView.findViewById(R.id.noTaskMsgView);
-                        noTaskMsgView.setVisibility(View.VISIBLE);
+                    if (taskList == null) {
+                        Toast.makeText(getContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     todoList.clear();
@@ -264,6 +264,11 @@ public class ListDetailFragment extends Fragment {
     private void updateUI() {
         requireActivity().runOnUiThread(() -> {
             try {
+                if (this.todoList == null || this.todoList.isEmpty()) {
+                    noTaskMsgView.setVisibility(View.VISIBLE);
+                    return;
+                }
+                noTaskMsgView.setVisibility(View.GONE);
                 // 创建RecyclerView的Adapter
                 TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoList);
                 // 设置RecyclerView的LayoutManager
