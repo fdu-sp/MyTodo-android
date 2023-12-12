@@ -1,6 +1,11 @@
 package com.zmark.mytodo.fragment;
 
+import static com.zmark.mytodo.service.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.service.invariant.Msg.SERVER_INTERNAL_ERROR;
+
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +13,17 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.model.group.TaskListSimple;
+import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
 import com.zmark.mytodo.service.impl.TaskServiceImpl;
 
 /**
@@ -43,6 +51,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private TextView taskTitle;
 
     private LinearLayout addToMyDayLayout;
+    private ImageView addToMyDayImageView;
     private TextView addToMyDayTextView;
 
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
@@ -70,13 +79,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.checkBox = view.findViewById(R.id.checkBox);
         this.taskTitle = view.findViewById(R.id.taskTitle);
         this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
+        this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
         this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
-
-        // 设置图标的选中状态
-//        ImageView iconImageView = findViewById(R.id.iconImageView);
-//        ColorStateList colorStateList = ContextCompat.getColorStateList(this, R.color.selector_icon_color);
-//        iconImageView.setImageTintList(colorStateList);
-
     }
 
     @Override
@@ -102,7 +106,78 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.checkBox.setChecked(taskDetail.getCompleted());
         // 设置任务标题
         this.taskTitle.setText(taskDetail.getTitle());
-        // 设置添加到我的一天的点击事件
-        
+        // 设置 添加到我的一天的 点击事件
+        // todo 如果是 我的一天 任务列表，需要通知上层更新
+        this.addToMyDayLayout.setOnClickListener(v -> {
+            if (taskDetail.isInMyDay()) {
+                MyDayTaskServiceImpl.removeFromMyDayList(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
+                    @Override
+                    public void onSuccess() {
+                        taskDetail.setInMyDay(false);
+                        setAddToMyDayUI(false);
+                    }
+
+                    @Override
+                    public void onFailure(Integer code, String msg) {
+                        Log.w(TAG, "onFailure: " + code + " " + msg);
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onClientRequestError(Throwable t) {
+                        Log.e(TAG, "onClientRequestError: ", t);
+                        Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onServerInternalError() {
+                        Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                MyDayTaskServiceImpl.addTaskToMyDay(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
+                    @Override
+                    public void onSuccess() {
+                        taskDetail.setInMyDay(true);
+                        setAddToMyDayUI(true);
+                    }
+
+                    @Override
+                    public void onFailure(Integer code, String msg) {
+                        Log.w(TAG, "onFailure: " + code + " " + msg);
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onClientRequestError(Throwable t) {
+                        Log.e(TAG, "onClientRequestError: ", t);
+                        Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onServerInternalError() {
+                        Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        // 设置 添加到我的一天 的UI
+        setAddToMyDayUI(taskDetail.isInMyDay());
+    }
+
+    private void setAddToMyDayUI(boolean inMyDay) {
+        if (inMyDay) {
+            addToMyDayTextView.setText(R.string.already_in_my_day);
+            ColorStateList colorStateList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
+            addToMyDayTextView.setTextColor(colorStateList);
+            addToMyDayImageView.setImageTintList(colorStateList);
+        } else {
+            addToMyDayTextView.setText(R.string.add_to_my_day);
+            ColorStateList colorStateList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.black);
+            addToMyDayTextView.setTextColor(colorStateList);
+            addToMyDayImageView.setImageTintList(colorStateList);
+        }
     }
 }

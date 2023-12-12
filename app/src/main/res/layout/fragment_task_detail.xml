@@ -97,6 +97,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
+                android:id="@+id/addToMyDayImageView"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_marginStart="12dp"

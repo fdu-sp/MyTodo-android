@@ -51,4 +51,5 @@
     <string name="move">迁移</string>
     <string name="delete">删除</string>
     <string name="create_timestamp">创建时间</string>
+    <string name="already_in_my_day">已添加到\"我的一天\"</string>
 </resources>

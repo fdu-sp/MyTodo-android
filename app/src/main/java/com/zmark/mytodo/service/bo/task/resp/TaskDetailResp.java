@@ -19,6 +19,7 @@ public class TaskDetailResp {
     private String completedTime;
     private Boolean archived;
     private List<TagSimpleResp> tags;
+    private Boolean inMyDay;
     private TaskContentInfoResp taskContentInfo;
     private TaskPriorityInfoResp taskPriorityInfo;
     private TaskTimeInfoResp taskTimeInfo;
@@ -47,6 +48,10 @@ public class TaskDetailResp {
 
     public List<TagSimpleResp> getTags() {
         return tags;
+    }
+
+    public Boolean isInMyDay() {
+        return inMyDay;
     }
 
     public TaskContentInfoResp getTaskContentInfo() {

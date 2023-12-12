@@ -15,6 +15,7 @@ public class TaskDetail {
     private String completedTime;
     private Boolean archived;
     private List<TagSimpleResp> tags;
+    private Boolean inMyDay;
     private TaskContentInfoResp taskContentInfo;
     private TaskPriorityInfoResp taskPriorityInfo;
     private TaskTimeInfoResp taskTimeInfo;
@@ -28,6 +29,7 @@ public class TaskDetail {
         this.completedTime = taskDetailResp.getCompletedTime();
         this.archived = taskDetailResp.getArchived();
         this.tags = taskDetailResp.getTags();
+        this.inMyDay = taskDetailResp.isInMyDay();
         this.taskContentInfo = taskDetailResp.getTaskContentInfo();
         this.taskPriorityInfo = taskDetailResp.getTaskPriorityInfo();
         this.taskTimeInfo = taskDetailResp.getTaskTimeInfo();
@@ -90,6 +92,14 @@ public class TaskDetail {
 
     public void setTags(List<TagSimpleResp> tags) {
         this.tags = tags;
+    }
+
+    public Boolean isInMyDay() {
+        return inMyDay;
+    }
+
+    public void setInMyDay(Boolean inMyDay) {
+        this.inMyDay = inMyDay;
     }
 
     public TaskContentInfoResp getTaskContentInfo() {
