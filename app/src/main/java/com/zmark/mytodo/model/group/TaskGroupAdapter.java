@@ -1,5 +1,7 @@
 package com.zmark.mytodo.model.group;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,15 +104,30 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             taskListAdapter.notifyDataSetChanged();
         }
 
+        private void animateScale(View view, boolean isExpanded) {
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(
+                    ObjectAnimator.ofFloat(view, "scaleX", isExpanded ? 1.0f : 0.0f, isExpanded ? 0.0f : 1.0f),
+                    ObjectAnimator.ofFloat(view, "scaleY", isExpanded ? 1.0f : 0.0f, isExpanded ? 0.0f : 1.0f)
+            );
+            animatorSet.setInterpolator(new FastOutSlowInInterpolator());
+            animatorSet.setDuration(300);
+            animatorSet.start();
+        }
+
         private void handleGroupFoldClick(TaskGroup taskGroup) {
             boolean isExpanded = taskGroup.isExpanded();
-            taskGroup.setExpanded(!isExpanded);
-
+            isExpanded = !isExpanded;
+            taskGroup.setExpanded(isExpanded);
             // 切换图标
-            groupFoldImageView.setImageResource(taskGroup.isExpanded() ? R.drawable.ic_arrow_right : R.drawable.ic_arrow_down);
+            groupFoldImageView.setImageResource(isExpanded ? R.drawable.ic_arrow_right : R.drawable.ic_arrow_down);
 
             // 控制 RecyclerView 的可见性
-            taskGroupItemRecyclerView.setVisibility(taskGroup.isExpanded() ? View.GONE : View.VISIBLE);
+            taskGroupItemRecyclerView.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
+
+            // 应用列表折叠的动画
+            animateScale(taskGroupItemRecyclerView, isExpanded);
         }
+
     }
 }
