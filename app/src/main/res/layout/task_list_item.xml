@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/icon_left"
-        android:layout_width="18sp"
-        android:layout_height="18sp"
+        android:layout_width="16sp"
+        android:layout_height="16sp"
         android:src="@drawable/ic_list"
         android:contentDescription="@string/list" />
 
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
         android:paddingEnd="5dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <!-- 在 LinearLayout 中添加一个占位 View，使右侧的TextView位于最右边 -->
@@ -34,11 +34,11 @@
         android:layout_height="wrap_content"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:textSize="16sp" />
+        android:textSize="13sp" />
 
     <ImageView
-        android:layout_width="18sp"
-        android:layout_height="18sp"
+        android:layout_width="16sp"
+        android:layout_height="16sp"
         android:src="@drawable/ic_arrow_right"
         android:contentDescription="@string/list" />
 </LinearLayout>
