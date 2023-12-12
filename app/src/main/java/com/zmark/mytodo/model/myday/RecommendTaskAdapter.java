@@ -98,6 +98,9 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                 // 显示标签
                 String tagsString = taskSimple.getTagString();
                 if (!tagsString.isEmpty()) {
+                    if (tagsString.length() >= 6) {
+                        tagsString = tagsString.substring(0, 6) + "...";
+                    }
                     tagsTextView.setText(tagsString);
                 } else {
                     tagsTextView.setVisibility(View.GONE);
