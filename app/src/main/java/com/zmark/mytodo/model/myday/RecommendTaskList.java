@@ -44,4 +44,23 @@ public class RecommendTaskList {
     public List<TaskSimple> getTaskSimpleRespList() {
         return taskSimpleRespList;
     }
+
+    public void removeTask(TaskSimple taskSimple) {
+        if (taskSimple == null) {
+            return;
+        }
+        taskSimpleRespList.remove(taskSimple);
+    }
+
+    public void removeTask(Long taskSimpleId) {
+        if (taskSimpleId == null) {
+            return;
+        }
+        for (TaskSimple taskSimple : taskSimpleRespList) {
+            if (taskSimple.getId().equals(taskSimpleId)) {
+                taskSimpleRespList.remove(taskSimple);
+                return;
+            }
+        }
+    }
 }
