@@ -99,7 +99,7 @@ public class ListDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        containerView = inflater.inflate(R.layout.fragment_myday, container, false);
+        containerView = inflater.inflate(R.layout.fragment_list_detail, container, false);
         this.findView(containerView);
         // 注册顶部菜单
         this.registerTopMenu();
