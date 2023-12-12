@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.zmark.mytodo.fragment.CalendarViewFragment;
 import com.zmark.mytodo.fragment.HomeFragment;
 import com.zmark.mytodo.fragment.QuadrantViewFragment;
 import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void registerBottomNavigations() {
         navFragmentFactoryMap.put(R.id.navigation_home, HomeFragment::new);
         navFragmentFactoryMap.put(R.id.navigation_my_day, ListDetailFragment::MyDayInstance);
-        navFragmentFactoryMap.put(R.id.navigation_calendar_view, CalendarViewFragment::new);
+//        navFragmentFactoryMap.put(R.id.navigation_calendar_view, CalendarViewFragment::new);
         navFragmentFactoryMap.put(R.id.navigation_four_quadrants_view, QuadrantViewFragment::new);
         // 设置底部导航的点击事件
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
