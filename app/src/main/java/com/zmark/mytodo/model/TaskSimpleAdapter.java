@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,11 +26,21 @@ import java.util.List;
 public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> {
     private static final String TAG = "TaskSimpleAdapter";
 
+    public interface OnTaskContentClickListener {
+        void onTaskContentClick(TaskSimple taskSimple);
+    }
+
+    private OnTaskContentClickListener onTaskContentClickListener;
+
     private final List<TaskSimple> todoList;
 
     public TaskSimpleAdapter(List<TaskSimple> todoList) {
         this.todoList = new ArrayList<>();
         this.todoList.addAll(todoList);
+    }
+
+    public void setOnTaskContentClickListener(OnTaskContentClickListener listener) {
+        this.onTaskContentClickListener = listener;
     }
 
     @NonNull
@@ -76,6 +87,13 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
                     todoItem.setBinding(false);
                 });
             });
+            // 设置任务内容的点击事件
+            holder.taskContentLayout.setOnClickListener(v -> {
+                if (onTaskContentClickListener != null) {
+                    onTaskContentClickListener.onTaskContentClick(todoItem);
+                }
+            });
+
             // 显示标签
             String tagsString = todoItem.getTagString();
             if (!tagsString.isEmpty()) {
@@ -157,6 +175,7 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CheckBox checkBox;
+        public LinearLayout taskContentLayout;
         public TextView titleTextView;
         public TextView tagsTextView;
         public TextView dueDateTextView;
@@ -165,6 +184,7 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
         public ViewHolder(View view) {
             super(view);
             checkBox = view.findViewById(R.id.checkBox);
+            taskContentLayout = view.findViewById(R.id.taskContentLayout);
             titleTextView = view.findViewById(R.id.todoTitle);
             tagsTextView = view.findViewById(R.id.tagLayout);
             dueDateTextView = view.findViewById(R.id.dueDate);

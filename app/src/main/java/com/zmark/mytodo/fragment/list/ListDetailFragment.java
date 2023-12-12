@@ -25,13 +25,17 @@ import com.zmark.mytodo.R;
 import com.zmark.mytodo.anim.AnimUtils;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.fragment.TaskDetailFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
+import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.model.TaskSimpleAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.ApiUtils;
+import com.zmark.mytodo.service.api.TaskService;
+import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.service.invariant.Msg;
 import com.zmark.mytodo.service.result.Result;
@@ -84,7 +88,7 @@ public class ListDetailFragment extends Fragment {
     public static ListDetailFragment NewListDetailFragmentInstance(TaskListSimple taskListSimple) {
         return new ListDetailFragment(taskListSimple);
     }
-    
+
     public static ListDetailFragment MyDayInstance() {
         Call<Result<List<TaskSimpleResp>>> myDayCall = MainApplication.getMyDayTaskService().getMyDayListWithSimpleInfo();
         TaskListSimple myDay = new TaskListSimple();
@@ -276,6 +280,7 @@ public class ListDetailFragment extends Fragment {
                 noTaskMsgView.setVisibility(View.GONE);
                 // 创建RecyclerView的Adapter
                 TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoList);
+                taskSimpleAdapter.setOnTaskContentClickListener(this::openTaskDetail);
                 // 设置RecyclerView的LayoutManager
                 todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 // 将Adapter设置给RecyclerView
@@ -283,6 +288,43 @@ public class ListDetailFragment extends Fragment {
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openTaskDetail(TaskSimple todoItem) {
+        TaskService taskService = MainApplication.getTaskService();
+        taskService.getDetailInfoById(todoItem.getId()).enqueue(new retrofit2.Callback<Result<TaskDetailResp>>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<Result<TaskDetailResp>> call,
+                                   @NonNull retrofit2.Response<Result<TaskDetailResp>> response) {
+                if (response.isSuccessful()) {
+                    Result<TaskDetailResp> result = response.body();
+                    if (result == null) {
+                        Log.w(TAG, "result is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()) {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                        Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailResp taskDetail = result.getObject();
+                    if (taskDetail == null) {
+                        Log.w(TAG, "taskDetail is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(new TaskDetail(taskDetail));
+                    taskDetailFragment.show(requireActivity().getSupportFragmentManager(), taskDetailFragment.getTag());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<Result<TaskDetailResp>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
     }
