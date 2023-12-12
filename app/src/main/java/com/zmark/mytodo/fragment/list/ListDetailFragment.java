@@ -88,7 +88,6 @@ public class ListDetailFragment extends Fragment {
     }
 
     // todo: 切换细节的显示和隐藏
-    // todo: 排序待办事项
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
