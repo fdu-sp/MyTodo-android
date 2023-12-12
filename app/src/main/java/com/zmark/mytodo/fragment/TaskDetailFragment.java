@@ -79,6 +79,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView tagImageView;
     private TextView tagTextView;
 
+    private TextView timeCreateShowTextView;
+
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
@@ -130,6 +132,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.tagLayout = view.findViewById(R.id.tagLayout);
         this.tagImageView = view.findViewById(R.id.tagImageView);
         this.tagTextView = view.findViewById(R.id.tagTextView);
+
+        this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
     }
 
     @Override
@@ -242,6 +246,18 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
             // todo
         });
         this.updateTagUI();
+
+        // 设置创建时间
+        this.updateTimeCreateUI();
+
+    }
+
+    private void updateTimeCreateUI() {
+        requireActivity().runOnUiThread(() -> {
+            String timeCreateStr = "创建于 " +
+                    TimeUtils.getFormattedDateStrFromTimeStamp(taskDetail.getCreateTime());
+            this.timeCreateShowTextView.setText(timeCreateStr);
+        });
     }
 
     private void updateListUI() {

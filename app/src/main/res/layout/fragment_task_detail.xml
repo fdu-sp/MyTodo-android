@@ -351,7 +351,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/timeShowTextView"
+                android:id="@+id/timeCreateShowTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -363,6 +363,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/deleteImageView"
                 android:layout_width="25sp"
                 android:layout_height="25sp"
                 android:contentDescription="@string/delete"
