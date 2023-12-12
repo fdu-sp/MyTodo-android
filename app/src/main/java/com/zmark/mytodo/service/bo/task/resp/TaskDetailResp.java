@@ -24,4 +24,48 @@ public class TaskDetailResp {
     private TaskTimeInfoResp taskTimeInfo;
     private String createTime;
     private String updateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public String getCompletedTime() {
+        return completedTime;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public List<TagSimpleResp> getTags() {
+        return tags;
+    }
+
+    public TaskContentInfoResp getTaskContentInfo() {
+        return taskContentInfo;
+    }
+
+    public TaskPriorityInfoResp getTaskPriorityInfo() {
+        return taskPriorityInfo;
+    }
+
+    public TaskTimeInfoResp getTaskTimeInfo() {
+        return taskTimeInfo;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
 }
