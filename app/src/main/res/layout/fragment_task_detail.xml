@@ -130,18 +130,26 @@
             android:orientation="vertical">
             <!-- 提醒 -->
             <LinearLayout
+                android:id="@+id/reminderLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="17sp"
+                    android:layout_height="17sp"
+                    android:src="@drawable/ic_remind_empty"
+                    android:contentDescription="@string/setReminder" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/setReminder"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <!-- 到期时间 -->
