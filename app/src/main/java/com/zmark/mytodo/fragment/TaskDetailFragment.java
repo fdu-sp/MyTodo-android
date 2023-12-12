@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +15,20 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.model.group.TaskListSimple;
+import com.zmark.mytodo.service.impl.TaskServiceImpl;
 
 /**
  * 任务详情页
  */
 public class TaskDetailFragment extends BottomSheetDialogFragment {
     private static final String TAG = "TaskDetailFragment";
+
+    public interface OnTaskCompleteStateListener {
+        void onTaskCompleteStateChanged(TaskDetail taskDetail);
+    }
+
+    private OnTaskCompleteStateListener onTaskCompleteStateListener;
+
     /**
      * model
      */
@@ -26,13 +36,19 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
     private final TaskListSimple taskListSimple;
 
+    private ImageView backButton;
     private TextView taskListNameTextView;
-
+    private CheckBox checkBox;
+    private TextView taskTitle;
 
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
         this.taskDetail = taskDetail;
+    }
+
+    public void setOnTaskCompleteStateListener(OnTaskCompleteStateListener listener) {
+        this.onTaskCompleteStateListener = listener;
     }
 
     @Nullable
@@ -47,10 +63,30 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.taskListNameTextView.setText(taskListSimple.getName());
+        this.backButton.setOnClickListener(v -> {
+            this.dismiss();
+        });
+        // 设置checkbox的选中状态和事件
+        this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                taskDetail.complete();
+                TaskServiceImpl.completeTask(taskDetail.getId());
+            } else {
+                taskDetail.unComplete();
+                TaskServiceImpl.unCompleteTask(taskDetail.getId());
+            }
+            if (onTaskCompleteStateListener != null) {
+                onTaskCompleteStateListener.onTaskCompleteStateChanged(taskDetail);
+            }
+        });
+        this.taskTitle.setText(taskDetail.getTitle());
     }
 
     private void findViews(View view) {
         this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
+        this.backButton = view.findViewById(R.id.backButton);
+        this.checkBox = view.findViewById(R.id.checkBox);
+        this.taskTitle = view.findViewById(R.id.taskTitle);
 
         // 设置图标的选中状态
 //        ImageView iconImageView = findViewById(R.id.iconImageView);

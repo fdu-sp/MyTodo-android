@@ -310,13 +310,21 @@ public class ListDetailFragment extends Fragment {
                         Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    TaskDetailResp taskDetail = result.getObject();
-                    if (taskDetail == null) {
+                    TaskDetailResp taskDetailResp = result.getObject();
+                    if (taskDetailResp == null) {
                         Log.w(TAG, "taskDetail is null");
                         Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(taskListSimple, new TaskDetail(taskDetail));
+                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(taskListSimple, new TaskDetail(taskDetailResp));
+                    taskDetailFragment.setOnTaskCompleteStateListener(taskDetail -> {
+                        todoList.forEach(todo -> {
+                            if (todo.getId().equals(taskDetail.getId())) {
+                                todo.setCompleted(taskDetail.getCompleted());
+                            }
+                        });
+                        updateUI();
+                    });
                     taskDetailFragment.show(requireActivity().getSupportFragmentManager(), taskDetailFragment.getTag());
                 }
             }

@@ -51,13 +51,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/taskDetailBarLayout"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="10dp">
 
         <!-- 左侧圆形勾选框 -->
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="25sp"
+            android:layout_height="25sp"
             android:contentDescription="@string/check_box" />
 
         <!-- 任务标题 -->
@@ -65,8 +66,9 @@
             android:id="@+id/taskTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:text="@string/title"
-            android:textSize="18sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
     <!-- todo 添加步骤 -->
