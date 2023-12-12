@@ -14,11 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.service.api.TaskService;
-import com.zmark.mytodo.service.result.Result;
-import com.zmark.mytodo.service.result.ResultCode;
+import com.zmark.mytodo.service.impl.TaskServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,13 +66,13 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
                     // 处理选中事件
                     todoItem.changeToBeDone(); // 更新数据项的选中状态
                     // 调用后端接口，完成任务
-                    completeTask(todoItem.getId());
+                    TaskServiceImpl.completeTask(todoItem.getId());
                 } else {
                     Log.i(TAG, "onCheckedChanged: 取消选中");
                     // 处理取消选中事件
                     todoItem.changeToBeUndone(); // 更新数据项的选中状态
                     // 调用后端接口，取消完成任务
-                    unCompleteTask(todoItem.getId());
+                    TaskServiceImpl.unCompleteTask(todoItem.getId());
                 }
                 // 通知Adapter刷新特定位置的项目
                 // 使用 Handler 延迟执行 notifyItemChanged
@@ -119,58 +116,6 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
     @Override
     public int getItemCount() {
         return todoList.size();
-    }
-
-    private void completeTask(Long taskId) {
-        TaskService taskService = MainApplication.getTaskService();
-        taskService.completeTask(taskId).enqueue(new retrofit2.Callback<Result<String>>() {
-            @Override
-            public void onResponse(@NonNull retrofit2.Call<Result<String>> call, @NonNull retrofit2.Response<Result<String>> response) {
-                if (response.isSuccessful()) {
-                    Result<String> result = response.body();
-                    if (result == null) {
-                        Log.w(TAG, "result is null");
-                        return;
-                    }
-                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
-                        Log.i(TAG, "onResponse: 任务完成");
-                    } else {
-                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull retrofit2.Call<Result<String>> call, @NonNull Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-    }
-
-    private void unCompleteTask(Long taskId) {
-        TaskService taskService = MainApplication.getTaskService();
-        taskService.unCompleteTask(taskId).enqueue(new retrofit2.Callback<Result<String>>() {
-            @Override
-            public void onResponse(@NonNull retrofit2.Call<Result<String>> call, @NonNull retrofit2.Response<Result<String>> response) {
-                if (response.isSuccessful()) {
-                    Result<String> result = response.body();
-                    if (result == null) {
-                        Log.w(TAG, "result is null");
-                        return;
-                    }
-                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
-                        Log.i(TAG, "onResponse: 任务取消完成");
-                    } else {
-                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull retrofit2.Call<Result<String>> call, @NonNull Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
