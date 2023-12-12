@@ -64,7 +64,13 @@ public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTask
 
             // Create a RecommendTaskAdapter for the nested RecyclerView
             taskAdapter = new RecommendTaskAdapter();
-            taskAdapter.setOnTaskAddedListener(onTaskSimpleAddedListener);
+            taskAdapter.setOnTaskAddedListener(taskSimple -> {
+                // 更新UI
+                bind(recommendTaskLists.get(getAdapterPosition()));
+                if (onTaskSimpleAddedListener != null) {
+                    onTaskSimpleAddedListener.onTaskAdded(taskSimple);
+                }
+            });
             recommendListView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             recommendListView.setAdapter(taskAdapter);
         }
