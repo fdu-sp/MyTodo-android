@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/white">
 
@@ -19,7 +18,13 @@
             android:id="@+id/recommendListTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp" />
+            android:shadowColor="@color/wheat"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:padding="3dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommendListView"
@@ -30,6 +35,7 @@
             android:id="@+id/noTaskMsgView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:visibility="gone">
 
             <TextView
