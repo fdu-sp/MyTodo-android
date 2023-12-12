@@ -1,7 +1,10 @@
 package com.zmark.mytodo.model.group;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,13 +102,42 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             groupListCountTextView.setText(String.valueOf(taskGroup.getTaskListSimpleList().size()));
 
             groupItemContainer.setOnClickListener(v -> {
-                // 处理点击事件
-                handleGroupFoldClick(taskGroup);
+                animateBackGroundDeepen(groupItemContainer, () -> {
+                    // 处理点击事件
+                    handleGroupFoldClick(taskGroup);
+                });
             });
 
             // Update the task list in the nested RecyclerView
             taskListAdapter.setTasks(taskGroup.getTaskListSimpleList());
             taskListAdapter.notifyDataSetChanged();
+        }
+
+        private void animateBackGroundDeepen(View view, Runnable onClick) {
+            view.setOnClickListener(v -> {
+                // 创建颜色变化动画
+                ValueAnimator colorAnimator = ValueAnimator.ofArgb(0xFFFFFFFF, 0xFFCCCCCC); // 默认颜色到按下状态颜色
+                colorAnimator.setDuration(150);
+
+                // 监听动画值的变化，设置背景颜色
+                colorAnimator.addUpdateListener(animation -> {
+                    view.setBackgroundColor((int) animation.getAnimatedValue());
+                });
+
+                // 设置动画结束后的回调
+                colorAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        // 处理点击事件
+                        onClick.run();
+                        // 恢复背景颜色
+                        view.setBackgroundResource(R.color.white);
+                    }
+                });
+
+                // 启动动画
+                colorAnimator.start();
+            });
         }
 
         private void animateScale(View view, boolean isExpanded) {
