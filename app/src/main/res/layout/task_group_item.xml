@@ -46,6 +46,7 @@
             android:textSize="18sp" />
 
         <ImageView
+            android:id="@+id/groupFoldImageView"
             android:layout_width="18sp"
             android:layout_height="18sp"
             android:src="@drawable/ic_arrow_down"

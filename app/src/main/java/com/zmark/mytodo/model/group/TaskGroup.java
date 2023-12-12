@@ -19,6 +19,8 @@ public class TaskGroup {
     String createTime;
     String updateTime;
 
+    boolean isExpanded = false;
+
     public TaskGroup() {
     }
 
@@ -96,5 +98,13 @@ public class TaskGroup {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 }

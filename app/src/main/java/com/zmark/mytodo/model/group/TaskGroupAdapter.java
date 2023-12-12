@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,8 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
         private final TextView groupNameTextView;
         private final TextView groupListCountTextView;
         private final TaskListAdapter taskListAdapter;
+        private final ImageView groupFoldImageView;
+        private final RecyclerView taskGroupItemRecyclerView;
 
         private OnListClickListener onListClickListener;
 
@@ -68,8 +71,9 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
         public TaskGroupViewHolder(@NonNull View itemView) {
             super(itemView);
             groupNameTextView = itemView.findViewById(R.id.groupNameTextView);
-            RecyclerView taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
+            taskGroupItemRecyclerView = itemView.findViewById(R.id.taskGroupItemRecyclerView);
             groupListCountTextView = itemView.findViewById(R.id.groupListCountTextView);
+            groupFoldImageView = itemView.findViewById(R.id.groupFoldImageView);
 
             // Create a TaskAdapter for the nested RecyclerView
             taskListAdapter = new TaskListAdapter(new ArrayList<>());
@@ -87,9 +91,25 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             groupNameTextView.setText(taskGroup.getName());
             groupListCountTextView.setText(String.valueOf(taskGroup.getTaskListSimpleList().size()));
 
+            groupFoldImageView.setOnClickListener(v -> {
+                // 处理点击事件
+                handleGroupFoldClick(taskGroup);
+            });
+
             // Update the task list in the nested RecyclerView
             taskListAdapter.setTasks(taskGroup.getTaskListSimpleList());
             taskListAdapter.notifyDataSetChanged();
+        }
+
+        private void handleGroupFoldClick(TaskGroup taskGroup) {
+            boolean isExpanded = taskGroup.isExpanded();
+            taskGroup.setExpanded(!isExpanded);
+
+            // 切换图标
+            groupFoldImageView.setImageResource(taskGroup.isExpanded() ? R.drawable.ic_arrow_right : R.drawable.ic_arrow_down);
+
+            // 控制 RecyclerView 的可见性
+            taskGroupItemRecyclerView.setVisibility(taskGroup.isExpanded() ? View.GONE : View.VISIBLE);
         }
     }
 }
