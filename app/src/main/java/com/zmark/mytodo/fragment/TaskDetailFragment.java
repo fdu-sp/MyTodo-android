@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,9 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private CheckBox checkBox;
     private TextView taskTitle;
 
+    private LinearLayout addToMyDayLayout;
+    private TextView addToMyDayTextView;
+
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
@@ -59,6 +63,22 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         return view;
     }
 
+
+    private void findViews(View view) {
+        this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
+        this.backButton = view.findViewById(R.id.backButton);
+        this.checkBox = view.findViewById(R.id.checkBox);
+        this.taskTitle = view.findViewById(R.id.taskTitle);
+        this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
+        this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+
+        // 设置图标的选中状态
+//        ImageView iconImageView = findViewById(R.id.iconImageView);
+//        ColorStateList colorStateList = ContextCompat.getColorStateList(this, R.color.selector_icon_color);
+//        iconImageView.setImageTintList(colorStateList);
+
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -66,7 +86,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.backButton.setOnClickListener(v -> {
             this.dismiss();
         });
-        // 设置checkbox的选中状态和事件
+        // 设置checkbox的事件和选中状态
         this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 taskDetail.complete();
@@ -79,19 +99,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
                 onTaskCompleteStateListener.onTaskCompleteStateChanged(taskDetail);
             }
         });
+        this.checkBox.setChecked(taskDetail.getCompleted());
+        // 设置任务标题
         this.taskTitle.setText(taskDetail.getTitle());
-    }
-
-    private void findViews(View view) {
-        this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
-        this.backButton = view.findViewById(R.id.backButton);
-        this.checkBox = view.findViewById(R.id.checkBox);
-        this.taskTitle = view.findViewById(R.id.taskTitle);
-
-        // 设置图标的选中状态
-//        ImageView iconImageView = findViewById(R.id.iconImageView);
-//        ColorStateList colorStateList = ContextCompat.getColorStateList(this, R.color.selector_icon_color);
-//        iconImageView.setImageTintList(colorStateList);
-
+        // 设置添加到我的一天的点击事件
+        
     }
 }
