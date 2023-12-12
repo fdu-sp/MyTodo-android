@@ -1,6 +1,7 @@
 package com.zmark.mytodo.service.api;
 
 import com.zmark.mytodo.service.bo.task.req.TaskCreatReq;
+import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.service.result.Result;
 
@@ -13,6 +14,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface TaskService {
+    @GET("task/detail/get-info/{task-id}")
+    Call<Result<TaskDetailResp>> getDetailInfoById(@Path("task-id") Long taskId);
+
     @GET("task/simple/get-all-tasks")
     Call<Result<List<TaskSimpleResp>>> getAllTasksWithSimpleInfo();
 
