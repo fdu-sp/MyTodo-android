@@ -16,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,12 +29,19 @@ import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
 import com.zmark.mytodo.fragment.taskadd.AddTaskBottomSheetFragment;
 import com.zmark.mytodo.handler.ClickListener;
+import com.zmark.mytodo.model.group.TaskGroup;
+import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.api.HelloService;
+import com.zmark.mytodo.service.api.TaskGroupService;
+import com.zmark.mytodo.service.bo.group.resp.TaskGroupSimpleResp;
 import com.zmark.mytodo.service.invariant.Msg;
 import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.service.result.ResultCode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView navTopTitleView;
     private ClickListener onRightIconClickListener;
     private ImageView rightIcon;
+
+    private final List<TaskGroup> taskGroups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,11 +185,74 @@ public class MainActivity extends AppCompatActivity {
 
     // 打开左侧抽屉菜单的方法
     private void openLeftDrawer() {
+        this.fetchDataAndUpdateUI();
         ImageView iconLeft = findViewById(R.id.icon_left);
         this.animateIcon(iconLeft);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         // 延迟（ms）打开抽屉菜单
         drawerLayout.postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), 250);
+    }
+
+    private void fetchDataAndUpdateUI() {
+        TaskGroupService taskGroupService = MainApplication.getTaskGroupService();
+        Call<Result<List<TaskGroupSimpleResp>>> call = taskGroupService.getAllTaskGroup();
+        call.enqueue(new Callback<Result<List<TaskGroupSimpleResp>>>() {
+            @Override
+            public void onResponse(@NonNull Call<Result<List<TaskGroupSimpleResp>>> call,
+                                   @NonNull Response<Result<List<TaskGroupSimpleResp>>> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                    ApiUtils.handleResponseError(TAG, response);
+                    return;
+                }
+                Result<List<TaskGroupSimpleResp>> result = response.body();
+                if (result == null) {
+                    Log.e(TAG, "onResponse: result is null");
+                    Toast.makeText(MainActivity.this, Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (result.getCode() == ResultCode.SUCCESS.getCode()) {
+                    List<TaskGroupSimpleResp> simpleRespList = result.getObject();
+                    if (simpleRespList == null) {
+                        Log.e(TAG, "onResponse: simpleRespList is null");
+                        Toast.makeText(MainActivity.this, Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    taskGroups.clear();
+                    taskGroups.addAll(TaskGroup.from(simpleRespList));
+                    updateDrawerGroupUI();
+                } else {
+                    Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                    Toast.makeText(MainActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Result<List<TaskGroupSimpleResp>>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Toast.makeText(MainActivity.this, Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateDrawerGroupUI() {
+        runOnUiThread(() -> {
+            try {
+                NavigationView navigationView = findViewById(R.id.top_left_nav_view);
+                RecyclerView containerView = navigationView.findViewById(R.id.taskGroupRecyclerView);
+                TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
+                containerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                containerView.setAdapter(taskGroupAdapter);
+                taskGroupAdapter.setOnItemClickListener(taskListSimple -> {
+                    this.navigateToFragment(ListDetailFragment.NewListDetailFragmentInstance(taskListSimple));
+                    DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "updateUI: " + e.getMessage(), e);
+                Toast.makeText(MainActivity.this, Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // 打开普通菜单栏的方法
