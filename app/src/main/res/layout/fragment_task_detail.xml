@@ -243,6 +243,7 @@
             android:orientation="vertical">
             <!-- 迁移清单 -->
             <LinearLayout
+                android:id="@+id/listLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -255,6 +256,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/listImageView"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginStart="12dp"
@@ -262,6 +264,7 @@
                     android:src="@drawable/ic_list" />
 
                 <TextView
+                    android:id="@+id/listTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

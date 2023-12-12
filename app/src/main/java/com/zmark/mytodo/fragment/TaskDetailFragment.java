@@ -71,6 +71,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView repeatedImageView;
     private TextView repeatedTextView;
 
+    private LinearLayout listLayout;
+    private ImageView listImageView;
+    private TextView listTextView;
+
     private LinearLayout tagLayout;
     private ImageView tagImageView;
     private TextView tagTextView;
@@ -118,6 +122,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.repeatedLayout = view.findViewById(R.id.repeatedLayout);
         this.repeatedImageView = view.findViewById(R.id.repeatedImageView);
         this.repeatedTextView = view.findViewById(R.id.repeatedTextView);
+
+        this.listLayout = view.findViewById(R.id.listLayout);
+        this.listImageView = view.findViewById(R.id.listImageView);
+        this.listTextView = view.findViewById(R.id.listTextView);
 
         this.tagLayout = view.findViewById(R.id.tagLayout);
         this.tagImageView = view.findViewById(R.id.tagImageView);
@@ -223,11 +231,25 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         });
         this.updateRepeatedUI();
 
+        // 设置 list
+        this.listLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateListUI();
+
         // 设置 tag
         this.tagLayout.setOnClickListener(v -> {
             // todo
         });
         this.updateTagUI();
+    }
+
+    private void updateListUI() {
+        requireActivity().runOnUiThread(() -> {
+            // todo
+            listTextView.setTextColor(unCheckedColorStateList);
+            listImageView.setImageTintList(unCheckedColorStateList);
+        });
     }
 
     private void updateRepeatedUI() {
