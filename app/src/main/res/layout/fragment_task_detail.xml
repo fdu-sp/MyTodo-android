@@ -67,7 +67,7 @@
             android:id="@+id/taskTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:text="@string/title"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -96,9 +96,9 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="17sp"
-                android:layout_height="17sp"
-                android:layout_marginStart="10dp"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_my_day"
                 android:contentDescription="@string/add_to_my_day" />
 
@@ -106,9 +106,9 @@
                 android:id="@+id/addToMyDayTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/add_to_my_day"
-                android:textSize="17sp" />
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:text="@string/add_to_my_day" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -138,23 +138,23 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17sp"
-                    android:layout_height="17sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
                     android:src="@drawable/ic_remind_empty"
                     android:contentDescription="@string/setReminder" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/setReminder"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <!-- 到期时间 -->
@@ -166,14 +166,14 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17sp"
-                    android:layout_height="17sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
                     android:contentDescription="@string/due_date"
                     android:src="@drawable/ic_calendar_3" />
 
@@ -181,8 +181,8 @@
                     android:id="@+id/dueDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
                     android:text="@string/due_today" />
             </LinearLayout>
 
@@ -195,22 +195,22 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17sp"
-                    android:layout_height="17sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
                     android:contentDescription="@string/isRecurring"
                     android:src="@drawable/ic_recurring" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
                     android:text="@string/repeated" />
             </LinearLayout>
         </LinearLayout>
@@ -241,22 +241,22 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17sp"
-                    android:layout_height="17sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
                     android:contentDescription="@string/move"
                     android:src="@drawable/ic_list" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
                     android:text="@string/move" />
             </LinearLayout>
 
@@ -269,14 +269,14 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="17sp"
-                    android:layout_height="17sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
                     android:contentDescription="@string/tag"
                     android:src="@drawable/ic_tag" />
 
@@ -284,8 +284,8 @@
                     android:id="@+id/tagTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="17sp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
                     android:text="@string/tag" />
             </LinearLayout>
         </LinearLayout>
