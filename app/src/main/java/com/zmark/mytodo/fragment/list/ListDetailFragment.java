@@ -64,13 +64,16 @@ public class ListDetailFragment extends Fragment {
     private BottomGroupAndSortSheetFragment.GroupTypeE groupType;
     private SortTypeE sortType;
 
-    public ListDetailFragment(TaskListSimple taskListSimple) {
+    private ListDetailFragment(TaskListSimple taskListSimple) {
         this.taskListSimple = taskListSimple;
         this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
         this.call = MainApplication.getTaskService().getAllTasksWithSimpleInfoByList(taskListSimple.getId());
         this.isMyDay = false;
     }
 
+    /**
+     * for my day
+     */
     private ListDetailFragment(TaskListSimple taskListSimple, Call<Result<List<TaskSimpleResp>>> call) {
         this.taskListSimple = taskListSimple;
         this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
@@ -78,6 +81,10 @@ public class ListDetailFragment extends Fragment {
         this.isMyDay = true;
     }
 
+    public static ListDetailFragment NewListDetailFragmentInstance(TaskListSimple taskListSimple) {
+        return new ListDetailFragment(taskListSimple);
+    }
+    
     public static ListDetailFragment MyDayInstance() {
         Call<Result<List<TaskSimpleResp>>> myDayCall = MainApplication.getMyDayTaskService().getMyDayListWithSimpleInfo();
         TaskListSimple myDay = new TaskListSimple();

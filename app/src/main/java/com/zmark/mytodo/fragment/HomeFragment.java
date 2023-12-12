@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void navigateToListDetailFragment(TaskListSimple taskListSimple) {
-        ListDetailFragment listDetailFragment = new ListDetailFragment(taskListSimple);
+        ListDetailFragment listDetailFragment = ListDetailFragment.NewListDetailFragmentInstance(taskListSimple);
         this.navigateToFragment(listDetailFragment);
     }
 
