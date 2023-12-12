@@ -59,6 +59,15 @@ public class TaskDetail {
         this.completed = completed;
     }
 
+
+    public void complete() {
+        this.completed = true;
+    }
+
+    public void unComplete() {
+        this.completed = false;
+    }
+
     public String getCompletedTime() {
         return completedTime;
     }
