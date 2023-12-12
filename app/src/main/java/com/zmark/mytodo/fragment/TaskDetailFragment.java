@@ -59,6 +59,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView addToMyDayImageView;
     private TextView addToMyDayTextView;
 
+    private LinearLayout reminderLayout;
+    private ImageView reminderImageView;
+    private TextView reminderTextView;
+
     private LinearLayout dueDateLayout;
     private ImageView dueDateImageView;
     private TextView dueDateTextView;
@@ -98,6 +102,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
         this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
         this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+
+        this.reminderLayout = view.findViewById(R.id.reminderLayout);
+        this.reminderImageView = view.findViewById(R.id.reminderImageView);
+        this.reminderTextView = view.findViewById(R.id.reminderTextView);
 
         this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
         this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
@@ -189,6 +197,12 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         });
         this.updateAddToMyDayUI();
 
+        // 设置 reminder
+        this.reminderLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateReminderUI();
+
         // 设置 due date
         this.dueDateLayout.setOnClickListener(v -> {
             // todo
@@ -200,6 +214,14 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
             // todo
         });
         this.updateTagUI();
+    }
+
+    private void updateReminderUI() {
+        requireActivity().runOnUiThread(() -> {
+            // todo
+            reminderTextView.setTextColor(unCheckedColorStateList);
+            reminderImageView.setImageTintList(unCheckedColorStateList);
+        });
     }
 
     private void updateTagUI() {
