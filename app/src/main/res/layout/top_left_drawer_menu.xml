@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:background="@color/cornflower_blue"
+        tools:ignore="UseCompoundDrawables">
+        <!-- 头像 -->
+        <ImageView
+            android:id="@+id/header_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/default_avatar"
+            android:contentDescription="@string/avatar" />
+
+        <LinearLayout
+            android:id="@+id/topBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <!-- 用户名 -->
+            <TextView
+                android:id="@+id/header_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="10dp"
+                android:text="@string/username"
+                android:textSize="20sp"
+                android:textColor="@color/white" />
+
+            <!-- 右侧搜索框 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_gravity="end">
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:hint="@string/search"
+                    android:inputType="text"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    tools:ignore="NestedWeights"
+                    android:autofillHints="@string/search" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="0dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/search" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 任务分组和清单 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskGroupRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border_background"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        tools:visibility="visible"
+        tools:listitem="@layout/task_group_item" />
+</LinearLayout>

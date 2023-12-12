@@ -103,9 +103,8 @@
     <!-- 左侧抽屉菜单 -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/top_left_nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/top_left_drawer_header" />
-
+        app:headerLayout="@layout/top_left_drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>
