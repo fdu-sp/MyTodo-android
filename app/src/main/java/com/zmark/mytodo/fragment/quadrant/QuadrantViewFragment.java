@@ -97,11 +97,16 @@ public class QuadrantViewFragment extends Fragment {
     protected void registerTopMenu() {
         // 注册右侧菜单的点击事件 --> 选择清单，和排序方式
         // todo 选择清单
-        this.menuHandlerMap.put(R.id.menuSelectList, item -> showSortDialog());
+        this.menuHandlerMap.put(R.id.menuSelectList, item -> showListSelectFragment());
         this.menuHandlerMap.put(R.id.menuSelectSortType, item -> showSortDialog());
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
         mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+    }
+
+    private void showListSelectFragment() {
+        TaskListSelectBottomSheetFragment taskListSelectBottomSheetFragment = new TaskListSelectBottomSheetFragment();
+        taskListSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskListSelectBottomSheetFragment.getTag());
     }
 
     private void initPopupMenu(View view) {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- 底部任务分组和清单 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/task_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border_background"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        tools:visibility="visible"
+        tools:listitem="@layout/task_group_item" />
+</androidx.constraintlayout.widget.ConstraintLayout>
