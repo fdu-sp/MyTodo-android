@@ -72,6 +72,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView dueDateImageView;
     private TextView dueDateTextView;
 
+    private LinearLayout expectedExecutionDateLayout;
+    private ImageView expectedExecutionDateImageView;
+    private TextView expectedExecutionDateTextView;
+
     private LinearLayout repeatedLayout;
     private ImageView repeatedImageView;
     private TextView repeatedTextView;
@@ -132,6 +136,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
         this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
         this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
+
+        this.expectedExecutionDateLayout = view.findViewById(R.id.expectedExecutionDateLayout);
+        this.expectedExecutionDateImageView = view.findViewById(R.id.expectedExecutionDateImageView);
+        this.expectedExecutionDateTextView = view.findViewById(R.id.expectedExecutionDateTextView);
 
         this.repeatedLayout = view.findViewById(R.id.repeatedLayout);
         this.repeatedImageView = view.findViewById(R.id.repeatedImageView);
@@ -249,6 +257,12 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         });
         this.updateDueDateUI();
 
+        // 设置 expected execution date
+        this.expectedExecutionDateLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updateExpectedExecutionDateUI();
+
         // 设置 repeated
         this.repeatedLayout.setOnClickListener(v -> {
             // todo
@@ -273,6 +287,14 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         // 设置删除
         this.deleteImageView.setOnClickListener(v -> {
             // todo
+        });
+    }
+
+    private void updateExpectedExecutionDateUI() {
+        requireActivity().runOnUiThread(() -> {
+            // todo
+            expectedExecutionDateTextView.setTextColor(unCheckedColorStateList);
+            expectedExecutionDateImageView.setImageTintList(unCheckedColorStateList);
         });
     }
 
