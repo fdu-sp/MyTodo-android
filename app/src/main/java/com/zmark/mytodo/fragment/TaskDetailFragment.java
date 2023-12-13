@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
@@ -90,8 +91,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
     private EditText editTextMultiLine;
 
+    private CardView bottomCardView;
     private TextView timeCreateShowTextView;
-
     private ImageView deleteImageView;
 
     public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
@@ -157,8 +158,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
         this.editTextMultiLine = view.findViewById(R.id.editTextMultiLine);
 
+        this.bottomCardView = view.findViewById(R.id.bottomCardView);
         this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
-
         this.deleteImageView = view.findViewById(R.id.deleteImageView);
     }
 
