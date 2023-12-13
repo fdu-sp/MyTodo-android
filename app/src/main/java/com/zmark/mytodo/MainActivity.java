@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
                 containerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 containerView.setAdapter(taskGroupAdapter);
-                taskGroupAdapter.setOnItemClickListener(taskListSimple -> {
+                taskGroupAdapter.setOnListClickListener(taskListSimple -> {
                     this.navigateToFragment(ListDetailFragment.NewListDetailFragmentInstance(taskListSimple));
                     DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
                     drawerLayout.closeDrawer(GravityCompat.START);

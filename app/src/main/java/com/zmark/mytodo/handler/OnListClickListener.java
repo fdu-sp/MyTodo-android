@@ -7,5 +7,5 @@ import com.zmark.mytodo.model.group.TaskListSimple;
  * @see com.zmark.mytodo.model.group.TaskGroupAdapter
  */
 public interface OnListClickListener {
-    void onItemClick(TaskListSimple task);
+    void onListClick(TaskListSimple task);
 }

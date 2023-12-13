@@ -110,7 +110,7 @@ public class TaskListSelectBottomSheetFragment extends BottomSheetDialogFragment
                 TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
                 containerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 containerView.setAdapter(taskGroupAdapter);
-                taskGroupAdapter.setOnItemClickListener(this::onTaskListSelected);
+                taskGroupAdapter.setOnListClickListener(this::onTaskListSelected);
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(requireContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();

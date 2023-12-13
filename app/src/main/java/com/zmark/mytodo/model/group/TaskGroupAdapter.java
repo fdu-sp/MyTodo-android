@@ -30,7 +30,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
 
     private OnListClickListener onListClickListener;
 
-    public void setOnItemClickListener(OnListClickListener listener) {
+    public void setOnListClickListener(OnListClickListener listener) {
         this.onListClickListener = listener;
     }
 
@@ -43,9 +43,9 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
     public TaskGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_group_item, parent, false);
         TaskGroupViewHolder viewHolder = new TaskGroupViewHolder(view);
-        viewHolder.setOnItemClickListener(task -> {
+        viewHolder.setOnListClickListener(task -> {
             if (onListClickListener != null) {
-                onListClickListener.onItemClick(task);
+                onListClickListener.onListClick(task);
             }
         });
         return viewHolder;
@@ -73,7 +73,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
 
         private OnListClickListener onListClickListener;
 
-        public void setOnItemClickListener(OnListClickListener listener) {
+        public void setOnListClickListener(OnListClickListener listener) {
             this.onListClickListener = listener;
         }
 
@@ -91,7 +91,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             taskGroupItemRecyclerView.setAdapter(taskListAdapter);
             taskListAdapter.setOnItemClickListener(task -> {
                 if (onListClickListener != null) {
-                    onListClickListener.onItemClick(task);
+                    onListClickListener.onListClick(task);
                 }
             });
         }

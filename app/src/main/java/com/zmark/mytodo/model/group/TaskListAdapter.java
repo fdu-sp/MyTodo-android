@@ -41,7 +41,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.itemView.setOnClickListener(v -> {
             if (onListClickListener != null) {
-                onListClickListener.onItemClick(task);
+                onListClickListener.onListClick(task);
             }
         });
     }
