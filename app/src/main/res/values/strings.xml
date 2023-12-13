@@ -55,4 +55,5 @@
     <string name="add_due_date">添加截止日期</string>
     <string name="select_list">选择清单</string>
     <string name="select_sort_type">选择排序方式</string>
+    <string name="plan_the_execution_time">规划执行时间</string>
 </resources>

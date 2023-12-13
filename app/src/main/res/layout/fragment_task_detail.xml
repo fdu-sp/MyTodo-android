@@ -115,12 +115,53 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- 优先级 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/priorityCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addToMyDayCardView"
+        android:orientation="vertical"
+        android:layout_margin="7dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:id="@+id/priorityLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/priorityImageView"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_priority"
+                android:contentDescription="@string/setPriority" />
+
+            <TextView
+                android:id="@+id/priorityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:text="@string/setPriority" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <!-- 提醒、到期时间、重复 -->
     <androidx.cardview.widget.CardView
         android:id="@+id/timeRelatedCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addToMyDayCardView"
+        android:layout_below="@id/priorityCardView"
         android:orientation="vertical"
         android:layout_margin="7dp"
         app:cardCornerRadius="4dp"
@@ -190,6 +231,37 @@
                     android:layout_marginStart="10dp"
                     android:textSize="20sp"
                     android:text="@string/due_today" />
+            </LinearLayout>
+
+            <!-- 规划时间 -->
+            <LinearLayout
+                android:id="@+id/expectedExecutionDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/expectedExecutionDateImageView"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="12dp"
+                    android:contentDescription="@string/plan_the_execution_time"
+                    android:src="@drawable/ic_time" />
+
+                <TextView
+                    android:id="@+id/expectedExecutionDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
+                    android:text="@string/plan_the_execution_time" />
             </LinearLayout>
 
             <!-- 重复 -->
