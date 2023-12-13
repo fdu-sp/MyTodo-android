@@ -20,7 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.model.PriorityTypeE;
 import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
@@ -40,7 +42,6 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private OnTaskCompleteStateListener onTaskCompleteStateListener;
 
     private ColorStateList checkedColorStateList;
-
     private ColorStateList unCheckedColorStateList;
 
     /**
@@ -58,6 +59,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private LinearLayout addToMyDayLayout;
     private ImageView addToMyDayImageView;
     private TextView addToMyDayTextView;
+
+    private LinearLayout priorityLayout;
+    private ImageView priorityImageView;
+    private TextView priorityTextView;
 
     private LinearLayout reminderLayout;
     private ImageView reminderImageView;
@@ -106,6 +111,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
                 ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
         unCheckedColorStateList =
                 ContextCompat.getColorStateList(requireContext(), R.color.black);
+
         this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
         this.backButton = view.findViewById(R.id.backButton);
         this.checkBox = view.findViewById(R.id.checkBox);
@@ -114,6 +120,10 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
         this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
         this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+
+        this.priorityLayout = view.findViewById(R.id.priorityLayout);
+        this.priorityImageView = view.findViewById(R.id.priorityImageView);
+        this.priorityTextView = view.findViewById(R.id.priorityTextView);
 
         this.reminderLayout = view.findViewById(R.id.reminderLayout);
         this.reminderImageView = view.findViewById(R.id.reminderImageView);
@@ -221,6 +231,12 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         });
         this.updateAddToMyDayUI();
 
+        // 设置 priority
+        this.priorityLayout.setOnClickListener(v -> {
+            // todo
+        });
+        this.updatePriorityUI();
+
         // 设置 reminder
         this.reminderLayout.setOnClickListener(v -> {
             // todo
@@ -257,6 +273,18 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         // 设置删除
         this.deleteImageView.setOnClickListener(v -> {
             // todo
+        });
+    }
+
+    private void updatePriorityUI() {
+        requireActivity().runOnUiThread(() -> {
+            PriorityTypeE priorityTypeE = taskDetail.getTaskPriorityInfo().getPriorityType();
+            ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
+            priorityTextView.setTextColor(colorStateList);
+            priorityTextView.setText(priorityTypeE.getDesc());
+            priorityImageView.setImageTintList(colorStateList);
+            priorityImageView.setImageTintList(colorStateList);
+            // todo 点击事件
         });
     }
 

@@ -1,9 +1,15 @@
 package com.zmark.mytodo;
 
+import static com.zmark.mytodo.model.PriorityTypeE.NOT_URGENCY_IMPORTANT;
+
 import android.app.Application;
+import android.content.res.ColorStateList;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import com.zmark.mytodo.config.Config;
+import com.zmark.mytodo.model.PriorityTypeE;
 import com.zmark.mytodo.service.api.FourQuadrantService;
 import com.zmark.mytodo.service.api.HelloService;
 import com.zmark.mytodo.service.api.MyDayTaskService;
@@ -11,6 +17,8 @@ import com.zmark.mytodo.service.api.TaskGroupService;
 import com.zmark.mytodo.service.api.TaskListService;
 import com.zmark.mytodo.service.api.TaskService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -19,6 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainApplication extends Application {
     private static final String TAG = "MainApplication";
+    /**
+     * 优先级相关的颜色
+     */
+    private static final Map<PriorityTypeE, ColorStateList> priorityTextColorMap = new HashMap<>();
     private static Retrofit retrofit;
     private static HelloService helloService;
     private static TaskService taskService;
@@ -26,11 +38,27 @@ public class MainApplication extends Application {
     private static TaskListService taskListService;
     private static MyDayTaskService myDayTaskService;
     private static FourQuadrantService fourQuadrantService;
+    
+    public static ColorStateList getPriorityTextColor(PriorityTypeE priorityTypeE) {
+        return priorityTextColorMap.get(priorityTypeE);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: Application started");
+
+        ColorStateList color_prior_text_urgent_and_import = ContextCompat.getColorStateList(this, R.color.prior_text_urgent_and_import);
+        ColorStateList color_prior_text_not_urgent_and_import = ContextCompat.getColorStateList(this, R.color.prior_text_not_urgent_and_import);
+        ColorStateList color_prior_text_urgent_not_import = ContextCompat.getColorStateList(this, R.color.prior_text_urgent_not_import);
+        ColorStateList color_prior_text_not_urgent_not_import = ContextCompat.getColorStateList(this, R.color.prior_text_not_urgent_not_import);
+
+        this.priorityTextColorMap.put(PriorityTypeE.URGENCY_IMPORTANT, color_prior_text_urgent_and_import);
+        this.priorityTextColorMap.put(NOT_URGENCY_IMPORTANT, color_prior_text_not_urgent_and_import);
+        this.priorityTextColorMap.put(PriorityTypeE.URGENCY_NOT_IMPORTANT, color_prior_text_urgent_not_import);
+        this.priorityTextColorMap.put(PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT, color_prior_text_not_urgent_not_import);
+
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.SECONDS)
                 .readTimeout(1, TimeUnit.SECONDS)
