@@ -133,7 +133,7 @@ public class ListDetailFragment extends Fragment {
         PopupMenu popupMenu = new PopupMenu(requireContext(), view);
         // 替换为自定义的菜单资源
         popupMenu.inflate(R.menu.menu_myday);
-        // 设置菜单项-显示or隐藏细节
+        // 设置菜单项的点击事件
         this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
         popupMenu.setOnMenuItemClickListener(item -> {
             MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
