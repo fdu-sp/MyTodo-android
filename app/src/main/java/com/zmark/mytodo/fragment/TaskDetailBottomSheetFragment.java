@@ -23,6 +23,8 @@ import com.zmark.mytodo.service.impl.TaskServiceImpl;
 import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.utils.TimeUtils;
 
+import java.util.Optional;
+
 import retrofit2.Call;
 
 /**
@@ -159,6 +161,10 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
 
     @Override
     protected void handleConfirmButtonClick(View view) {
+        String title = taskTitle.getText().toString();
+        String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
+        taskDetail.setTitle(title);
+        taskDetail.getTaskContentInfo().setDescription(description);
         Call<Result<TaskDetailResp>> call = MainApplication.getTaskService().updateTask(taskDetail.toTaskUpdateReq());
         ApiUtils.doRequest(call, new ApiUtils.Callbacks<TaskDetailResp>() {
             @Override
