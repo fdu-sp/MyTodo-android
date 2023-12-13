@@ -64,13 +64,13 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
                 if (isChecked) {
                     Log.i(TAG, "onCheckedChanged: 选中");
                     // 处理选中事件
-                    todoItem.changeToBeDone(); // 更新数据项的选中状态
+                    todoItem.complete(); // 更新数据项的选中状态
                     // 调用后端接口，完成任务
                     TaskServiceImpl.completeTask(todoItem.getId());
                 } else {
                     Log.i(TAG, "onCheckedChanged: 取消选中");
                     // 处理取消选中事件
-                    todoItem.changeToBeUndone(); // 更新数据项的选中状态
+                    todoItem.unComplete(); // 更新数据项的选中状态
                     // 调用后端接口，取消完成任务
                     TaskServiceImpl.unCompleteTask(todoItem.getId());
                 }

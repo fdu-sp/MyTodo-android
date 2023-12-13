@@ -1,5 +1,6 @@
 package com.zmark.mytodo.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.model.QuadrantAdapter;
+import com.zmark.mytodo.model.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
 import com.zmark.mytodo.service.ApiUtils;
@@ -27,7 +28,6 @@ import com.zmark.mytodo.service.result.Result;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 
@@ -41,10 +41,10 @@ public class QuadrantViewFragment extends Fragment {
     private RecyclerView urgentNotImportantRecyclerView;
     private RecyclerView notUrgentNotImportantRecyclerView;
 
-    List<String> urgentImportantTasks = new ArrayList<>();
-    List<String> notUrgentImportantTasks = new ArrayList<>();
-    List<String> urgentNotImportantTasks = new ArrayList<>();
-    List<String> notUrgentNotImportantTasks = new ArrayList<>();
+    List<TaskSimple> urgentImportantTasks = new ArrayList<>();
+    List<TaskSimple> notUrgentImportantTasks = new ArrayList<>();
+    List<TaskSimple> urgentNotImportantTasks = new ArrayList<>();
+    List<TaskSimple> notUrgentNotImportantTasks = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,14 +106,10 @@ public class QuadrantViewFragment extends Fragment {
         // todo  排序数据
 
         // 处理数据
-        urgentImportantTasks = this.fourQuadrant.getUrgentAndImportant().getTasks()
-                .stream().map(TaskSimple::getTitle).collect(Collectors.toList());
-        notUrgentImportantTasks = this.fourQuadrant.getNotUrgentAndImportant().getTasks()
-                .stream().map(TaskSimple::getTitle).collect(Collectors.toList());
-        urgentNotImportantTasks = this.fourQuadrant.getUrgentAndNotImportant().getTasks()
-                .stream().map(TaskSimple::getTitle).collect(Collectors.toList());
-        notUrgentNotImportantTasks = this.fourQuadrant.getNotUrgentAndNotImportant().getTasks()
-                .stream().map(TaskSimple::getTitle).collect(Collectors.toList());
+        urgentImportantTasks = this.fourQuadrant.getUrgentAndImportant().getTasks();
+        notUrgentImportantTasks = this.fourQuadrant.getNotUrgentAndImportant().getTasks();
+        urgentNotImportantTasks = this.fourQuadrant.getUrgentAndNotImportant().getTasks();
+        notUrgentNotImportantTasks = this.fourQuadrant.getNotUrgentAndNotImportant().getTasks();
     }
 
     private void updateUI() {
@@ -135,7 +131,8 @@ public class QuadrantViewFragment extends Fragment {
         // 添加任何其他的 RecyclerView 配置
     }
 
-    private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView, List<String> tasks, int emptyTaskTextId) {
+    private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView, List<TaskSimple> tasks, int emptyTaskTextId) {
+        // todo 设置象限名称
         if (tasks.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             TextView textView = view.findViewById(emptyTaskTextId);
@@ -144,8 +141,9 @@ public class QuadrantViewFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
             TextView textView = view.findViewById(emptyTaskTextId);
             textView.setVisibility(View.GONE);
-            QuadrantAdapter quadrantAdapter = new QuadrantAdapter(tasks);
-            recyclerView.setAdapter(quadrantAdapter);
+            Activity activity = requireActivity();
+            QuadrantTaskItemAdapter quadrantTaskItemAdapter = new QuadrantTaskItemAdapter(activity, tasks);
+            recyclerView.setAdapter(quadrantTaskItemAdapter);
         }
     }
 
