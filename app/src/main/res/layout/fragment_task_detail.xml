@@ -86,7 +86,7 @@
             android:contentDescription="@string/check_box" />
 
         <!-- 任务标题 -->
-        <TextView
+        <EditText
             android:id="@+id/taskTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -430,6 +430,7 @@
 
     <!-- 底部，时间信息、删除按钮 -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/bottomCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
