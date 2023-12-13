@@ -143,6 +143,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         expectedExecutionDateLayout.setOnClickListener(this::handleExpectedExecutionDateClick);
         this.updateExpectedExecutionViewUI();
 
+        // 设置重复
+        repeatedLayout.setOnClickListener(this::handleRepeatedClick);
+        this.updateRepeatedViewUI();
+
         // 标签
         tagLayout.setOnClickListener(view -> this.handleTagSet());
 
@@ -312,6 +316,19 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 expectedExecutionDateTextView.setText(R.string.plan_the_execution_time);
                 expectedExecutionDateTextView.setTextColor(unCheckedColorStateList);
             }
+        });
+    }
+
+    protected void handleRepeatedClick(View view) {
+        // todo 处理用户点击设置重复的逻辑
+//        Toast.makeText(requireContext(), "设置重复", Toast.LENGTH_SHORT).show();
+        this.updateRepeatedViewUI();
+    }
+
+    protected void updateRepeatedViewUI() {
+        requireActivity().runOnUiThread(() -> {
+            repeatedTextView.setText(R.string.no_repetition);
+            repeatedTextView.setTextColor(unCheckedColorStateList);
         });
     }
 
