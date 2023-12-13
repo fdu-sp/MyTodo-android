@@ -36,4 +36,12 @@ public class TagSimple {
     public void setTagPath(String tagPath) {
         this.tagPath = tagPath;
     }
+
+    public TagSimpleResp toTagSimpleResp() {
+        TagSimpleResp tagSimpleResp = new TagSimpleResp();
+        tagSimpleResp.setId(this.id);
+        tagSimpleResp.setTagName(this.tagName);
+        tagSimpleResp.setTagPath(this.tagPath);
+        return tagSimpleResp;
+    }
 }

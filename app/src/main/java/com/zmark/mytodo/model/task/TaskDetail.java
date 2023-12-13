@@ -2,6 +2,7 @@ package com.zmark.mytodo.model.task;
 
 import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
+import com.zmark.mytodo.service.bo.task.req.TaskUpdateReq;
 import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskContentInfoResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskPriorityInfoResp;
@@ -83,6 +84,25 @@ public class TaskDetail {
         createReq.setExpectedExecutionStartPeriod(this.taskTimeInfo.getExpectedExecutionStartPeriod());
         createReq.setExpectedExecutionEndPeriod(this.taskTimeInfo.getExpectedExecutionEndPeriod());
         return createReq;
+    }
+
+    public TaskUpdateReq toTaskUpdateReq() {
+        TaskUpdateReq updateReq = new TaskUpdateReq();
+        updateReq.setId(this.id);
+        updateReq.setTitle(this.title);
+        updateReq.setCompleted(this.completed);
+        updateReq.setCompletedTime(this.completedTime);
+        updateReq.setArchived(this.archived);
+        updateReq.setTags(this.tags.stream().map(TagSimple::toTagSimpleResp).collect(Collectors.toList()));
+        updateReq.setTaskListId(this.taskListId);
+        updateReq.setTaskListName(this.taskListName);
+        updateReq.setInMyDay(this.inMyDay);
+        updateReq.setTaskContentInfo(this.taskContentInfo);
+        updateReq.setTaskPriorityInfo(this.taskPriorityInfo);
+        updateReq.setTaskTimeInfo(this.taskTimeInfo);
+        updateReq.setCreateTime(this.createTime);
+        updateReq.setUpdateTime(this.updateTime);
+        return updateReq;
     }
 
     public Long getId() {
