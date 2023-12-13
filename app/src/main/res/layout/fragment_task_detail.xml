@@ -93,7 +93,10 @@
             android:layout_marginStart="10dp"
             android:text="@string/title"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:hint="@string/add_title"
+            android:autofillHints=""
+            android:inputType="text" />
     </LinearLayout>
     <!-- todo 添加步骤 -->
 
