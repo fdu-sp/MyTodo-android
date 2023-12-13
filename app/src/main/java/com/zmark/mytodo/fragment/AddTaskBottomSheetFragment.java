@@ -48,56 +48,56 @@ import retrofit2.Response;
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
 
-    private TaskDetail taskDetail;
-    private PriorityTypeE priorityTypeE;
+    protected TaskDetail taskDetail;
+    protected PriorityTypeE priorityTypeE;
 
-    private ColorStateList checkedColorStateList;
-    private ColorStateList unCheckedColorStateList;
+    protected ColorStateList checkedColorStateList;
+    protected ColorStateList unCheckedColorStateList;
 
-    private ImageView backButton;
-    private TextView taskListNameTextView;
-    private CheckBox checkBox;
-    private EditText taskTitle;
+    protected ImageView backButton;
+    protected TextView taskListNameTextView;
+    protected CheckBox checkBox;
+    protected EditText taskTitle;
 
-    private ImageView confirmButton;
+    protected ImageView confirmButton;
 
-    private LinearLayout addToMyDayLayout;
-    private ImageView addToMyDayImageView;
-    private TextView addToMyDayTextView;
+    protected LinearLayout addToMyDayLayout;
+    protected ImageView addToMyDayImageView;
+    protected TextView addToMyDayTextView;
 
-    private LinearLayout priorityLayout;
-    private ImageView priorityImageView;
-    private TextView priorityTextView;
+    protected LinearLayout priorityLayout;
+    protected ImageView priorityImageView;
+    protected TextView priorityTextView;
 
-    private LinearLayout reminderLayout;
-    private ImageView reminderImageView;
-    private TextView reminderTextView;
+    protected LinearLayout reminderLayout;
+    protected ImageView reminderImageView;
+    protected TextView reminderTextView;
 
-    private LinearLayout dueDateLayout;
-    private ImageView dueDateImageView;
-    private TextView dueDateTextView;
+    protected LinearLayout dueDateLayout;
+    protected ImageView dueDateImageView;
+    protected TextView dueDateTextView;
 
-    private LinearLayout expectedExecutionDateLayout;
-    private ImageView expectedExecutionDateImageView;
-    private TextView expectedExecutionDateTextView;
+    protected LinearLayout expectedExecutionDateLayout;
+    protected ImageView expectedExecutionDateImageView;
+    protected TextView expectedExecutionDateTextView;
 
-    private LinearLayout repeatedLayout;
-    private ImageView repeatedImageView;
-    private TextView repeatedTextView;
+    protected LinearLayout repeatedLayout;
+    protected ImageView repeatedImageView;
+    protected TextView repeatedTextView;
 
-    private LinearLayout listLayout;
-    private ImageView listImageView;
-    private TextView listTextView;
+    protected LinearLayout listLayout;
+    protected ImageView listImageView;
+    protected TextView listTextView;
 
-    private LinearLayout tagLayout;
-    private ImageView tagImageView;
-    private TextView tagTextView;
+    protected LinearLayout tagLayout;
+    protected ImageView tagImageView;
+    protected TextView tagTextView;
 
-    private EditText editTextMultiLine;
+    protected EditText editTextMultiLine;
 
-    private CardView bottomCardView;
-    private TextView timeCreateShowTextView;
-    private ImageView deleteImageView;
+    protected CardView bottomCardView;
+    protected TextView timeCreateShowTextView;
+    protected ImageView deleteImageView;
 
     public AddTaskBottomSheetFragment() {
         // Required empty public constructor
@@ -115,9 +115,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         this.findViews(bottomSheetView);
 
         this.taskListNameTextView.setText("默认清单");
-        this.backButton.setOnClickListener(v -> {
-            this.dismiss();
-        });
+        this.backButton.setOnClickListener(v -> this.dismiss());
         // 设置checkbox的事件和选中状态
         this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> taskDetail.setCompleted(isChecked));
         this.checkBox.setChecked(taskDetail.getCompleted());
