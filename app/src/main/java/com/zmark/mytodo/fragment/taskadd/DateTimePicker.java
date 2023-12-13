@@ -17,9 +17,13 @@ public class DateTimePicker {
         void onDateTimeSet(String date, String time);
     }
 
-    private OnDateTimeSetDetailListener onDateTimeSetDetailListener;
+    public interface OnTimeStampSetListener {
+        void onTimeStampSet(String timeStamp);
+    }
 
+    private OnDateTimeSetDetailListener onDateTimeSetDetailListener;
     private OnDateTimeSetListener onDateTimeSetListener;
+    private OnTimeStampSetListener onTimeStampSetListener;
 
     public void setOnDateTimeSetDetailListener(OnDateTimeSetDetailListener onDateTimeSetDetailListener) {
         this.onDateTimeSetDetailListener = onDateTimeSetDetailListener;
@@ -27,6 +31,10 @@ public class DateTimePicker {
 
     public void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
         this.onDateTimeSetListener = onDateTimeSetListener;
+    }
+
+    public void setOnTimeStampSetListener(OnTimeStampSetListener onTimeStampSetListener) {
+        this.onTimeStampSetListener = onTimeStampSetListener;
     }
 
     public void show(Context context) {
@@ -52,6 +60,11 @@ public class DateTimePicker {
                                     String time = String.format(Locale.getDefault(), "%02d:%02d",
                                             selectedHourOfDay, selectedMinute);
                                     onDateTimeSetListener.onDateTimeSet(date, time);
+                                }
+                                if (onTimeStampSetListener != null) {
+                                    String timeStamp = String.format(Locale.getDefault(), "%04d-%02d-%02d %02d:%02d:00",
+                                            selectedYear, monthOfYear + 1, dayOfMonth1, selectedHourOfDay, selectedMinute);
+                                    onTimeStampSetListener.onTimeStampSet(timeStamp);
                                 }
                             }, hourOfDay, minute, DateFormat.is24HourFormat(context));
                     // 显示时间选择器对话框
