@@ -17,6 +17,7 @@ import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
+import com.zmark.mytodo.fragment.quadrant.QuadrantViewFragment;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;

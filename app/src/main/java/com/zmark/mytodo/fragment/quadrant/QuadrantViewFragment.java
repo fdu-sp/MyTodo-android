@@ -1,4 +1,4 @@
-package com.zmark.mytodo.fragment;
+package com.zmark.mytodo.fragment.quadrant;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +23,7 @@ import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.TaskSimple;
@@ -89,10 +90,7 @@ public class QuadrantViewFragment extends Fragment {
 
     protected void registerTopMenu() {
         // 注册右侧菜单的点击事件 --> 选择清单，和排序方式
-        this.menuHandlerMap.put(R.id.menuSelectList, item -> {
-            // todo 选择清单
-            Toast.makeText(requireContext(), "选择清单", Toast.LENGTH_SHORT).show();
-        });
+        this.menuHandlerMap.put(R.id.menuSelectList, item -> showSortDialog());
         this.menuHandlerMap.put(R.id.menuSelectSortType, item -> {
             // todo 排序方式
             Toast.makeText(requireContext(), "排序方式", Toast.LENGTH_SHORT).show();
@@ -115,6 +113,20 @@ public class QuadrantViewFragment extends Fragment {
             return true;
         });
         popupMenu.show();
+    }
+
+    private void showSortDialog() {
+        BottomGroupAndSortSheetFragment bottomGroupAndSortSheetFragment =
+                new BottomGroupAndSortSheetFragment(null, this.sortType);
+        bottomGroupAndSortSheetFragment.setSortListener((sortTypeE) -> {
+            // 根据用户选择的排序方式对进行排序
+            this.sortType = sortTypeE;
+            this.saveSelectedSortType(sortTypeE);
+            this.sortData();
+            // 更新UI
+            this.updateUI();
+        });
+        bottomGroupAndSortSheetFragment.show(requireActivity().getSupportFragmentManager(), bottomGroupAndSortSheetFragment.getTag());
     }
 
     private void fetchDataAndUpdateUI() {
