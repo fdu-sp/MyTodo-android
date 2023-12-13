@@ -154,8 +154,10 @@ public class TaskDetail {
         if (this.tags == null) {
             this.tags = new ArrayList<>();
         }
-        if (this.tags.contains(tag)) {
-            return;
+        for (TagSimple tagSimple : this.tags) {
+            if (tagSimple.getId().equals(tag.getId())) {
+                return;
+            }
         }
         this.tags.add(tag);
     }
