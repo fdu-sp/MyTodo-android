@@ -35,6 +35,7 @@ public class TaskDetail {
         this.tags = new ArrayList<>();
         this.inMyDay = false;
         this.taskListId = null;
+        this.taskListName = null;
         this.taskContentInfo = new TaskContentInfoResp();
         this.taskPriorityInfo = new TaskPriorityInfoResp();
         this.taskTimeInfo = new TaskTimeInfoResp();
@@ -69,6 +70,7 @@ public class TaskDetail {
         createReq.setTagNames(tagNames);
         createReq.setDescription(this.taskContentInfo.getDescription());
         createReq.setTaskListId(this.taskListId);
+        createReq.setInMyDay(this.inMyDay);
         createReq.setImportant(this.taskPriorityInfo.getImportant());
         createReq.setUrgent(this.taskPriorityInfo.getUrgent());
         createReq.setEndDate(this.taskTimeInfo.getEndDate());

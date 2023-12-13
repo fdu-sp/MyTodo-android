@@ -23,6 +23,8 @@ public class TaskCreateReq {
 
     private Long taskListId;
 
+    private Boolean inMyDay;
+
     /**
      * priority info
      */
@@ -57,6 +59,10 @@ public class TaskCreateReq {
 
     public void setTaskListId(Long taskListId) {
         this.taskListId = taskListId;
+    }
+
+    public void setInMyDay(Boolean inMyDay) {
+        this.inMyDay = inMyDay;
     }
 
     public void setImportant(Boolean important) {
