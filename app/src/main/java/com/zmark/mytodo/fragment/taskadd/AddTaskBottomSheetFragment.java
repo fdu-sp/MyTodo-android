@@ -252,9 +252,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 String reminderStr = "在 " + formattedDateStr + " " + timeStr + "时提醒我";
                 reminderTextView.setText(reminderStr);
                 reminderTextView.setTextColor(checkedColorStateList);
+                reminderImageView.setImageTintList(checkedColorStateList);
             } else {
                 reminderTextView.setText(R.string.setReminder);
                 reminderTextView.setTextColor(unCheckedColorStateList);
+                reminderImageView.setImageTintList(unCheckedColorStateList);
             }
         });
     }
@@ -282,9 +284,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 Log.d(TAG, "updateDueDateTimeViewUI: " + dueDateTimeStr);
                 dueDateTextView.setText(dueDateTimeStr);
                 dueDateTextView.setTextColor(checkedColorStateList);
+                dueDateImageView.setImageTintList(checkedColorStateList);
             } else {
                 dueDateTextView.setText(R.string.no_deadline_is_set);
                 dueDateTextView.setTextColor(unCheckedColorStateList);
+                dueDateImageView.setImageTintList(unCheckedColorStateList);
             }
         });
     }
@@ -311,9 +315,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 Log.d(TAG, "updateExpectedExecutionViewUI: " + expectedExecutionDateStr);
                 expectedExecutionDateTextView.setText(expectedExecutionDateStr);
                 expectedExecutionDateTextView.setTextColor(checkedColorStateList);
+                expectedExecutionDateImageView.setImageTintList(checkedColorStateList);
             } else {
                 expectedExecutionDateTextView.setText(R.string.plan_the_execution_time);
                 expectedExecutionDateTextView.setTextColor(unCheckedColorStateList);
+                expectedExecutionDateImageView.setImageTintList(unCheckedColorStateList);
             }
         });
     }
@@ -328,6 +334,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         requireActivity().runOnUiThread(() -> {
             repeatedTextView.setText(R.string.no_repetition);
             repeatedTextView.setTextColor(unCheckedColorStateList);
+            repeatedImageView.setImageTintList(unCheckedColorStateList);
         });
     }
 
@@ -349,9 +356,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             if (taskListId != null && taskListName != null) {
                 listTextView.setText(taskListName);
                 listTextView.setTextColor(checkedColorStateList);
+                listImageView.setImageTintList(checkedColorStateList);
             } else {
                 listTextView.setText(R.string.select_list);
                 listTextView.setTextColor(unCheckedColorStateList);
+                listImageView.setImageTintList(unCheckedColorStateList);
             }
         });
     }
