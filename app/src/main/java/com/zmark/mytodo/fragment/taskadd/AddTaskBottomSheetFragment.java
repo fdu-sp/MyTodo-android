@@ -12,20 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.PriorityTypeE;
+import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.api.TaskService;
-import com.zmark.mytodo.service.bo.task.req.TaskCreatReq;
+import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
 import com.zmark.mytodo.service.invariant.Msg;
 import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.service.result.ResultCode;
@@ -42,61 +47,99 @@ import retrofit2.Response;
 
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
+
+    private TaskDetail taskDetail;
     private PriorityTypeE priorityTypeE;
     private String endDate;
     private String endTime;
 
-    private EditText newTaskTitleInput;
-    private EditText newTaskDescriptionInput;
-    private TextView listTextView;
-    private TextView endDateTextView;
+    private ColorStateList checkedColorStateList;
+    private ColorStateList unCheckedColorStateList;
 
-    private ImageView prioritySetImageView;
+    private ImageView backButton;
+    private TextView taskListNameTextView;
+    private CheckBox checkBox;
+    private EditText taskTitle;
+
+    private ImageView confirmButton;
+
+    private LinearLayout addToMyDayLayout;
+    private ImageView addToMyDayImageView;
+    private TextView addToMyDayTextView;
+
+    private LinearLayout priorityLayout;
+    private ImageView priorityImageView;
     private TextView priorityTextView;
 
+    private LinearLayout reminderLayout;
+    private ImageView reminderImageView;
+    private TextView reminderTextView;
+
+    private LinearLayout dueDateLayout;
+    private ImageView dueDateImageView;
+    private TextView dueDateTextView;
+
+    private LinearLayout expectedExecutionDateLayout;
+    private ImageView expectedExecutionDateImageView;
+    private TextView expectedExecutionDateTextView;
+
+    private LinearLayout repeatedLayout;
+    private ImageView repeatedImageView;
+    private TextView repeatedTextView;
+
+    private LinearLayout listLayout;
+    private ImageView listImageView;
+    private TextView listTextView;
+
+    private LinearLayout tagLayout;
+    private ImageView tagImageView;
     private TextView tagTextView;
-    private TextView reminderTimeTextView;
+
+    private EditText editTextMultiLine;
+
+    private CardView bottomCardView;
+    private TextView timeCreateShowTextView;
+    private ImageView deleteImageView;
 
     public AddTaskBottomSheetFragment() {
         // Required empty public constructor
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.taskDetail = new TaskDetail();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View bottomSheetView = inflater.inflate(R.layout.fragment_add_task, container, false);// 获取底部抽屉中的 EditText
+        View bottomSheetView = inflater.inflate(R.layout.fragment_task_detail, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
 
-        // 截止日期与时间
-        bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> this.handleDueDateTimePicker());
-        updateDueDateTimeViewUI();
-
-        // 优先级
-        priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
-        prioritySetImageView.setOnClickListener(view -> this.handlePrioritySet());
-        updatePriorityViewUI();
-
-        // 标签
-        bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> this.handleTagSet());
-
-        bottomSheetView.findViewById(R.id.reminderSetImageView).setOnClickListener(view -> {
-            // todo 处理用户点击设置提醒的逻辑
-            Toast.makeText(requireContext(), "设置提醒", Toast.LENGTH_SHORT).show();
+        this.taskListNameTextView.setText("默认清单");
+        this.backButton.setOnClickListener(v -> {
+            this.dismiss();
         });
-        bottomSheetView.findViewById(R.id.listSetImageView).setOnClickListener(view -> {
-            // todo 处理用户点击设置清单的逻辑
-            Toast.makeText(requireContext(), "设置清单", Toast.LENGTH_SHORT).show();
-        });
-        bottomSheetView.findViewById(R.id.confirmButton).setOnClickListener(view -> {
+        // 设置checkbox的事件和选中状态
+        this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> taskDetail.setCompleted(isChecked));
+        this.checkBox.setChecked(taskDetail.getCompleted());
+        // 设置任务标题
+        this.taskTitle.setText(taskDetail.getTitle());
+
+        // 显示确认按钮
+        confirmButton.setVisibility(View.VISIBLE);
+        confirmButton.setOnClickListener(view -> {
             // 处理用户点击发送按钮的逻辑
-            if (newTaskTitleInput.getText().toString().isEmpty()) {
+            if (taskTitle.getText().toString().isEmpty()) {
                 // 如果待办事项为空，则不执行添加操作
                 Toast.makeText(requireContext(), Msg.NO_TASK_TITLE, Toast.LENGTH_SHORT).show();
                 return;
             }
-            String title = newTaskTitleInput.getText().toString();
-            String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
+            String title = taskTitle.getText().toString();
+            String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
             // 执行添加待办事项的操作
-            TaskCreatReq createReq = new TaskCreatReq();
+            // todo 是否已经完成
+            TaskCreateReq createReq = new TaskCreateReq();
             createReq.setTitle(title);
             createReq.setDescription(description);
             createReq.setEndDate(endDate);
@@ -106,6 +149,31 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             createNewTask(createReq);
         });
 
+        // 截止日期与时间
+        dueDateLayout.setOnClickListener(view -> this.handleDueDateTimePicker());
+        updateDueDateTimeViewUI();
+
+        // 优先级
+        priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
+        priorityLayout.setOnClickListener(view -> this.handlePrioritySet());
+        updatePriorityViewUI();
+
+        // 标签
+        tagLayout.setOnClickListener(view -> this.handleTagSet());
+
+        reminderLayout.setOnClickListener(view -> {
+            // todo 处理用户点击设置提醒的逻辑
+            Toast.makeText(requireContext(), "设置提醒", Toast.LENGTH_SHORT).show();
+        });
+
+        listLayout.setOnClickListener(view -> {
+            // todo 处理用户点击设置清单的逻辑
+            Toast.makeText(requireContext(), "设置清单", Toast.LENGTH_SHORT).show();
+        });
+
+        // 隐藏底部
+        bottomCardView.setVisibility(View.GONE);
+
         // 在输入法弹出时调整窗口的大小
         Dialog dialog = getDialog();
         if (dialog != null) {
@@ -113,6 +181,27 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
         return bottomSheetView;
+    }
+
+    private void handleConfirmButtonClick(View view) {
+        // 处理用户点击发送按钮的逻辑
+        if (taskTitle.getText().toString().isEmpty()) {
+            // 如果待办事项为空，则不执行添加操作
+            Toast.makeText(requireContext(), Msg.NO_TASK_TITLE, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String title = taskTitle.getText().toString();
+        String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
+        // 执行添加待办事项的操作
+        // todo 从taskDetail中获取数据
+        TaskCreateReq createReq = new TaskCreateReq();
+        createReq.setTitle(title);
+        createReq.setDescription(description);
+        createReq.setEndDate(endDate);
+        createReq.setEndTime(endTime);
+        createReq.setImportant(priorityTypeE.isImportant());
+        createReq.setUrgent(priorityTypeE.isUrgent());
+        createNewTask(createReq);
     }
 
     private void handleTagSet() {
@@ -158,11 +247,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                                 + " " + TimeUtils.getDayOfWeek(endDate)
                                 + " " + endTime + " 到期";
                 Log.d(TAG, "updateDueDateTimeViewUI: " + dueDateTimeStr);
-                endDateTextView.setText(dueDateTimeStr);
-                endDateTextView.setTextColor(MainApplication.getCheckedColorStateList());
+                dueDateTextView.setText(dueDateTimeStr);
+                dueDateTextView.setTextColor(MainApplication.getCheckedColorStateList());
             } else {
-                endDateTextView.setText(R.string.no_deadline_is_set);
-                endDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
+                dueDateTextView.setText(R.string.no_deadline_is_set);
+                dueDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
             }
         });
     }
@@ -191,12 +280,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
         priorityTextView.setText(priorityTypeE.getDesc());
         priorityTextView.setTextColor(colorStateList);
-        prioritySetImageView.setImageTintList(colorStateList);
+        priorityImageView.setImageTintList(colorStateList);
     }
 
-    private void createNewTask(TaskCreatReq taskCreatReq) {
+    private void createNewTask(TaskCreateReq taskCreateReq) {
         TaskService taskService = MainApplication.getTaskService();
-        Call<Result<Object>> call = taskService.createNewTask(taskCreatReq);
+        Call<Result<Object>> call = taskService.createNewTask(taskCreateReq);
         call.enqueue(new Callback<Result<Object>>() {
             @Override
             public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
@@ -226,13 +315,53 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void findViews(View view) {
-        newTaskTitleInput = view.findViewById(R.id.newTaskTitleInput);
-        newTaskDescriptionInput = view.findViewById(R.id.newTaskDescriptionInput);
-        listTextView = view.findViewById(R.id.listTextView);
-        endDateTextView = view.findViewById(R.id.endDateTextView);
-        prioritySetImageView = view.findViewById(R.id.prioritySetImageView);
-        priorityTextView = view.findViewById(R.id.priorityTextView);
-        tagTextView = view.findViewById(R.id.tagTextView);
-        reminderTimeTextView = view.findViewById(R.id.reminderTimeTextView);
+        checkedColorStateList =
+                MainApplication.getCheckedColorStateList();
+        unCheckedColorStateList =
+                MainApplication.getUnCheckedColorStateList();
+
+        this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
+        this.backButton = view.findViewById(R.id.backButton);
+        this.checkBox = view.findViewById(R.id.checkBox);
+        this.taskTitle = view.findViewById(R.id.taskTitle);
+        this.confirmButton = view.findViewById(R.id.confirmButton);
+
+        this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
+        this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
+        this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
+
+        this.priorityLayout = view.findViewById(R.id.priorityLayout);
+        this.priorityImageView = view.findViewById(R.id.priorityImageView);
+        this.priorityTextView = view.findViewById(R.id.priorityTextView);
+
+        this.reminderLayout = view.findViewById(R.id.reminderLayout);
+        this.reminderImageView = view.findViewById(R.id.reminderImageView);
+        this.reminderTextView = view.findViewById(R.id.reminderTextView);
+
+        this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
+        this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
+        this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
+
+        this.expectedExecutionDateLayout = view.findViewById(R.id.expectedExecutionDateLayout);
+        this.expectedExecutionDateImageView = view.findViewById(R.id.expectedExecutionDateImageView);
+        this.expectedExecutionDateTextView = view.findViewById(R.id.expectedExecutionDateTextView);
+
+        this.repeatedLayout = view.findViewById(R.id.repeatedLayout);
+        this.repeatedImageView = view.findViewById(R.id.repeatedImageView);
+        this.repeatedTextView = view.findViewById(R.id.repeatedTextView);
+
+        this.listLayout = view.findViewById(R.id.listLayout);
+        this.listImageView = view.findViewById(R.id.listImageView);
+        this.listTextView = view.findViewById(R.id.listTextView);
+
+        this.tagLayout = view.findViewById(R.id.tagLayout);
+        this.tagImageView = view.findViewById(R.id.tagImageView);
+        this.tagTextView = view.findViewById(R.id.tagTextView);
+
+        this.editTextMultiLine = view.findViewById(R.id.editTextMultiLine);
+
+        this.bottomCardView = view.findViewById(R.id.bottomCardView);
+        this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
+        this.deleteImageView = view.findViewById(R.id.deleteImageView);
     }
 }
