@@ -142,11 +142,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         // 标签
         tagLayout.setOnClickListener(view -> this.handleTagSet());
 
-        reminderLayout.setOnClickListener(view -> {
-            // todo 处理用户点击设置提醒的逻辑
-            Toast.makeText(requireContext(), "设置提醒", Toast.LENGTH_SHORT).show();
-        });
-
+        // 设置清单
         listLayout.setOnClickListener(view -> {
             // todo 处理用户点击设置清单的逻辑
             Toast.makeText(requireContext(), "设置清单", Toast.LENGTH_SHORT).show();
@@ -232,11 +228,28 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     protected void handleReminderClick(View view) {
-
+        DateTimePicker dateTimePicker = new DateTimePicker();
+        dateTimePicker.setOnTimeStampSetListener((timestamp) -> {
+            this.taskDetail.getTaskTimeInfo().setReminderTimestamp(timestamp);
+            this.updateReminderClickUI();
+        });
+        dateTimePicker.show(requireContext());
     }
 
     protected void updateReminderClickUI() {
-        // todo
+        String reminderTimestamp = taskDetail.getTaskTimeInfo().getReminderTimestamp();
+        requireActivity().runOnUiThread(() -> {
+            if (reminderTimestamp != null) {
+                String formattedDateStr = TimeUtils.getFormattedDateStrFromTimeStamp(reminderTimestamp);
+                String timeStr = TimeUtils.getTimeStrFromTimeStamp(reminderTimestamp);
+                String reminderStr = "在 " + formattedDateStr + " " + timeStr + "时提醒我";
+                reminderTextView.setText(reminderStr);
+                reminderTextView.setTextColor(checkedColorStateList);
+            } else {
+                reminderTextView.setText(R.string.setReminder);
+                reminderTextView.setTextColor(unCheckedColorStateList);
+            }
+        });
     }
 
     protected void handleDueDateTimeClick(View view) {
@@ -261,10 +274,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                                 + " " + endTime + " 到期";
                 Log.d(TAG, "updateDueDateTimeViewUI: " + dueDateTimeStr);
                 dueDateTextView.setText(dueDateTimeStr);
-                dueDateTextView.setTextColor(MainApplication.getCheckedColorStateList());
+                dueDateTextView.setTextColor(checkedColorStateList);
             } else {
                 dueDateTextView.setText(R.string.no_deadline_is_set);
-                dueDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
+                dueDateTextView.setTextColor(unCheckedColorStateList);
             }
         });
     }
