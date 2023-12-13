@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:gravity="center_vertical"
     android:padding="16dp"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/imageViewTagIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_marginStart="12dp"
         android:src="@drawable/ic_tag"
         android:contentDescription="@string/tag" />
 
@@ -19,7 +22,6 @@
         android:id="@+id/textViewTagPath"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+        android:layout_marginStart="10dp"
+        android:textSize="20sp" />
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class TagSimpleListAdapter extends RecyclerView.Adapter<TagSimpleListAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TagSimple tag = tagList.get(position);
         String tagPath = tag.getTagPath();
+        holder.imageViewTagIcon.setImageTintList(MainApplication.getUnCheckedColorStateList());
         if (tagPath.split("/").length == 1) {
             holder.imageViewTagIcon.setImageResource(R.drawable.ic_tag_1_simple);
         } else {
@@ -51,6 +53,7 @@ public class TagSimpleListAdapter extends RecyclerView.Adapter<TagSimpleListAdap
                 onTagSelectListener.onTagSelect(tag);
             }
         });
+        holder.textViewTagPath.setTextColor(MainApplication.getUnCheckedColorStateList());
         holder.textViewTagPath.setText(tag.getTagPath());
     }
 
