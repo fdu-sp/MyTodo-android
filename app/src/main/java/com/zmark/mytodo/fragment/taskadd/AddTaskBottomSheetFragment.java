@@ -134,14 +134,15 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         addToMyDayLayout.setOnClickListener(this::handleAddToMyDayClick);
         this.updateAddToMyDayUI();
 
+        // 优先级
+        priorityLayout.setOnClickListener(this::handlePriorityClick);
+        updatePriorityViewUI();
+
+        // 设置提醒
+
         // 截止日期与时间
         dueDateLayout.setOnClickListener(view -> this.handleDueDateTimePicker());
         updateDueDateTimeViewUI();
-
-        // 优先级
-        priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
-        priorityLayout.setOnClickListener(view -> this.handlePrioritySet());
-        updatePriorityViewUI();
 
         // 标签
         tagLayout.setOnClickListener(view -> this.handleTagSet());
@@ -205,6 +206,35 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         });
     }
 
+    protected void handlePriorityClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("设置优先级");
+        String[] priorityArray = PriorityTypeE.getPriorityArray();
+
+        // 设置当前选中的优先级
+        builder.setSingleChoiceItems(priorityArray, priorityTypeE.getCode() - 1, (dialog, which) -> {
+            priorityTypeE = PriorityTypeE.getByCode(which + 1);
+            if (priorityTypeE == null) {
+                Log.e(TAG, "handlePrioritySet: 优先级设置错误");
+                priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
+            }
+            updatePriorityViewUI();
+            dialog.dismiss();
+        });
+
+        // 显示对话框
+        builder.show();
+    }
+
+    protected void updatePriorityViewUI() {
+        if (priorityTypeE == null) {
+            priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
+        }
+        ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
+        priorityTextView.setText(priorityTypeE.getDesc());
+        priorityTextView.setTextColor(colorStateList);
+        priorityImageView.setImageTintList(colorStateList);
+    }
 
     private void handleTagSet() {
         // todo
@@ -256,33 +286,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 dueDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
             }
         });
-    }
-
-    private void handlePrioritySet() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("设置优先级");
-        String[] priorityArray = PriorityTypeE.getPriorityArray();
-
-        // 设置当前选中的优先级
-        builder.setSingleChoiceItems(priorityArray, priorityTypeE.getCode() - 1, (dialog, which) -> {
-            priorityTypeE = PriorityTypeE.getByCode(which + 1);
-            if (priorityTypeE == null) {
-                Log.e(TAG, "handlePrioritySet: 优先级设置错误");
-                priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
-            }
-            updatePriorityViewUI();
-            dialog.dismiss();
-        });
-
-        // 显示对话框
-        builder.show();
-    }
-
-    private void updatePriorityViewUI() {
-        ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
-        priorityTextView.setText(priorityTypeE.getDesc());
-        priorityTextView.setTextColor(colorStateList);
-        priorityImageView.setImageTintList(colorStateList);
     }
 
     private void createNewTask(TaskCreateReq taskCreateReq) {
