@@ -153,7 +153,8 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         this.updateListSelectUI();
 
         // 标签
-        tagLayout.setOnClickListener(view -> this.handleTagSet());
+        tagLayout.setOnClickListener(this::handleTagSet);
+        this.updateTagSetUI();
 
         // 隐藏底部
         bottomCardView.setVisibility(View.GONE);
@@ -365,7 +366,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         });
     }
 
-    private void handleTagSet() {
+    protected void handleTagSet(View view) {
+        // todo
+        this.updateTagSetUI();
+    }
+
+    protected void updateTagSetUI() {
         // todo
     }
 
