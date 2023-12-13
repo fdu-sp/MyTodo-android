@@ -13,6 +13,15 @@ public class TaskTimeInfoResp {
     private String expectedExecutionStartPeriod;
     private String expectedExecutionEndPeriod;
 
+    public TaskTimeInfoResp() {
+        this.endDate = null;
+        this.endTime = null;
+        this.activateCountdown = false;
+        this.expectedExecutionDate = null;
+        this.expectedExecutionStartPeriod = null;
+        this.expectedExecutionEndPeriod = null;
+    }
+
     public String getEndDate() {
         return endDate;
     }

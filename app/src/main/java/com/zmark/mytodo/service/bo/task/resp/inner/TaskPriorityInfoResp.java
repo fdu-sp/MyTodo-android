@@ -11,6 +11,11 @@ public class TaskPriorityInfoResp {
     private Boolean isImportant;
     private Boolean isUrgent;
 
+    public TaskPriorityInfoResp() {
+        this.isImportant = false;
+        this.isUrgent = false;
+    }
+
     public PriorityTypeE getPriorityType() {
         if (isImportant && isUrgent) {
             return PriorityTypeE.URGENCY_IMPORTANT;

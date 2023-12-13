@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private ImageView backButton;
     private TextView taskListNameTextView;
     private CheckBox checkBox;
-    private TextView taskTitle;
+    private EditText taskTitle;
 
     private LinearLayout addToMyDayLayout;
     private ImageView addToMyDayImageView;
@@ -86,6 +87,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private LinearLayout tagLayout;
     private ImageView tagImageView;
     private TextView tagTextView;
+
+    private EditText editTextMultiLine;
 
     private TextView timeCreateShowTextView;
 
@@ -151,6 +154,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         this.tagLayout = view.findViewById(R.id.tagLayout);
         this.tagImageView = view.findViewById(R.id.tagImageView);
         this.tagTextView = view.findViewById(R.id.tagTextView);
+
+        this.editTextMultiLine = view.findViewById(R.id.editTextMultiLine);
 
         this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
 

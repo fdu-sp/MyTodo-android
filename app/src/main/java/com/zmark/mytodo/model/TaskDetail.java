@@ -6,6 +6,7 @@ import com.zmark.mytodo.service.bo.task.resp.inner.TaskContentInfoResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskPriorityInfoResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskTimeInfoResp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDetail {
@@ -21,6 +22,21 @@ public class TaskDetail {
     private TaskTimeInfoResp taskTimeInfo;
     private String createTime;
     private String updateTime;
+
+    public TaskDetail() {
+        this.id = null;
+        this.title = "";
+        this.completed = false;
+        this.completedTime = null;
+        this.archived = false;
+        this.tags = new ArrayList<>();
+        this.inMyDay = false;
+        this.taskContentInfo = new TaskContentInfoResp();
+        this.taskPriorityInfo = new TaskPriorityInfoResp();
+        this.taskTimeInfo = new TaskTimeInfoResp();
+        this.createTime = null;
+        this.updateTime = null;
+    }
 
     public TaskDetail(TaskDetailResp taskDetailResp) {
         this.id = taskDetailResp.getId();
