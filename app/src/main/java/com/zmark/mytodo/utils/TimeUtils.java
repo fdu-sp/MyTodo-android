@@ -68,6 +68,31 @@ public class TimeUtils {
         }
     }
 
+    public static String getDayOfWeek(String dateStr) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getDateFromStr(dateStr));
+
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return "星期日";
+            case Calendar.MONDAY:
+                return "星期一";
+            case Calendar.TUESDAY:
+                return "星期二";
+            case Calendar.WEDNESDAY:
+                return "星期三";
+            case Calendar.THURSDAY:
+                return "星期四";
+            case Calendar.FRIDAY:
+                return "星期五";
+            case Calendar.SATURDAY:
+                return "星期六";
+            default:
+                return "未知";
+        }
+    }
+
     /**
      * 返回`日期 周几`
      */
