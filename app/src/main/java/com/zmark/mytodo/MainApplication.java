@@ -31,6 +31,10 @@ public class MainApplication extends Application {
      * 优先级相关的颜色
      */
     private static final Map<PriorityTypeE, ColorStateList> priorityTextColorMap = new HashMap<>();
+
+    private static ColorStateList checkedColorStateList;
+    private static ColorStateList unCheckedColorStateList;
+
     private static Retrofit retrofit;
     private static HelloService helloService;
     private static TaskService taskService;
@@ -38,9 +42,17 @@ public class MainApplication extends Application {
     private static TaskListService taskListService;
     private static MyDayTaskService myDayTaskService;
     private static FourQuadrantService fourQuadrantService;
-    
+
     public static ColorStateList getPriorityTextColor(PriorityTypeE priorityTypeE) {
         return priorityTextColorMap.get(priorityTypeE);
+    }
+
+    public static ColorStateList getCheckedColorStateList() {
+        return checkedColorStateList;
+    }
+
+    public static ColorStateList getUnCheckedColorStateList() {
+        return unCheckedColorStateList;
     }
 
     @Override
@@ -53,10 +65,15 @@ public class MainApplication extends Application {
         ColorStateList color_prior_text_urgent_not_import = ContextCompat.getColorStateList(this, R.color.prior_text_urgent_not_import);
         ColorStateList color_prior_text_not_urgent_not_import = ContextCompat.getColorStateList(this, R.color.prior_text_not_urgent_not_import);
 
-        this.priorityTextColorMap.put(PriorityTypeE.URGENCY_IMPORTANT, color_prior_text_urgent_and_import);
-        this.priorityTextColorMap.put(NOT_URGENCY_IMPORTANT, color_prior_text_not_urgent_and_import);
-        this.priorityTextColorMap.put(PriorityTypeE.URGENCY_NOT_IMPORTANT, color_prior_text_urgent_not_import);
-        this.priorityTextColorMap.put(PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT, color_prior_text_not_urgent_not_import);
+        priorityTextColorMap.put(PriorityTypeE.URGENCY_IMPORTANT, color_prior_text_urgent_and_import);
+        priorityTextColorMap.put(NOT_URGENCY_IMPORTANT, color_prior_text_not_urgent_and_import);
+        priorityTextColorMap.put(PriorityTypeE.URGENCY_NOT_IMPORTANT, color_prior_text_urgent_not_import);
+        priorityTextColorMap.put(PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT, color_prior_text_not_urgent_not_import);
+
+        checkedColorStateList =
+                ContextCompat.getColorStateList(this, R.color.cornflower_blue);
+        unCheckedColorStateList =
+                ContextCompat.getColorStateList(this, R.color.black);
 
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

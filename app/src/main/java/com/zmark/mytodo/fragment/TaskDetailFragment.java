@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
@@ -112,9 +111,9 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
 
     private void findViews(View view) {
         checkedColorStateList =
-                ContextCompat.getColorStateList(requireContext(), R.color.cornflower_blue);
+                MainApplication.getCheckedColorStateList();
         unCheckedColorStateList =
-                ContextCompat.getColorStateList(requireContext(), R.color.black);
+                MainApplication.getUnCheckedColorStateList();
 
         this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
         this.backButton = view.findViewById(R.id.backButton);
