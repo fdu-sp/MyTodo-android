@@ -1,6 +1,7 @@
 package com.zmark.mytodo.model;
 
 import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
 import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskContentInfoResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskPriorityInfoResp;
@@ -17,6 +18,7 @@ public class TaskDetail {
     private Boolean archived;
     private List<TagSimpleResp> tags;
     private Boolean inMyDay;
+    private Long taskListId;
     private TaskContentInfoResp taskContentInfo;
     private TaskPriorityInfoResp taskPriorityInfo;
     private TaskTimeInfoResp taskTimeInfo;
@@ -31,6 +33,7 @@ public class TaskDetail {
         this.archived = false;
         this.tags = new ArrayList<>();
         this.inMyDay = false;
+        this.taskListId = null;
         this.taskContentInfo = new TaskContentInfoResp();
         this.taskPriorityInfo = new TaskPriorityInfoResp();
         this.taskTimeInfo = new TaskTimeInfoResp();
@@ -45,12 +48,34 @@ public class TaskDetail {
         this.completedTime = taskDetailResp.getCompletedTime();
         this.archived = taskDetailResp.getArchived();
         this.tags = taskDetailResp.getTags();
+        this.taskListId = taskDetailResp.getTaskListId();
         this.inMyDay = taskDetailResp.isInMyDay();
         this.taskContentInfo = taskDetailResp.getTaskContentInfo();
         this.taskPriorityInfo = taskDetailResp.getTaskPriorityInfo();
         this.taskTimeInfo = taskDetailResp.getTaskTimeInfo();
         this.createTime = taskDetailResp.getCreateTime();
         this.updateTime = taskDetailResp.getUpdateTime();
+    }
+
+    public TaskCreateReq toTaskCreateReq() {
+        TaskCreateReq createReq = new TaskCreateReq();
+        createReq.setTitle(this.title);
+        List<String> tagNames = new ArrayList<>();
+        for (TagSimpleResp tag : this.tags) {
+            tagNames.add(tag.getTagPath());
+        }
+        createReq.setTagNames(tagNames);
+        createReq.setDescription(this.taskContentInfo.getDescription());
+        createReq.setTaskListId(this.taskListId);
+        createReq.setImportant(this.taskPriorityInfo.getImportant());
+        createReq.setUrgent(this.taskPriorityInfo.getUrgent());
+        createReq.setEndDate(this.taskTimeInfo.getEndDate());
+        createReq.setEndTime(this.taskTimeInfo.getEndTime());
+        createReq.setActivateCountdown(this.taskTimeInfo.getActivateCountdown());
+        createReq.setExpectedExecutionDate(this.taskTimeInfo.getExpectedExecutionDate());
+        createReq.setExpectedExecutionStartPeriod(this.taskTimeInfo.getExpectedExecutionStartPeriod());
+        createReq.setExpectedExecutionEndPeriod(this.taskTimeInfo.getExpectedExecutionEndPeriod());
+        return createReq;
     }
 
     public Long getId() {
@@ -116,6 +141,26 @@ public class TaskDetail {
 
     public void setTags(List<TagSimpleResp> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(TagSimpleResp tag) {
+        this.tags.add(tag);
+    }
+
+    public void removeTag(TagSimpleResp tag) {
+        this.tags.remove(tag);
+    }
+
+    public Boolean getInMyDay() {
+        return inMyDay;
+    }
+
+    public Long getTaskListId() {
+        return taskListId;
+    }
+
+    public void setTaskListId(Long taskListId) {
+        this.taskListId = taskListId;
     }
 
     public Boolean isInMyDay() {
