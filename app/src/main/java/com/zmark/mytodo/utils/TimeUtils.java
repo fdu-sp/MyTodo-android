@@ -115,6 +115,9 @@ public class TimeUtils {
      * 如果是今天，返回今天
      */
     public static String getFormattedDateStrFromTimeStamp(Timestamp timeStamp) {
+        if (timeStamp == null) {
+            return "";
+        }
         Date date = new Date(timeStamp.getTime());
         if (dateEquals(date, today())) {
             return "今天";

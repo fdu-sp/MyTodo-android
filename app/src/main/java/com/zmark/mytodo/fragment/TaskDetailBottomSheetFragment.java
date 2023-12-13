@@ -9,18 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.group.TaskListSimple;
@@ -33,7 +26,7 @@ import com.zmark.mytodo.utils.TimeUtils;
 /**
  * 任务详情页
  */
-public class TaskDetailBottomSheetFragment extends BottomSheetDialogFragment {
+public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
     private static final String TAG = "TaskDetailBottomSheetFragment";
 
     public interface OnTaskCompleteStateListener {
@@ -42,125 +35,26 @@ public class TaskDetailBottomSheetFragment extends BottomSheetDialogFragment {
 
     private OnTaskCompleteStateListener onTaskCompleteStateListener;
 
-    private ColorStateList checkedColorStateList;
-    private ColorStateList unCheckedColorStateList;
-
-    /**
-     * model
-     */
-    private final TaskDetail taskDetail;
-
     private final TaskListSimple taskListSimple;
 
-    private ImageView backButton;
-    private TextView taskListNameTextView;
-    private CheckBox checkBox;
-    private EditText taskTitle;
-
-    private LinearLayout addToMyDayLayout;
-    private ImageView addToMyDayImageView;
-    private TextView addToMyDayTextView;
-
-    private LinearLayout priorityLayout;
-    private ImageView priorityImageView;
-    private TextView priorityTextView;
-
-    private LinearLayout reminderLayout;
-    private ImageView reminderImageView;
-    private TextView reminderTextView;
-
-    private LinearLayout dueDateLayout;
-    private ImageView dueDateImageView;
-    private TextView dueDateTextView;
-
-    private LinearLayout expectedExecutionDateLayout;
-    private ImageView expectedExecutionDateImageView;
-    private TextView expectedExecutionDateTextView;
-
-    private LinearLayout repeatedLayout;
-    private ImageView repeatedImageView;
-    private TextView repeatedTextView;
-
-    private LinearLayout listLayout;
-    private ImageView listImageView;
-    private TextView listTextView;
-
-    private LinearLayout tagLayout;
-    private ImageView tagImageView;
-    private TextView tagTextView;
-
-    private EditText editTextMultiLine;
-
-    private CardView bottomCardView;
-    private TextView timeCreateShowTextView;
-    private ImageView deleteImageView;
-
     public TaskDetailBottomSheetFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
-        super();
+        super(taskDetail);
         this.taskListSimple = taskListSimple;
-        this.taskDetail = taskDetail;
     }
 
     public void setOnTaskCompleteStateListener(OnTaskCompleteStateListener listener) {
         this.onTaskCompleteStateListener = listener;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_task_detail, container, false);
-        this.findViews(view);
-        return view;
-    }
-
-    private void findViews(View view) {
-        checkedColorStateList =
-                MainApplication.getCheckedColorStateList();
-        unCheckedColorStateList =
-                MainApplication.getUnCheckedColorStateList();
-
-        this.taskListNameTextView = view.findViewById(R.id.toolbarTitle);
-        this.backButton = view.findViewById(R.id.backButton);
-        this.checkBox = view.findViewById(R.id.checkBox);
-        this.taskTitle = view.findViewById(R.id.taskTitle);
-
-        this.addToMyDayLayout = view.findViewById(R.id.addToMyDayLayout);
-        this.addToMyDayImageView = view.findViewById(R.id.addToMyDayImageView);
-        this.addToMyDayTextView = view.findViewById(R.id.addToMyDayTextView);
-
-        this.priorityLayout = view.findViewById(R.id.priorityLayout);
-        this.priorityImageView = view.findViewById(R.id.priorityImageView);
-        this.priorityTextView = view.findViewById(R.id.priorityTextView);
-
-        this.reminderLayout = view.findViewById(R.id.reminderLayout);
-        this.reminderImageView = view.findViewById(R.id.reminderImageView);
-        this.reminderTextView = view.findViewById(R.id.reminderTextView);
-
-        this.dueDateLayout = view.findViewById(R.id.dueDateLayout);
-        this.dueDateImageView = view.findViewById(R.id.dueDateImageView);
-        this.dueDateTextView = view.findViewById(R.id.dueDateTextView);
-
-        this.expectedExecutionDateLayout = view.findViewById(R.id.expectedExecutionDateLayout);
-        this.expectedExecutionDateImageView = view.findViewById(R.id.expectedExecutionDateImageView);
-        this.expectedExecutionDateTextView = view.findViewById(R.id.expectedExecutionDateTextView);
-
-        this.repeatedLayout = view.findViewById(R.id.repeatedLayout);
-        this.repeatedImageView = view.findViewById(R.id.repeatedImageView);
-        this.repeatedTextView = view.findViewById(R.id.repeatedTextView);
-
-        this.listLayout = view.findViewById(R.id.listLayout);
-        this.listImageView = view.findViewById(R.id.listImageView);
-        this.listTextView = view.findViewById(R.id.listTextView);
-
-        this.tagLayout = view.findViewById(R.id.tagLayout);
-        this.tagImageView = view.findViewById(R.id.tagImageView);
-        this.tagTextView = view.findViewById(R.id.tagTextView);
-
-        this.editTextMultiLine = view.findViewById(R.id.editTextMultiLine);
-
-        this.bottomCardView = view.findViewById(R.id.bottomCardView);
-        this.timeCreateShowTextView = view.findViewById(R.id.timeCreateShowTextView);
-        this.deleteImageView = view.findViewById(R.id.deleteImageView);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -364,7 +258,8 @@ public class TaskDetailBottomSheetFragment extends BottomSheetDialogFragment {
         });
     }
 
-    private void updateAddToMyDayUI() {
+    @Override
+    protected void updateAddToMyDayUI() {
         requireActivity().runOnUiThread(() -> {
             if (taskDetail.isInMyDay()) {
                 addToMyDayTextView.setText(R.string.already_in_my_day);

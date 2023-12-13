@@ -100,13 +100,16 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     protected ImageView deleteImageView;
 
     public AddTaskBottomSheetFragment() {
-        // Required empty public constructor
+        this.taskDetail = new TaskDetail();
+    }
+
+    public AddTaskBottomSheetFragment(TaskDetail taskDetail) {
+        this.taskDetail = taskDetail;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.taskDetail = new TaskDetail();
     }
 
     @Override
