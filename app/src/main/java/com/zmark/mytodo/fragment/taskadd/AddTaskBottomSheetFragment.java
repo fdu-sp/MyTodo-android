@@ -129,15 +129,19 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
         // 优先级
         priorityLayout.setOnClickListener(this::handlePriorityClick);
-        updatePriorityViewUI();
+        this.updatePriorityViewUI();
 
         // 设置提醒
         reminderLayout.setOnClickListener(this::handleReminderClick);
-        updateReminderClickUI();
+        this.updateReminderClickUI();
 
         // 截止日期与时间
         dueDateLayout.setOnClickListener(this::handleDueDateTimeClick);
-        updateDueDateTimeViewUI();
+        this.updateDueDateTimeViewUI();
+
+        // 预计执行时间
+        expectedExecutionDateLayout.setOnClickListener(this::handleExpectedExecutionDateClick);
+        this.updateExpectedExecutionViewUI();
 
         // 标签
         tagLayout.setOnClickListener(view -> this.handleTagSet());
@@ -278,6 +282,35 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             } else {
                 dueDateTextView.setText(R.string.no_deadline_is_set);
                 dueDateTextView.setTextColor(unCheckedColorStateList);
+            }
+        });
+    }
+
+    protected void handleExpectedExecutionDateClick(View view) {
+        DateTimePicker dateTimePicker = new DateTimePicker();
+        dateTimePicker.setOnDateTimeSetListener((date, time) -> {
+            this.taskDetail.getTaskTimeInfo().setExpectedExecutionDate(date);
+            this.taskDetail.getTaskTimeInfo().setExpectedExecutionStartPeriod(time);
+            this.updateExpectedExecutionViewUI();
+        });
+        dateTimePicker.show(requireContext());
+    }
+
+    protected void updateExpectedExecutionViewUI() {
+        String expectedExecutionDate = taskDetail.getTaskTimeInfo().getExpectedExecutionDate();
+        String expectedExecutionStartPeriod = taskDetail.getTaskTimeInfo().getExpectedExecutionStartPeriod();
+        requireActivity().runOnUiThread(() -> {
+            if (expectedExecutionDate != null && expectedExecutionStartPeriod != null) {
+                String expectedExecutionDateStr =
+                        TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(expectedExecutionDate))
+                                + " " + TimeUtils.getDayOfWeek(expectedExecutionDate)
+                                + " " + expectedExecutionStartPeriod + " 开始";
+                Log.d(TAG, "updateExpectedExecutionViewUI: " + expectedExecutionDateStr);
+                expectedExecutionDateTextView.setText(expectedExecutionDateStr);
+                expectedExecutionDateTextView.setTextColor(checkedColorStateList);
+            } else {
+                expectedExecutionDateTextView.setText(R.string.plan_the_execution_time);
+                expectedExecutionDateTextView.setTextColor(unCheckedColorStateList);
             }
         });
     }
