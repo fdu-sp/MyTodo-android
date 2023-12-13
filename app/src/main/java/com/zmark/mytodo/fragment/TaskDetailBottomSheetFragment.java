@@ -13,11 +13,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.model.task.TaskDetail;
+import com.zmark.mytodo.service.ApiUtils;
+import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
 import com.zmark.mytodo.service.impl.TaskServiceImpl;
+import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.utils.TimeUtils;
+
+import retrofit2.Call;
 
 /**
  * 任务详情页
@@ -29,7 +35,13 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
         void onTaskCompleteStateChanged(TaskDetail taskDetail);
     }
 
+    public interface OnTaskUpdateListener {
+        void onTaskUpdated(TaskDetail taskDetail);
+    }
+
     private OnTaskCompleteStateListener onTaskCompleteStateListener;
+
+    private OnTaskUpdateListener onTaskUpdateListener;
 
     private final TaskListSimple taskListSimple;
 
@@ -40,6 +52,10 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
 
     public void setOnTaskCompleteStateListener(OnTaskCompleteStateListener listener) {
         this.onTaskCompleteStateListener = listener;
+    }
+
+    public void setOnTaskUpdateListener(OnTaskUpdateListener listener) {
+        this.onTaskUpdateListener = listener;
     }
 
     @Override
@@ -143,7 +159,37 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
 
     @Override
     protected void handleConfirmButtonClick(View view) {
-        // todo update task
+        Call<Result<TaskDetailResp>> call = MainApplication.getTaskService().updateTask(taskDetail.toTaskUpdateReq());
+        ApiUtils.doRequest(call, new ApiUtils.Callbacks<TaskDetailResp>() {
+            @Override
+            public void onSuccess(TaskDetailResp data) {
+                Log.i(TAG, "onSuccess: " + data);
+                taskDetail = new TaskDetail(data);
+                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+
+                if (onTaskUpdateListener != null) {
+                    onTaskUpdateListener.onTaskUpdated(taskDetail);
+                }
+            }
+
+            @Override
+            public void onFailure(Integer code, String msg) {
+                Log.w(TAG, "onFailure: " + code + " " + msg);
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClientRequestError(Throwable t) {
+                Log.e(TAG, "onClientRequestError: ", t);
+                Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onServerInternalError() {
+                Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void updateTimeCreateUI() {
