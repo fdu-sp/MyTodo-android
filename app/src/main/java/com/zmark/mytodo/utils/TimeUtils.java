@@ -2,7 +2,10 @@ package com.zmark.mytodo.utils;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class TimeUtils {
 
@@ -118,5 +121,20 @@ public class TimeUtils {
         }
         String dayOfWeek = getDayOfWeek(timeStamp);
         return getFormattedDateStr(date) + " " + dayOfWeek;
+    }
+
+
+    /**
+     * 获取时间戳字符串中的时间部分
+     */
+    public static String getTimeStrFromTimeStamp(String timestampStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            java.util.Date date = inputFormat.parse(timestampStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            return outputFormat.format(Objects.requireNonNull(date));
+        } catch (Exception e) {
+            return "";
+        }
     }
 }
