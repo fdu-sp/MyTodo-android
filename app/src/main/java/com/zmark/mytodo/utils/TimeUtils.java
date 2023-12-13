@@ -126,12 +126,15 @@ public class TimeUtils {
 
     /**
      * 获取时间戳字符串中的时间部分
+     *
+     * @param timestampStr 时间戳字符串 yyyy-MM-dd HH:mm:ss
+     * @return HH:mm
      */
     public static String getTimeStrFromTimeStamp(String timestampStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             java.util.Date date = inputFormat.parse(timestampStr);
-            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             return outputFormat.format(Objects.requireNonNull(date));
         } catch (Exception e) {
             return "";
