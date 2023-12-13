@@ -161,6 +161,9 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         tagLayout.setOnClickListener(this::handleTagSet);
         this.updateTagSetUI();
 
+        // 设置备注和描述
+        this.updateDescriptionUI();
+
         // 隐藏底部
         bottomCardView.setVisibility(View.GONE);
 
@@ -393,6 +396,15 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 tagTextView.setText(R.string.add_tag);
                 tagTextView.setTextColor(unCheckedColorStateList);
                 tagImageView.setImageTintList(unCheckedColorStateList);
+            }
+        });
+    }
+
+    protected void updateDescriptionUI() {
+        String description = taskDetail.getTaskContentInfo().getDescription();
+        requireActivity().runOnUiThread(() -> {
+            if (description != null && !description.isEmpty()) {
+                editTextMultiLine.setText(description);
             }
         });
     }
