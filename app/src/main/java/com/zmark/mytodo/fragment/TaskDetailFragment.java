@@ -187,6 +187,8 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
         // 设置任务标题
         this.taskTitle.setText(taskDetail.getTitle());
 
+        // todo 确认
+
         // 设置 添加到我的一天
         // todo 如果是 我的一天 任务列表，需要通知上层更新
         this.addToMyDayLayout.setOnClickListener(v -> {
