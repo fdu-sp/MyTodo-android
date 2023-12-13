@@ -15,13 +15,26 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/urgentImportantRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="4dp"
             android:background="#FFCDD2"
-            android:scrollbars="vertical" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/urgentImportantTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/urgentImportantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/urgentImportantEmptyTextView"
@@ -41,13 +54,25 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notUrgentImportantRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="4dp"
             android:background="#C8E6C9"
-            android:scrollbars="vertical" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notUrgentImportantTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notUrgentImportantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/notUrgentImportantEmptyTextView"
@@ -67,13 +92,25 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/urgentNotImportantRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="4dp"
             android:background="#FFECB3"
-            android:scrollbars="vertical" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/urgentNotImportantTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/urgentNotImportantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/urgentNotImportantEmptyTextView"
@@ -93,13 +130,26 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notUrgentNotImportantRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="4dp"
             android:background="#B2EBF2"
-            android:scrollbars="vertical" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notUrgentNotImportantTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notUrgentNotImportantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+
+                android:scrollbars="vertical" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/notUrgentNotImportantEmptyTextView"

@@ -119,10 +119,22 @@ public class QuadrantViewFragment extends Fragment {
             setupQuadrantRecyclerView(urgentNotImportantRecyclerView);
             setupQuadrantRecyclerView(notUrgentNotImportantRecyclerView);
             // 为每个象限设置数据
-            setQuadrantAdapter(view, urgentImportantRecyclerView, urgentImportantTasks, R.id.urgentImportantEmptyTextView);
-            setQuadrantAdapter(view, notUrgentImportantRecyclerView, notUrgentImportantTasks, R.id.notUrgentImportantEmptyTextView);
-            setQuadrantAdapter(view, urgentNotImportantRecyclerView, urgentNotImportantTasks, R.id.urgentNotImportantEmptyTextView);
-            setQuadrantAdapter(view, notUrgentNotImportantRecyclerView, notUrgentNotImportantTasks, R.id.notUrgentNotImportantEmptyTextView);
+            setQuadrantAdapter(view, urgentImportantRecyclerView,
+                    fourQuadrant.getUrgentAndImportant().getTitle(),
+                    urgentImportantTasks,
+                    R.id.urgentImportantTitleTextView, R.id.urgentImportantEmptyTextView);
+            setQuadrantAdapter(view, notUrgentImportantRecyclerView,
+                    fourQuadrant.getNotUrgentAndImportant().getTitle(),
+                    notUrgentImportantTasks,
+                    R.id.notUrgentImportantTitleTextView, R.id.notUrgentImportantEmptyTextView);
+            setQuadrantAdapter(view, urgentNotImportantRecyclerView,
+                    fourQuadrant.getUrgentAndNotImportant().getTitle(),
+                    urgentNotImportantTasks,
+                    R.id.urgentNotImportantTitleTextView, R.id.urgentNotImportantEmptyTextView);
+            setQuadrantAdapter(view, notUrgentNotImportantRecyclerView,
+                    fourQuadrant.getNotUrgentAndNotImportant().getTitle(),
+                    notUrgentNotImportantTasks,
+                    R.id.notUrgentNotImportantTitleTextView, R.id.notUrgentNotImportantEmptyTextView);
         });
     }
 
@@ -131,8 +143,12 @@ public class QuadrantViewFragment extends Fragment {
         // 添加任何其他的 RecyclerView 配置
     }
 
-    private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView, List<TaskSimple> tasks, int emptyTaskTextId) {
+    private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView,
+                                    String title, List<TaskSimple> tasks,
+                                    int titleTextViewId, int emptyTaskTextId) {
         // todo 设置象限名称
+        TextView titleTextView = view.findViewById(titleTextViewId);
+        titleTextView.setText(title);
         if (tasks.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             TextView textView = view.findViewById(emptyTaskTextId);
