@@ -15,6 +15,7 @@ public class TaskCreateReq {
      */
     private List<String> tagNames = new ArrayList<>();
 
+    private Boolean completed;
     /**
      * content description
      * 不可以为null，所以默认值为""
@@ -51,6 +52,10 @@ public class TaskCreateReq {
 
     public void setTagNames(List<String> tagNames) {
         this.tagNames = tagNames;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
     public void setDescription(String description) {

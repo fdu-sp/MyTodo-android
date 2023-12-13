@@ -68,6 +68,7 @@ public class TaskDetail {
             tagNames.add(tag.getTagPath());
         }
         createReq.setTagNames(tagNames);
+        createReq.setCompleted(this.completed);
         createReq.setDescription(this.taskContentInfo.getDescription());
         createReq.setTaskListId(this.taskListId);
         createReq.setInMyDay(this.inMyDay);
