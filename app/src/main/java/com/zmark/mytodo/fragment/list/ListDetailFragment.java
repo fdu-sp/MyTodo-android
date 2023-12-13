@@ -55,12 +55,15 @@ public class ListDetailFragment extends Fragment {
     private static final String TAG = "ListDetailFragment";
     private static final String KEY_GROUP_BY = "group_by";
     private static final String KEY_SORT_BY = "sort_by";
+    /**
+     * 用户偏好设置的名称
+     */
+    private final String perfName;
     private View containerView;
     private RecyclerView todoRecyclerView;
     private View noTaskMsgView;
     private final TaskListSimple taskListSimple;
     private final boolean isMyDay;
-    private final String perfName;
     private final Call<Result<List<TaskSimpleResp>>> call;
     private List<TaskSimple> todoList;
     private Map<Integer, MenuItemHandler> menuHandlerMap;
