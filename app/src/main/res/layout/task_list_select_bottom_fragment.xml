@@ -3,16 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- 底部任务分组和清单 -->
+    <!-- 任务分组和清单 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_group_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/border_background"
+        android:layout_margin="15dp"
         android:padding="5dp"
         android:scrollbars="vertical"
         android:visibility="visible"
