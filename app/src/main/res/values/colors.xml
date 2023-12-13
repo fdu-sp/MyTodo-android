@@ -16,6 +16,10 @@
     <color name="prior_bg_not_urgent_and_import">#C8E6C9</color>
     <color name="prior_bg_urgent_not_import">#FFECB3</color>
     <color name="prior_bg_not_urgent_not_import">#B2EBF2</color>
+    <color name="prior_text_urgent_and_import">@color/red</color>
+    <color name="prior_text_not_urgent_and_import">@color/orange</color>
+    <color name="prior_text_urgent_not_import">@color/cornflowerblue</color>
+    <color name="prior_text_not_urgent_not_import">@color/green</color>
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
     <color name="lightyellow">#FFFFE0</color><!--亮黄色 -->
     <color name="yellow">#FFFF00</color><!--黄色 -->
