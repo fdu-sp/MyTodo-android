@@ -161,7 +161,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 endDateTextView.setText(dueDateTimeStr);
                 endDateTextView.setTextColor(MainApplication.getCheckedColorStateList());
             } else {
-                endDateTextView.setText("未设置截止日期");
+                endDateTextView.setText(R.string.no_deadline_is_set);
                 endDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
             }
         });

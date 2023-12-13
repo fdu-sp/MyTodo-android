@@ -40,18 +40,20 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/listTextView"
+                android:id="@+id/reminderTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="@string/default_list"
-                android:layout_columnWeight="1" />
+                android:layout_marginStart="5dp"
+                android:layout_columnWeight="1"
+                android:text="@string/no_reminder_time_is_set" />
 
             <TextView
                 android:id="@+id/endDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:layout_marginStart="5dp"
                 android:layout_columnWeight="1"
                 android:text="@string/no_deadline_is_set" />
 
@@ -60,7 +62,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:layout_marginStart="5dp"
                 android:text="@string/default_priority"
+                android:layout_columnWeight="1" />
+
+            <TextView
+                android:id="@+id/listTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp"
+                android:text="@string/default_list"
                 android:layout_columnWeight="1" />
 
             <TextView
@@ -69,15 +81,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:layout_marginStart="5dp"
-                android:layout_columnWeight="1" />
-
-            <TextView
-                android:id="@+id/reminderTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginStart="5dp"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:text="@string/no_label_is_set" />
 
         </GridLayout>
 
@@ -90,9 +95,18 @@
             android:padding="5dp">
 
             <ImageView
+                android:id="@+id/reminderSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_remind_cancel"
+                android:contentDescription="@string/setReminder" />
+            <!-- android:src="@drawable/ic_remind_padding" -->
+
+            <ImageView
                 android:id="@+id/timeSetImageView"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_calendar_2"
                 android:contentDescription="@string/setTime" />
 
@@ -105,6 +119,14 @@
                 android:contentDescription="@string/setPriority" />
 
             <ImageView
+                android:id="@+id/listSetImageView"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_list"
+                android:contentDescription="@string/setList" />
+
+            <ImageView
                 android:id="@+id/tagSetImageView"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
@@ -112,21 +134,6 @@
                 android:src="@drawable/ic_tag"
                 android:contentDescription="@string/setTags" />
 
-            <ImageView
-                android:id="@+id/reminderSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_remind_cancel"
-                android:contentDescription="@string/setReminder" />
-            <!-- android:src="@drawable/ic_remind_padding" -->
-            <ImageView
-                android:id="@+id/listSetImageView"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_list"
-                android:contentDescription="@string/setList" />
 
             <View
                 android:layout_width="0dp"
