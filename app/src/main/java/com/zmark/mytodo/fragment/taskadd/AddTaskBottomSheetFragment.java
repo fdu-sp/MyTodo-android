@@ -62,10 +62,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View bottomSheetView = inflater.inflate(R.layout.fragment_add_task, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
+
+        // 截止日期与时间
         bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> this.handleDueDateTimePicker());
 
+        // 优先级
         priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
-        prioritySetImageView = bottomSheetView.findViewById(R.id.prioritySetImageView);
         prioritySetImageView.setOnClickListener(view -> this.handlePrioritySet());
         updatePriorityViewUI();
 
@@ -208,6 +210,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         listTextView = view.findViewById(R.id.listTextView);
         endDateTextView = view.findViewById(R.id.endDateTextView);
         endTimeTextView = view.findViewById(R.id.endTimeTextView);
+        prioritySetImageView = view.findViewById(R.id.prioritySetImageView);
         priorityTextView = view.findViewById(R.id.priorityTextView);
         tagTextView = view.findViewById(R.id.tagTextView);
         reminderTimeTextView = view.findViewById(R.id.reminderTimeTextView);
