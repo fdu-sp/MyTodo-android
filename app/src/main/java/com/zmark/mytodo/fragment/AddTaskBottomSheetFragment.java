@@ -374,7 +374,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         TagSelectBottomSheetFragment tagSelectBottomSheetFragment = new TagSelectBottomSheetFragment();
         tagSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), tagSelectBottomSheetFragment.getTag());
         tagSelectBottomSheetFragment.setOnTagSelectListener(tagSimple -> {
-            taskDetail.getTags().add(tagSimple);
+            taskDetail.addTag(tagSimple);
             this.updateTagSetUI();
             tagSelectBottomSheetFragment.dismiss();
         });

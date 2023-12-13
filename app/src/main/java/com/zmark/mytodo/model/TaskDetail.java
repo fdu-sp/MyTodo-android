@@ -151,6 +151,12 @@ public class TaskDetail {
     }
 
     public void addTag(TagSimple tag) {
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        if (this.tags.contains(tag)) {
+            return;
+        }
         this.tags.add(tag);
     }
 
