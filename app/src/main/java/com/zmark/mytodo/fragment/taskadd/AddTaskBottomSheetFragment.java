@@ -29,6 +29,7 @@ import com.zmark.mytodo.service.bo.task.req.TaskCreatReq;
 import com.zmark.mytodo.service.invariant.Msg;
 import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.service.result.ResultCode;
+import com.zmark.mytodo.utils.TimeUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,11 +43,13 @@ import retrofit2.Response;
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
     private PriorityTypeE priorityTypeE;
+    private String endDate;
+    private String endTime;
+
     private EditText newTaskTitleInput;
     private EditText newTaskDescriptionInput;
     private TextView listTextView;
     private TextView endDateTextView;
-    private TextView endTimeTextView;
 
     private ImageView prioritySetImageView;
     private TextView priorityTextView;
@@ -92,8 +95,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             }
             String title = newTaskTitleInput.getText().toString();
             String description = Optional.of(newTaskDescriptionInput.getText().toString()).orElse("");
-            String endDate = Optional.of(endDateTextView.getText().toString()).orElse(null);
-            String endTime = Optional.of(endTimeTextView.getText().toString()).orElse(null);
             // 执行添加待办事项的操作
             TaskCreatReq createReq = new TaskCreatReq();
             createReq.setTitle(title);
@@ -131,14 +132,16 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                             (view1, selectedHourOfDay, selectedMinute) -> {
                                 // 处理用户选择的日期和时间
 
-                                String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d",
+                                endDate = String.format(Locale.getDefault(), "%04d-%02d-%02d",
                                         selectedYear, monthOfYear + 1, dayOfMonth1);
 
-                                String selectedTime = String.format(Locale.getDefault(), "%02d:%02d",
+                                endTime = String.format(Locale.getDefault(), "%02d:%02d",
                                         selectedHourOfDay, selectedMinute);
-
-                                endDateTextView.setText(selectedDate);
-                                endTimeTextView.setText(selectedTime);
+                                String dateStr =
+                                        TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(endDate))
+                                                + " " + TimeUtils.getDayOfWeek(endDate)
+                                                + " " + endTime + " 到期";
+                                endDateTextView.setText(dateStr);
                             }, hourOfDay, minute, DateFormat.is24HourFormat(requireContext()));
 
                     // 显示时间选择器对话框
@@ -209,7 +212,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         newTaskDescriptionInput = view.findViewById(R.id.newTaskDescriptionInput);
         listTextView = view.findViewById(R.id.listTextView);
         endDateTextView = view.findViewById(R.id.endDateTextView);
-        endTimeTextView = view.findViewById(R.id.endTimeTextView);
         prioritySetImageView = view.findViewById(R.id.prioritySetImageView);
         priorityTextView = view.findViewById(R.id.priorityTextView);
         tagTextView = view.findViewById(R.id.tagTextView);
