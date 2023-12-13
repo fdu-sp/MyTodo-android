@@ -74,10 +74,9 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         prioritySetImageView.setOnClickListener(view -> this.handlePrioritySet());
         updatePriorityViewUI();
 
-        bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> {
-            // todo 处理用户点击设置标签的逻辑
-            Toast.makeText(requireContext(), "设置标签", Toast.LENGTH_SHORT).show();
-        });
+        // 标签
+        bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> this.handleTagSet());
+
         bottomSheetView.findViewById(R.id.reminderSetImageView).setOnClickListener(view -> {
             // todo 处理用户点击设置提醒的逻辑
             Toast.makeText(requireContext(), "设置提醒", Toast.LENGTH_SHORT).show();
@@ -113,6 +112,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
         return bottomSheetView;
+    }
+
+    private void handleTagSet() {
+        // todo
     }
 
     private void handleDueDateTimePicker() {
