@@ -208,11 +208,11 @@ public class TaskSimple {
         return false;
     }
 
-    public void changeToBeDone() {
+    public void complete() {
         this.setCompleted(true);
     }
 
-    public void changeToBeUndone() {
+    public void unComplete() {
         this.setCompleted(false);
     }
 }
