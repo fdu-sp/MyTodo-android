@@ -59,4 +59,5 @@
     <string name="no_deadline_is_set">未设置截止日期</string>
     <string name="no_label_is_set">未设置标签</string>
     <string name="no_reminder_time_is_set">未设置提醒时间</string>
+    <string name="add_title">输入标题</string>
 </resources>
