@@ -22,24 +22,47 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            <!-- 添加返回图标 -->
-            <ImageView
-                android:id="@+id/backButton"
-                android:layout_width="23sp"
-                android:layout_height="23sp"
-                android:src="@drawable/ic_back"
-                android:contentDescription="@string/back" />
 
-            <!-- 添加标题（清单名称） -->
-            <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text="@string/list"
-                android:textSize="23sp"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:padding="5dp">
+                <!-- 添加返回图标 -->
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="23sp"
+                    android:layout_height="23sp"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="@string/back" />
+
+                <!-- 添加标题（清单名称） -->
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/list"
+                    android:textSize="23sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/confirmButton"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="20dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_send_white"
+                    android:contentDescription="@string/confirm" />
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -58,8 +81,8 @@
         <!-- 左侧圆形勾选框 -->
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="25sp"
-            android:layout_height="25sp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
             android:contentDescription="@string/check_box" />
 
         <!-- 任务标题 -->
