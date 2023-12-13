@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuSelectList"
+        android:icon="@drawable/ic_top_menu_left"
+        app:showAsAction="ifRoom"
+        android:title="@string/select_list" />
+    <item
+        android:id="@+id/menuSelectSortType"
+        android:icon="@drawable/ic_top_menu_right"
+        android:title="@string/select_sort_type"
+        app:showAsAction="ifRoom" />
+</menu>

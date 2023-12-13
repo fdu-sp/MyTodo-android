@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
@@ -32,7 +34,9 @@ import com.zmark.mytodo.service.result.Result;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -48,6 +52,9 @@ public class QuadrantViewFragment extends Fragment {
      * 排序方式
      */
     private SortTypeE sortType;
+
+    private Map<Integer, MenuItemHandler> menuHandlerMap;
+
     private FourQuadrant fourQuadrant;
     private View view;
     private RecyclerView urgentImportantRecyclerView;
@@ -63,6 +70,7 @@ public class QuadrantViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_quadrant_view, container, false);
+        this.menuHandlerMap = new HashMap<>();
         urgentImportantRecyclerView = view.findViewById(R.id.urgentImportantRecyclerView);
         notUrgentImportantRecyclerView = view.findViewById(R.id.notUrgentImportantRecyclerView);
         urgentNotImportantRecyclerView = view.findViewById(R.id.urgentNotImportantRecyclerView);
@@ -79,10 +87,34 @@ public class QuadrantViewFragment extends Fragment {
         this.fetchDataAndUpdateUI();
     }
 
-    private void registerTopMenu() {
+    protected void registerTopMenu() {
+        // 注册右侧菜单的点击事件 --> 选择清单，和排序方式
+        this.menuHandlerMap.put(R.id.menuSelectList, item -> {
+            // todo 选择清单
+            Toast.makeText(requireContext(), "选择清单", Toast.LENGTH_SHORT).show();
+        });
+        this.menuHandlerMap.put(R.id.menuSelectSortType, item -> {
+            // todo 排序方式
+            Toast.makeText(requireContext(), "排序方式", Toast.LENGTH_SHORT).show();
+        });
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
-        // todo  注册右侧菜单的点击事件 --> 选择清单，和排序方式
+        mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+    }
+
+    private void initPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+        // 替换为自定义的菜单资源
+        popupMenu.inflate(R.menu.menu_quadrant_view);
+        // 设置菜单项的点击事件
+        popupMenu.setOnMenuItemClickListener(item -> {
+            MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
+            if (menuItemHandler != null) {
+                menuItemHandler.handle(item);
+            }
+            return true;
+        });
+        popupMenu.show();
     }
 
     private void fetchDataAndUpdateUI() {
