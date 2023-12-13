@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.model.PriorityTypeE;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.api.TaskService;
 import com.zmark.mytodo.service.bo.task.req.TaskCreatReq;
@@ -38,14 +41,16 @@ import retrofit2.Response;
 
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
-    private Boolean isImportant = false;
-    private Boolean isUrgent = false;
+    private PriorityTypeE priorityTypeE;
     private EditText newTaskTitleInput;
     private EditText newTaskDescriptionInput;
     private TextView listTextView;
     private TextView endDateTextView;
     private TextView endTimeTextView;
+
+    private ImageView prioritySetImageView;
     private TextView priorityTextView;
+
     private TextView tagTextView;
     private TextView reminderTimeTextView;
 
@@ -58,9 +63,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         View bottomSheetView = inflater.inflate(R.layout.fragment_add_task, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
         bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> this.handleDueDateTimePicker());
-        bottomSheetView.findViewById(R.id.prioritySetImageView).setOnClickListener(view -> {
-            this.handlePrioritySet();
-        });
+
+        priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
+        prioritySetImageView = bottomSheetView.findViewById(R.id.prioritySetImageView);
+        prioritySetImageView.setOnClickListener(view -> this.handlePrioritySet());
+        updatePriorityViewUI();
+
         bottomSheetView.findViewById(R.id.tagSetImageView).setOnClickListener(view -> {
             // todo 处理用户点击设置标签的逻辑
             Toast.makeText(requireContext(), "设置标签", Toast.LENGTH_SHORT).show();
@@ -90,8 +98,8 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             createReq.setDescription(description);
             createReq.setEndDate(endDate);
             createReq.setEndTime(endTime);
-            createReq.setImportant(isImportant);
-            createReq.setUrgent(isUrgent);
+            createReq.setImportant(priorityTypeE.isImportant());
+            createReq.setUrgent(priorityTypeE.isUrgent());
             createNewTask(createReq);
         });
 
@@ -142,36 +150,25 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private void handlePrioritySet() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("设置优先级");
-        String[] priorityArray = {"重要且紧急", "重要不紧急", "紧急不重要", "不重要不紧急"};
+        String[] priorityArray = PriorityTypeE.getPriorityArray();
 
         builder.setSingleChoiceItems(priorityArray, 0, (dialog, which) -> {
-            switch (which) {
-                case 0:
-                    isImportant = true;
-                    isUrgent = true;
-                    priorityTextView.setText("重要且紧急");
-                    break;
-                case 1:
-                    isImportant = true;
-                    isUrgent = false;
-                    priorityTextView.setText("重要不紧急");
-                    break;
-                case 2:
-                    isImportant = false;
-                    isUrgent = true;
-                    priorityTextView.setText("紧急不重要");
-                    break;
-                case 3:
-                    isImportant = false;
-                    isUrgent = false;
-                    priorityTextView.setText("不重要不紧急");
-                    break;
-                default:
-                    break;
+            priorityTypeE = PriorityTypeE.getByCode(which + 1);
+            if (priorityTypeE == null) {
+                Log.e(TAG, "handlePrioritySet: 优先级设置错误");
+                priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
             }
+            updatePriorityViewUI();
             dialog.dismiss();
         });
         builder.show();
+    }
+
+    private void updatePriorityViewUI() {
+        ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
+        priorityTextView.setText(priorityTypeE.getDesc());
+        priorityTextView.setTextColor(colorStateList);
+        prioritySetImageView.setImageTintList(colorStateList);
     }
 
     private void createNewTask(TaskCreatReq taskCreatReq) {
