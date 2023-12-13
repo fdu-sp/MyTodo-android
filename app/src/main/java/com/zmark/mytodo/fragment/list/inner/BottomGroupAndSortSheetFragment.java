@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -15,7 +16,7 @@ import com.zmark.mytodo.comparator.task.SortTypeE;
 
 public class BottomGroupAndSortSheetFragment extends BottomSheetDialogFragment {
 
-    private final static String TAG = "BottomSheetFragment";
+    private final static String TAG = "BottomGroupAndSortSheetFragment";
 
     public enum GroupTypeE {
         LIST(0, "清单"),
@@ -104,22 +105,28 @@ public class BottomGroupAndSortSheetFragment extends BottomSheetDialogFragment {
     private void registerSelectionChips(View view) {
         // 分组方式选择
         ChipGroup chipGroupGroupBy = view.findViewById(R.id.chipGroupGroupBy);
-        for (int i = 0; i < chipGroupGroupBy.getChildCount(); i++) {
-            View child = chipGroupGroupBy.getChildAt(i);
-            if (child instanceof Chip) {
-                Chip chip = (Chip) child;
-                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        // 取消其他Chip的选中状态
-                        uncheckOtherChips(chipGroupGroupBy, chip);
-                        handleGroupSelection(chip);
-                    }
-                });
+        TextView groupByTitle = view.findViewById(R.id.groupByTitle);
+        if (groupTypeE != null) {
+            for (int i = 0; i < chipGroupGroupBy.getChildCount(); i++) {
+                View child = chipGroupGroupBy.getChildAt(i);
+                if (child instanceof Chip) {
+                    Chip chip = (Chip) child;
+                    chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                        if (isChecked) {
+                            // 取消其他Chip的选中状态
+                            uncheckOtherChips(chipGroupGroupBy, chip);
+                            handleGroupSelection(chip);
+                        }
+                    });
 
-                if (chip.getText().equals(groupTypeE.getDesc())) {
-                    chip.setChecked(true);
+                    if (chip.getText().equals(groupTypeE.getDesc())) {
+                        chip.setChecked(true);
+                    }
                 }
             }
+        } else {
+            chipGroupGroupBy.setVisibility(View.GONE);
+            groupByTitle.setVisibility(View.GONE);
         }
 
         // 排序方式选择

@@ -69,9 +69,15 @@ public class QuadrantViewFragment extends Fragment {
     List<TaskSimple> notUrgentNotImportantTasks = new ArrayList<>();
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.menuHandlerMap = new HashMap<>();
+        this.sortType = getSavedSortBy();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_quadrant_view, container, false);
-        this.menuHandlerMap = new HashMap<>();
         urgentImportantRecyclerView = view.findViewById(R.id.urgentImportantRecyclerView);
         notUrgentImportantRecyclerView = view.findViewById(R.id.notUrgentImportantRecyclerView);
         urgentNotImportantRecyclerView = view.findViewById(R.id.urgentNotImportantRecyclerView);
@@ -90,11 +96,9 @@ public class QuadrantViewFragment extends Fragment {
 
     protected void registerTopMenu() {
         // 注册右侧菜单的点击事件 --> 选择清单，和排序方式
+        // todo 选择清单
         this.menuHandlerMap.put(R.id.menuSelectList, item -> showSortDialog());
-        this.menuHandlerMap.put(R.id.menuSelectSortType, item -> {
-            // todo 排序方式
-            Toast.makeText(requireContext(), "排序方式", Toast.LENGTH_SHORT).show();
-        });
+        this.menuHandlerMap.put(R.id.menuSelectSortType, item -> showSortDialog());
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
         mainActivity.setOnRightIconClickListener(this::initPopupMenu);
