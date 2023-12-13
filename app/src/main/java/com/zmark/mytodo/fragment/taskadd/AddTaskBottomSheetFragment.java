@@ -128,26 +128,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
         // 显示确认按钮
         confirmButton.setVisibility(View.VISIBLE);
-        confirmButton.setOnClickListener(view -> {
-            // 处理用户点击发送按钮的逻辑
-            if (taskTitle.getText().toString().isEmpty()) {
-                // 如果待办事项为空，则不执行添加操作
-                Toast.makeText(requireContext(), Msg.NO_TASK_TITLE, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String title = taskTitle.getText().toString();
-            String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
-            // 执行添加待办事项的操作
-            // todo 是否已经完成
-            TaskCreateReq createReq = new TaskCreateReq();
-            createReq.setTitle(title);
-            createReq.setDescription(description);
-            createReq.setEndDate(endDate);
-            createReq.setEndTime(endTime);
-            createReq.setImportant(priorityTypeE.isImportant());
-            createReq.setUrgent(priorityTypeE.isUrgent());
-            createNewTask(createReq);
-        });
+        confirmButton.setOnClickListener(this::handleConfirmButtonClick);
+
+        // 添加到我的一天
+        addToMyDayLayout.setOnClickListener(this::handleAddToMyDayClick);
+        this.updateAddToMyDayUI();
 
         // 截止日期与时间
         dueDateLayout.setOnClickListener(view -> this.handleDueDateTimePicker());
@@ -183,7 +168,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         return bottomSheetView;
     }
 
-    private void handleConfirmButtonClick(View view) {
+    protected void handleConfirmButtonClick(View view) {
         // 处理用户点击发送按钮的逻辑
         if (taskTitle.getText().toString().isEmpty()) {
             // 如果待办事项为空，则不执行添加操作
@@ -192,17 +177,34 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         }
         String title = taskTitle.getText().toString();
         String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
+        taskDetail.setTitle(title);
+        taskDetail.getTaskContentInfo().setDescription(description);
         // 执行添加待办事项的操作
-        // todo 从taskDetail中获取数据
-        TaskCreateReq createReq = new TaskCreateReq();
-        createReq.setTitle(title);
-        createReq.setDescription(description);
-        createReq.setEndDate(endDate);
-        createReq.setEndTime(endTime);
-        createReq.setImportant(priorityTypeE.isImportant());
-        createReq.setUrgent(priorityTypeE.isUrgent());
-        createNewTask(createReq);
+        // todo 是否已经完成
+        TaskCreateReq createReq = taskDetail.toTaskCreateReq();
+        this.createNewTask(createReq);
     }
+
+    protected void handleAddToMyDayClick(View view) {
+        // 处理用户点击添加到我的一天的逻辑
+        taskDetail.setInMyDay(!taskDetail.isInMyDay());
+        this.updateAddToMyDayUI();
+    }
+
+    protected void updateAddToMyDayUI() {
+        requireActivity().runOnUiThread(() -> {
+            if (taskDetail.isInMyDay()) {
+                addToMyDayTextView.setText(R.string.already_in_my_day);
+                addToMyDayTextView.setTextColor(checkedColorStateList);
+                addToMyDayImageView.setImageTintList(checkedColorStateList);
+            } else {
+                addToMyDayTextView.setText(R.string.add_to_my_day);
+                addToMyDayTextView.setTextColor(unCheckedColorStateList);
+                addToMyDayImageView.setImageTintList(unCheckedColorStateList);
+            }
+        });
+    }
+
 
     private void handleTagSet() {
         // todo
