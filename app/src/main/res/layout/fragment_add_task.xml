@@ -34,8 +34,8 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="2"
+            android:columnCount="1"
+            android:rowCount="5"
             android:layout_marginTop="5dp"
             android:padding="5dp">
 
@@ -52,7 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_columnWeight="1" />
+                android:layout_columnWeight="1"
+                android:text="@string/no_deadline_is_set" />
 
             <TextView
                 android:id="@+id/priorityTextView"

@@ -68,6 +68,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
         // 截止日期与时间
         bottomSheetView.findViewById(R.id.timeSetImageView).setOnClickListener(view -> this.handleDueDateTimePicker());
+        updateDueDateTimeViewUI();
 
         // 优先级
         priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
@@ -134,19 +135,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                     TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
                             (view1, selectedHourOfDay, selectedMinute) -> {
                                 // 处理用户选择的日期和时间
-
                                 endDate = String.format(Locale.getDefault(), "%04d-%02d-%02d",
                                         selectedYear, monthOfYear + 1, dayOfMonth1);
-
                                 endTime = String.format(Locale.getDefault(), "%02d:%02d",
                                         selectedHourOfDay, selectedMinute);
-                                String dateStr =
-                                        TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(endDate))
-                                                + " " + TimeUtils.getDayOfWeek(endDate)
-                                                + " " + endTime + " 到期";
-                                endDateTextView.setText(dateStr);
+                                this.updateDueDateTimeViewUI();
                             }, hourOfDay, minute, DateFormat.is24HourFormat(requireContext()));
-
                     // 显示时间选择器对话框
                     timePickerDialog.show();
                 }, year, month, dayOfMonth);
@@ -155,11 +149,29 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         datePickerDialog.show();
     }
 
+    private void updateDueDateTimeViewUI() {
+        Log.d(TAG, "updateDueDateTimeViewUI: " + endDate + " " + endTime);
+        requireActivity().runOnUiThread(() -> {
+            if (endDate != null && endTime != null) {
+                String dueDateTimeStr =
+                        TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(endDate))
+                                + " " + TimeUtils.getDayOfWeek(endDate)
+                                + " " + endTime + " 到期";
+                Log.d(TAG, "updateDueDateTimeViewUI: " + dueDateTimeStr);
+                endDateTextView.setText(dueDateTimeStr);
+                endDateTextView.setTextColor(MainApplication.getCheckedColorStateList());
+            } else {
+                endDateTextView.setText("未设置截止日期");
+                endDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
+            }
+        });
+    }
+
     private void handlePrioritySet() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("设置优先级");
         String[] priorityArray = PriorityTypeE.getPriorityArray();
-        
+
         // 设置当前选中的优先级
         builder.setSingleChoiceItems(priorityArray, priorityTypeE.getCode() - 1, (dialog, which) -> {
             priorityTypeE = PriorityTypeE.getByCode(which + 1);

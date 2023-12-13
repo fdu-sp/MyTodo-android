@@ -56,4 +56,5 @@
     <string name="select_list">选择清单</string>
     <string name="select_sort_type">选择排序方式</string>
     <string name="plan_the_execution_time">规划执行时间</string>
+    <string name="no_deadline_is_set">未设置截止日期</string>
 </resources>
