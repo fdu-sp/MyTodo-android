@@ -1,6 +1,8 @@
 package com.zmark.mytodo.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.comparator.task.SortTypeE;
+import com.zmark.mytodo.comparator.task.TodoItemComparators;
 import com.zmark.mytodo.model.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.TaskSimple;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
@@ -27,6 +31,7 @@ import com.zmark.mytodo.service.invariant.Msg;
 import com.zmark.mytodo.service.result.Result;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +39,15 @@ import retrofit2.Call;
 public class QuadrantViewFragment extends Fragment {
     private final static String TAG = "QuadrantViewFragment";
     private static final String NAV_TOP_TITLE = "四象限视图";
+    /**
+     * 用户偏好设置的名称
+     */
+    private static final String perfName = "QuadrantViewFragment";
+    private static final String KEY_SORT_BY = "sort_by";
+    /**
+     * 排序方式
+     */
+    private SortTypeE sortType;
     private FourQuadrant fourQuadrant;
     private View view;
     private RecyclerView urgentImportantRecyclerView;
@@ -103,8 +117,12 @@ public class QuadrantViewFragment extends Fragment {
     }
 
     private void sortData() {
-        // todo  排序数据
-
+        // 根据用户选择的排序方式对todoList进行排序
+        Comparator<TaskSimple> comparator = TodoItemComparators.getComparator(sortType);
+        this.fourQuadrant.getUrgentAndImportant().getTasks().sort(comparator);
+        this.fourQuadrant.getNotUrgentAndImportant().getTasks().sort(comparator);
+        this.fourQuadrant.getUrgentAndNotImportant().getTasks().sort(comparator);
+        this.fourQuadrant.getNotUrgentAndNotImportant().getTasks().sort(comparator);
         // 处理数据
         urgentImportantTasks = this.fourQuadrant.getUrgentAndImportant().getTasks();
         notUrgentImportantTasks = this.fourQuadrant.getNotUrgentAndImportant().getTasks();
@@ -160,6 +178,31 @@ public class QuadrantViewFragment extends Fragment {
             Activity activity = requireActivity();
             QuadrantTaskItemAdapter quadrantTaskItemAdapter = new QuadrantTaskItemAdapter(activity, tasks);
             recyclerView.setAdapter(quadrantTaskItemAdapter);
+        }
+    }
+
+    /**
+     * 从SharedPreferences获取保存的 SortBy 状态
+     */
+    private SortTypeE getSavedSortBy() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            // 从SharedPreferences获取保存的状态，默认为DUE_DATE_FIRST
+            String sortBy = preferences.getString(KEY_SORT_BY, SortTypeE.DUE_DATE_FIRST.getDesc());
+            return SortTypeE.getByDesc(sortBy);
+        }
+        // 默认为DUE_DATE_FIRST
+        return SortTypeE.DUE_DATE_FIRST;
+    }
+
+    private void saveSelectedSortType(SortTypeE sortType) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_SORT_BY, sortType.getDesc());
+            editor.apply();
         }
     }
 
