@@ -25,7 +25,7 @@ import com.zmark.mytodo.R;
 import com.zmark.mytodo.anim.AnimUtils;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TodoItemComparators;
-import com.zmark.mytodo.fragment.TaskDetailFragment;
+import com.zmark.mytodo.fragment.TaskDetailBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
@@ -319,8 +319,8 @@ public class ListDetailFragment extends Fragment {
                         Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    TaskDetailFragment taskDetailFragment = new TaskDetailFragment(taskListSimple, new TaskDetail(taskDetailResp));
-                    taskDetailFragment.setOnTaskCompleteStateListener(taskDetail -> {
+                    TaskDetailBottomSheetFragment taskDetailBottomSheetFragment = new TaskDetailBottomSheetFragment(taskListSimple, new TaskDetail(taskDetailResp));
+                    taskDetailBottomSheetFragment.setOnTaskCompleteStateListener(taskDetail -> {
                         todoList.forEach(todo -> {
                             if (todo.getId().equals(taskDetail.getId())) {
                                 todo.setCompleted(taskDetail.getCompleted());
@@ -328,7 +328,7 @@ public class ListDetailFragment extends Fragment {
                         });
                         updateUI();
                     });
-                    taskDetailFragment.show(requireActivity().getSupportFragmentManager(), taskDetailFragment.getTag());
+                    taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());
                 }
             }
 

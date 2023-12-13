@@ -33,8 +33,8 @@ import com.zmark.mytodo.utils.TimeUtils;
 /**
  * 任务详情页
  */
-public class TaskDetailFragment extends BottomSheetDialogFragment {
-    private static final String TAG = "TaskDetailFragment";
+public class TaskDetailBottomSheetFragment extends BottomSheetDialogFragment {
+    private static final String TAG = "TaskDetailBottomSheetFragment";
 
     public interface OnTaskCompleteStateListener {
         void onTaskCompleteStateChanged(TaskDetail taskDetail);
@@ -95,7 +95,7 @@ public class TaskDetailFragment extends BottomSheetDialogFragment {
     private TextView timeCreateShowTextView;
     private ImageView deleteImageView;
 
-    public TaskDetailFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
+    public TaskDetailBottomSheetFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
         super();
         this.taskListSimple = taskListSimple;
         this.taskDetail = taskDetail;
