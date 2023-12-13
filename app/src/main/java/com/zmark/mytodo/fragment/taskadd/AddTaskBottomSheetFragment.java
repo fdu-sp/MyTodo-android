@@ -23,6 +23,7 @@ import androidx.cardview.widget.CardView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.fragment.quadrant.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.model.PriorityTypeE;
 import com.zmark.mytodo.model.TaskDetail;
 import com.zmark.mytodo.service.ApiUtils;
@@ -147,14 +148,12 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         repeatedLayout.setOnClickListener(this::handleRepeatedClick);
         this.updateRepeatedViewUI();
 
+        // 设置清单
+        listLayout.setOnClickListener(this::handleListSelectClick);
+        this.updateListSelectUI();
+
         // 标签
         tagLayout.setOnClickListener(view -> this.handleTagSet());
-
-        // 设置清单
-        listLayout.setOnClickListener(view -> {
-            // todo 处理用户点击设置清单的逻辑
-            Toast.makeText(requireContext(), "设置清单", Toast.LENGTH_SHORT).show();
-        });
 
         // 隐藏底部
         bottomCardView.setVisibility(View.GONE);
@@ -329,6 +328,31 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         requireActivity().runOnUiThread(() -> {
             repeatedTextView.setText(R.string.no_repetition);
             repeatedTextView.setTextColor(unCheckedColorStateList);
+        });
+    }
+
+    protected void handleListSelectClick(View view) {
+        TaskListSelectBottomSheetFragment taskListSelectBottomSheetFragment = new TaskListSelectBottomSheetFragment();
+        taskListSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskListSelectBottomSheetFragment.getTag());
+        taskListSelectBottomSheetFragment.setOnListClickListener(taskListSimple -> {
+            taskDetail.setTaskListId(taskListSimple.getId());
+            taskDetail.setTaskListName(taskListSimple.getName());
+            this.updateListSelectUI();
+            taskListSelectBottomSheetFragment.dismiss();
+        });
+    }
+
+    protected void updateListSelectUI() {
+        Long taskListId = taskDetail.getTaskListId();
+        String taskListName = taskDetail.getTaskListName();
+        requireActivity().runOnUiThread(() -> {
+            if (taskListId != null && taskListName != null) {
+                listTextView.setText(taskListName);
+                listTextView.setTextColor(checkedColorStateList);
+            } else {
+                listTextView.setText(R.string.select_list);
+                listTextView.setTextColor(unCheckedColorStateList);
+            }
         });
     }
 
