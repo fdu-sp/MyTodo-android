@@ -8,6 +8,7 @@ package com.zmark.mytodo.service.bo.task.resp.inner;
 public class TaskTimeInfoResp {
     private String endDate;
     private String endTime;
+    private String reminderTimestamp;
     private Boolean activateCountdown;
     private String expectedExecutionDate;
     private String expectedExecutionStartPeriod;
@@ -36,6 +37,14 @@ public class TaskTimeInfoResp {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getReminderTimestamp() {
+        return reminderTimestamp;
+    }
+
+    public void setReminderTimestamp(String reminderTimestamp) {
+        this.reminderTimestamp = reminderTimestamp;
     }
 
     public Boolean getActivateCountdown() {
