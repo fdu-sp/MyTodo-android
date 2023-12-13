@@ -188,7 +188,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         taskDetail.setTitle(title);
         taskDetail.getTaskContentInfo().setDescription(description);
         // 执行添加待办事项的操作
-        // todo 是否已经完成
         TaskCreateReq createReq = taskDetail.toTaskCreateReq();
         this.createNewTask(createReq);
     }
