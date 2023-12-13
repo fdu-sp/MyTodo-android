@@ -368,7 +368,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textSize="20sp"
-                    android:text="@string/move" />
+                    android:text="@string/select_list" />
             </LinearLayout>
 
             <!-- 标签 -->
