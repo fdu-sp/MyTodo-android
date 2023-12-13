@@ -71,6 +71,7 @@ public class TaskDetail {
         createReq.setUrgent(this.taskPriorityInfo.getUrgent());
         createReq.setEndDate(this.taskTimeInfo.getEndDate());
         createReq.setEndTime(this.taskTimeInfo.getEndTime());
+        createReq.setReminderTimestamp(this.taskTimeInfo.getReminderTimestamp());
         createReq.setActivateCountdown(this.taskTimeInfo.getActivateCountdown());
         createReq.setExpectedExecutionDate(this.taskTimeInfo.getExpectedExecutionDate());
         createReq.setExpectedExecutionStartPeriod(this.taskTimeInfo.getExpectedExecutionStartPeriod());

@@ -34,6 +34,7 @@ public class TaskCreateReq {
      */
     private String endDate;
     private String endTime;
+    private String reminderTimestamp;
     private Boolean activateCountdown;
     private String expectedExecutionDate;
     private String expectedExecutionStartPeriod;
@@ -72,6 +73,10 @@ public class TaskCreateReq {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public void setReminderTimestamp(String reminderTimestamp) {
+        this.reminderTimestamp = reminderTimestamp;
     }
 
     public void setActivateCountdown(Boolean activateCountdown) {
