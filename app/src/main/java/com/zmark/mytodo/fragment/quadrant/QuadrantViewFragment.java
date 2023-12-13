@@ -38,17 +38,20 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 
 public class QuadrantViewFragment extends Fragment {
     private final static String TAG = "QuadrantViewFragment";
-    private static final String NAV_TOP_TITLE = "四象限视图";
+    private final static String NAV_TOP_TITLE = "四象限视图";
+    private final static Long DEFAULT_TASK_LIST_ID = 0L;
     /**
      * 用户偏好设置的名称
      */
-    private static final String perfName = "QuadrantViewFragment";
-    private static final String KEY_SORT_BY = "sort_by";
+    private final static String perfName = "QuadrantViewFragment";
+    private final static String KEY_SORT_BY = "sort_by";
+    private final static String KEY_TASK_LIST_ID = "task_list_id";
     /**
      * 排序方式
      */
@@ -56,8 +59,12 @@ public class QuadrantViewFragment extends Fragment {
 
     private Map<Integer, MenuItemHandler> menuHandlerMap;
 
+    private Long taskListId = DEFAULT_TASK_LIST_ID;
     private FourQuadrant fourQuadrant;
     private View view;
+
+    private TaskListSelectBottomSheetFragment taskListSelectBottomSheetFragment;
+
     private RecyclerView urgentImportantRecyclerView;
     private RecyclerView notUrgentImportantRecyclerView;
     private RecyclerView urgentNotImportantRecyclerView;
@@ -73,6 +80,7 @@ public class QuadrantViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.menuHandlerMap = new HashMap<>();
         this.sortType = getSavedSortBy();
+        this.taskListId = getTaskListId();
     }
 
     @Override
@@ -96,7 +104,6 @@ public class QuadrantViewFragment extends Fragment {
 
     protected void registerTopMenu() {
         // 注册右侧菜单的点击事件 --> 选择清单，和排序方式
-        // todo 选择清单
         this.menuHandlerMap.put(R.id.menuSelectList, item -> showListSelectFragment());
         this.menuHandlerMap.put(R.id.menuSelectSortType, item -> showSortDialog());
         MainActivity mainActivity = (MainActivity) requireActivity();
@@ -105,8 +112,14 @@ public class QuadrantViewFragment extends Fragment {
     }
 
     private void showListSelectFragment() {
-        TaskListSelectBottomSheetFragment taskListSelectBottomSheetFragment = new TaskListSelectBottomSheetFragment();
+        taskListSelectBottomSheetFragment = new TaskListSelectBottomSheetFragment();
         taskListSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskListSelectBottomSheetFragment.getTag());
+        taskListSelectBottomSheetFragment.setOnListClickListener(task -> {
+            this.taskListId = task.getId();
+            this.saveSelectedTaskListId(task.getId());
+            this.sortData();
+            fetchDataAndUpdateUI();
+        });
     }
 
     private void initPopupMenu(View view) {
@@ -139,8 +152,15 @@ public class QuadrantViewFragment extends Fragment {
     }
 
     private void fetchDataAndUpdateUI() {
-        Call<Result<FourQuadrantDetailResp>> call
-                = MainApplication.getFourQuadrantService().getFourQuadrantDetailByMyDay();
+        if (taskListId == null) {
+            taskListId = DEFAULT_TASK_LIST_ID;
+        }
+        Call<Result<FourQuadrantDetailResp>> call;
+        if (Objects.equals(taskListId, DEFAULT_TASK_LIST_ID)) {
+            call = MainApplication.getFourQuadrantService().getFourQuadrantDetailByMyDay();
+        } else {
+            call = MainApplication.getFourQuadrantService().getFourQuadrantDetailByList(taskListId);
+        }
         ApiUtils.doRequest(call, new ApiUtils.Callbacks<FourQuadrantDetailResp>() {
             @Override
             public void onSuccess(FourQuadrantDetailResp data) {
@@ -169,6 +189,7 @@ public class QuadrantViewFragment extends Fragment {
         });
     }
 
+
     private void sortData() {
         // 根据用户选择的排序方式对todoList进行排序
         Comparator<TaskSimple> comparator = TodoItemComparators.getComparator(sortType);
@@ -185,6 +206,9 @@ public class QuadrantViewFragment extends Fragment {
 
     private void updateUI() {
         requireActivity().runOnUiThread(() -> {
+            if (taskListSelectBottomSheetFragment != null) {
+                taskListSelectBottomSheetFragment.dismiss();
+            }
             setupQuadrantRecyclerView(urgentImportantRecyclerView);
             setupQuadrantRecyclerView(notUrgentImportantRecyclerView);
             setupQuadrantRecyclerView(urgentNotImportantRecyclerView);
@@ -217,7 +241,6 @@ public class QuadrantViewFragment extends Fragment {
     private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView,
                                     String title, List<TaskSimple> tasks,
                                     int titleTextViewId, int emptyTaskTextId) {
-        // todo 设置象限名称
         TextView titleTextView = view.findViewById(titleTextViewId);
         titleTextView.setText(title);
         if (tasks.isEmpty()) {
@@ -259,12 +282,22 @@ public class QuadrantViewFragment extends Fragment {
         }
     }
 
-    private List<String> getSampleTasks(int taskNumber) {
-        // 返回一些示例任务数据
-        List<String> sampleTasks = new ArrayList<>();
-        for (int i = 0; i < taskNumber; i++) {
-            sampleTasks.add("Task " + i);
+    private Long getTaskListId() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            return preferences.getLong(KEY_TASK_LIST_ID, DEFAULT_TASK_LIST_ID);
         }
-        return sampleTasks;
+        return DEFAULT_TASK_LIST_ID;
+    }
+
+    private void saveSelectedTaskListId(Long taskListId) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong(KEY_TASK_LIST_ID, taskListId);
+            editor.apply();
+        }
     }
 }

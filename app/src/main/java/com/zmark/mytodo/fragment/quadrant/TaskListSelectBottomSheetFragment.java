@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnListClickListener;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
-import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.api.TaskGroupService;
 import com.zmark.mytodo.service.bo.group.resp.TaskGroupSimpleResp;
@@ -41,6 +41,12 @@ public class TaskListSelectBottomSheetFragment extends BottomSheetDialogFragment
     private List<TaskGroup> taskGroups;
 
     private RecyclerView containerView;
+
+    private OnListClickListener onListClickListener;
+
+    public void setOnListClickListener(OnListClickListener listener) {
+        this.onListClickListener = listener;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,15 +116,11 @@ public class TaskListSelectBottomSheetFragment extends BottomSheetDialogFragment
                 TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
                 containerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 containerView.setAdapter(taskGroupAdapter);
-                taskGroupAdapter.setOnListClickListener(this::onTaskListSelected);
+                taskGroupAdapter.setOnListClickListener(onListClickListener);
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(requireContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void onTaskListSelected(TaskListSimple taskListSimple) {
-        Toast.makeText(requireContext(), taskListSimple.getName(), Toast.LENGTH_SHORT).show();
     }
 }
