@@ -159,8 +159,9 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("设置优先级");
         String[] priorityArray = PriorityTypeE.getPriorityArray();
-
-        builder.setSingleChoiceItems(priorityArray, 0, (dialog, which) -> {
+        
+        // 设置当前选中的优先级
+        builder.setSingleChoiceItems(priorityArray, priorityTypeE.getCode() - 1, (dialog, which) -> {
             priorityTypeE = PriorityTypeE.getByCode(which + 1);
             if (priorityTypeE == null) {
                 Log.e(TAG, "handlePrioritySet: 优先级设置错误");
@@ -169,6 +170,8 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             updatePriorityViewUI();
             dialog.dismiss();
         });
+
+        // 显示对话框
         builder.show();
     }
 
