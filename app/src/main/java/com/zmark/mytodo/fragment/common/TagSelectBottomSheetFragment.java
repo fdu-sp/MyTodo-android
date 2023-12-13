@@ -104,10 +104,8 @@ public class TagSelectBottomSheetFragment extends BottomSheetDialogFragment {
                 if (onTagSelectListener != null) {
                     onTagSelectListener.onTagSelect(tagSimple);
                 }
-                dismiss();
             });
             tagSimpleListRecyclerView.setAdapter(adapter);
-
         });
     }
 }

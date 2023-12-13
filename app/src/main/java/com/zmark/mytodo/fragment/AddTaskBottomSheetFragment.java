@@ -24,9 +24,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.fragment.common.DateTimePicker;
+import com.zmark.mytodo.fragment.common.TagSelectBottomSheetFragment;
 import com.zmark.mytodo.fragment.common.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.model.PriorityTypeE;
 import com.zmark.mytodo.model.TaskDetail;
+import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.api.TaskService;
 import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
@@ -35,6 +37,7 @@ import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.service.result.ResultCode;
 import com.zmark.mytodo.utils.TimeUtils;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -368,12 +371,29 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     protected void handleTagSet(View view) {
-        // todo
-        this.updateTagSetUI();
+        TagSelectBottomSheetFragment tagSelectBottomSheetFragment = new TagSelectBottomSheetFragment();
+        tagSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), tagSelectBottomSheetFragment.getTag());
+        tagSelectBottomSheetFragment.setOnTagSelectListener(tagSimple -> {
+            taskDetail.getTags().add(tagSimple);
+            this.updateTagSetUI();
+            tagSelectBottomSheetFragment.dismiss();
+        });
     }
 
     protected void updateTagSetUI() {
-        // todo
+        requireActivity().runOnUiThread(() -> {
+            List<TagSimple> tags = taskDetail.getTags();
+            if (tags != null && !tags.isEmpty()) {
+                String tagStr = taskDetail.getDetailTagString();
+                tagTextView.setText(tagStr);
+                tagTextView.setTextColor(checkedColorStateList);
+                tagImageView.setImageTintList(checkedColorStateList);
+            } else {
+                tagTextView.setText(R.string.add_tag);
+                tagTextView.setTextColor(unCheckedColorStateList);
+                tagImageView.setImageTintList(unCheckedColorStateList);
+            }
+        });
     }
 
     private void createNewTask(TaskCreateReq taskCreateReq) {

@@ -1,6 +1,6 @@
 package com.zmark.mytodo.model;
 
-import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
 import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.inner.TaskContentInfoResp;
@@ -9,6 +9,7 @@ import com.zmark.mytodo.service.bo.task.resp.inner.TaskTimeInfoResp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskDetail {
     private Long id;
@@ -16,7 +17,7 @@ public class TaskDetail {
     private Boolean completed;
     private String completedTime;
     private Boolean archived;
-    private List<TagSimpleResp> tags;
+    private List<TagSimple> tags;
     private Boolean inMyDay;
     private Long taskListId;
     private String taskListName;
@@ -49,7 +50,7 @@ public class TaskDetail {
         this.completed = taskDetailResp.getCompleted();
         this.completedTime = taskDetailResp.getCompletedTime();
         this.archived = taskDetailResp.getArchived();
-        this.tags = taskDetailResp.getTags();
+        this.tags = taskDetailResp.getTags().stream().map(TagSimple::new).collect(Collectors.toList());
         this.taskListId = taskDetailResp.getTaskListId();
         this.taskListName = taskDetailResp.getTaskListName();
         this.inMyDay = taskDetailResp.isInMyDay();
@@ -64,7 +65,7 @@ public class TaskDetail {
         TaskCreateReq createReq = new TaskCreateReq();
         createReq.setTitle(this.title);
         List<String> tagNames = new ArrayList<>();
-        for (TagSimpleResp tag : this.tags) {
+        for (TagSimple tag : this.tags) {
             tagNames.add(tag.getTagPath());
         }
         createReq.setTagNames(tagNames);
@@ -133,27 +134,27 @@ public class TaskDetail {
         this.archived = archived;
     }
 
-    public List<TagSimpleResp> getTags() {
+    public List<TagSimple> getTags() {
         return tags;
     }
 
     public String getDetailTagString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (TagSimpleResp tag : tags) {
+        for (TagSimple tag : tags) {
             stringBuilder.append(tag.getTagName()).append(" ");
         }
         return stringBuilder.toString();
     }
 
-    public void setTags(List<TagSimpleResp> tags) {
+    public void setTags(List<TagSimple> tags) {
         this.tags = tags;
     }
 
-    public void addTag(TagSimpleResp tag) {
+    public void addTag(TagSimple tag) {
         this.tags.add(tag);
     }
 
-    public void removeTag(TagSimpleResp tag) {
+    public void removeTag(TagSimple tag) {
         this.tags.remove(tag);
     }
 
