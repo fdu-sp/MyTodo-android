@@ -46,12 +46,14 @@ public class QuadrantViewFragment extends Fragment {
     private final static String TAG = "QuadrantViewFragment";
     private final static String NAV_TOP_TITLE = "四象限视图";
     private final static Long DEFAULT_TASK_LIST_ID = 0L;
+    private final static String DEFAULT_TASK_LIST_TITLE = "我的一天";
     /**
      * 用户偏好设置的名称
      */
     private final static String perfName = "QuadrantViewFragment";
     private final static String KEY_SORT_BY = "sort_by";
     private final static String KEY_TASK_LIST_ID = "task_list_id";
+    private final static String KEY_TASK_LIST_TITLE = "task_list_title";
     /**
      * 排序方式
      */
@@ -60,6 +62,7 @@ public class QuadrantViewFragment extends Fragment {
     private Map<Integer, MenuItemHandler> menuHandlerMap;
 
     private Long taskListId = DEFAULT_TASK_LIST_ID;
+    private String taskListTitle = DEFAULT_TASK_LIST_TITLE;
     private FourQuadrant fourQuadrant;
     private View view;
 
@@ -81,6 +84,7 @@ public class QuadrantViewFragment extends Fragment {
         this.menuHandlerMap = new HashMap<>();
         this.sortType = getSavedSortBy();
         this.taskListId = getTaskListId();
+        this.taskListTitle = getTaskListTitle();
     }
 
     @Override
@@ -114,9 +118,11 @@ public class QuadrantViewFragment extends Fragment {
     private void showListSelectFragment() {
         taskListSelectBottomSheetFragment = new TaskListSelectBottomSheetFragment();
         taskListSelectBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskListSelectBottomSheetFragment.getTag());
-        taskListSelectBottomSheetFragment.setOnListClickListener(task -> {
-            this.taskListId = task.getId();
-            this.saveSelectedTaskListId(task.getId());
+        taskListSelectBottomSheetFragment.setOnListClickListener(taskListSimple -> {
+            this.taskListId = taskListSimple.getId();
+            this.taskListTitle = taskListSimple.getName();
+            this.saveSelectedTaskListId(this.taskListId);
+            this.saveSelectedTaskListTitle(this.taskListTitle);
             this.sortData();
             fetchDataAndUpdateUI();
         });
@@ -209,6 +215,11 @@ public class QuadrantViewFragment extends Fragment {
             if (taskListSelectBottomSheetFragment != null) {
                 taskListSelectBottomSheetFragment.dismiss();
             }
+            // 设置导航栏标题
+            if (taskListTitle != null) {
+                MainActivity mainActivity = (MainActivity) requireActivity();
+                mainActivity.setNavTopTitleView(NAV_TOP_TITLE + "-" + taskListTitle);
+            }
             setupQuadrantRecyclerView(urgentImportantRecyclerView);
             setupQuadrantRecyclerView(notUrgentImportantRecyclerView);
             setupQuadrantRecyclerView(urgentNotImportantRecyclerView);
@@ -297,6 +308,25 @@ public class QuadrantViewFragment extends Fragment {
             SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putLong(KEY_TASK_LIST_ID, taskListId);
+            editor.apply();
+        }
+    }
+
+    private String getTaskListTitle() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            return preferences.getString(KEY_TASK_LIST_TITLE, DEFAULT_TASK_LIST_TITLE);
+        }
+        return DEFAULT_TASK_LIST_TITLE;
+    }
+
+    private void saveSelectedTaskListTitle(String taskListTitle) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_TASK_LIST_TITLE, taskListTitle);
             editor.apply();
         }
     }
