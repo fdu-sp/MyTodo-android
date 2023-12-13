@@ -1,6 +1,6 @@
 package com.zmark.mytodo.service.api;
 
-import com.zmark.mytodo.service.bo.task.req.TaskCreatReq;
+import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
 import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.service.result.Result;
@@ -30,5 +30,5 @@ public interface TaskService {
     Call<Result<String>> unCompleteTask(@Path("task-id") Long taskId);
 
     @POST("task/create-new-task")
-    Call<Result<Object>> createNewTask(@Body TaskCreatReq taskCreatReq);
+    Call<Result<Object>> createNewTask(@Body TaskCreateReq taskCreateReq);
 }

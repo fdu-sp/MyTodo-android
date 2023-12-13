@@ -8,7 +8,7 @@ import java.util.List;
  * @author ZMark
  * @date 2023/12/4 10:04
  */
-public class TaskCreatReq {
+public class TaskCreateReq {
     private String title;
     /**
      * 可以为空，但是不可以为null，所以默认值为{}
@@ -39,7 +39,7 @@ public class TaskCreatReq {
     private String expectedExecutionStartPeriod;
     private String expectedExecutionEndPeriod;
 
-    public TaskCreatReq() {
+    public TaskCreateReq() {
     }
 
     public void setTitle(String title) {
