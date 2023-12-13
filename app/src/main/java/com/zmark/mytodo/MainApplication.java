@@ -1,6 +1,6 @@
 package com.zmark.mytodo;
 
-import static com.zmark.mytodo.model.PriorityTypeE.NOT_URGENCY_IMPORTANT;
+import static com.zmark.mytodo.model.task.PriorityTypeE.NOT_URGENCY_IMPORTANT;
 
 import android.app.Application;
 import android.content.res.ColorStateList;
@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.core.content.ContextCompat;
 
 import com.zmark.mytodo.config.Config;
-import com.zmark.mytodo.model.PriorityTypeE;
+import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.service.api.FourQuadrantService;
 import com.zmark.mytodo.service.api.HelloService;
 import com.zmark.mytodo.service.api.MyDayTaskService;

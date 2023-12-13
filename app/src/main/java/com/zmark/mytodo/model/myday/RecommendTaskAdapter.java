@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
-import com.zmark.mytodo.model.TaskSimple;
+import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
 import com.zmark.mytodo.service.impl.TaskServiceImpl;
 

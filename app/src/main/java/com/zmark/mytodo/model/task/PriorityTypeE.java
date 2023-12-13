@@ -1,4 +1,4 @@
-package com.zmark.mytodo.model;
+package com.zmark.mytodo.model.task;
 
 public enum PriorityTypeE {
     URGENCY_IMPORTANT(1, "紧急且重要", true, true),

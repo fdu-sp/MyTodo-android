@@ -1,4 +1,4 @@
-package com.zmark.mytodo.model;
+package com.zmark.mytodo.model.task;
 
 import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;

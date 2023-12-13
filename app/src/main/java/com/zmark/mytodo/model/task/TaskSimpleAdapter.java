@@ -1,4 +1,4 @@
-package com.zmark.mytodo.model;
+package com.zmark.mytodo.model.task;
 
 import android.os.Handler;
 import android.os.Looper;

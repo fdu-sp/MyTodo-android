@@ -1,7 +1,7 @@
 package com.zmark.mytodo.model.quadrant;
 
 
-import com.zmark.mytodo.model.TaskSimple;
+import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.service.bo.quadrant.resp.OneQuadrantDetailResp;
 
 import java.util.List;

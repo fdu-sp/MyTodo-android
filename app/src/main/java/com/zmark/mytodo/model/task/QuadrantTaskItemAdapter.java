@@ -1,4 +1,4 @@
-package com.zmark.mytodo.model;
+package com.zmark.mytodo.model.task;
 
 import android.app.Activity;
 import android.util.Log;

@@ -1,7 +1,7 @@
 package com.zmark.mytodo.service.bo.task.resp.inner;
 
 
-import com.zmark.mytodo.model.PriorityTypeE;
+import com.zmark.mytodo.model.task.PriorityTypeE;
 
 /**
  * @author ZMark

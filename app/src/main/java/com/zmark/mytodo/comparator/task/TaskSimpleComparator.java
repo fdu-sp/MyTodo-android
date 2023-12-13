@@ -1,6 +1,6 @@
 package com.zmark.mytodo.comparator.task;
 
-import com.zmark.mytodo.model.TaskSimple;
+import com.zmark.mytodo.model.task.TaskSimple;
 
 /**
  * todo 预计使用责任链模式 改造 排序代码
