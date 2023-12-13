@@ -1,12 +1,9 @@
 package com.zmark.mytodo.fragment.taskadd;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +33,6 @@ import com.zmark.mytodo.service.result.Result;
 import com.zmark.mytodo.service.result.ResultCode;
 import com.zmark.mytodo.utils.TimeUtils;
 
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,8 +45,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
     private TaskDetail taskDetail;
     private PriorityTypeE priorityTypeE;
-    private String endDate;
-    private String endTime;
 
     private ColorStateList checkedColorStateList;
     private ColorStateList unCheckedColorStateList;
@@ -139,9 +132,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         updatePriorityViewUI();
 
         // 设置提醒
+        reminderLayout.setOnClickListener(this::handleReminderClick);
+        updateReminderClickUI();
 
         // 截止日期与时间
-        dueDateLayout.setOnClickListener(view -> this.handleDueDateTimePicker());
+        dueDateLayout.setOnClickListener(this::handleDueDateTimeClick);
         updateDueDateTimeViewUI();
 
         // 标签
@@ -236,41 +231,27 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         priorityImageView.setImageTintList(colorStateList);
     }
 
-    private void handleTagSet() {
+    protected void handleReminderClick(View view) {
+
+    }
+
+    protected void updateReminderClickUI() {
         // todo
     }
 
-    private void handleDueDateTimePicker() {
-        // 获取当前日期和时间
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        // 创建日期选择器对话框
-        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
-                (view, selectedYear, monthOfYear, dayOfMonth1) -> {
-                    // 在日期选择后，创建时间选择器对话框
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
-                            (view1, selectedHourOfDay, selectedMinute) -> {
-                                // 处理用户选择的日期和时间
-                                endDate = String.format(Locale.getDefault(), "%04d-%02d-%02d",
-                                        selectedYear, monthOfYear + 1, dayOfMonth1);
-                                endTime = String.format(Locale.getDefault(), "%02d:%02d",
-                                        selectedHourOfDay, selectedMinute);
-                                this.updateDueDateTimeViewUI();
-                            }, hourOfDay, minute, DateFormat.is24HourFormat(requireContext()));
-                    // 显示时间选择器对话框
-                    timePickerDialog.show();
-                }, year, month, dayOfMonth);
-
-        // 显示日期选择器对话框
-        datePickerDialog.show();
+    protected void handleDueDateTimeClick(View view) {
+        DateTimePicker dateTimePicker = new DateTimePicker();
+        dateTimePicker.setOnDateTimeSetListener((date, time) -> {
+            this.taskDetail.getTaskTimeInfo().setEndDate(date);
+            this.taskDetail.getTaskTimeInfo().setEndTime(time);
+            this.updateDueDateTimeViewUI();
+        });
+        dateTimePicker.show(requireContext());
     }
 
-    private void updateDueDateTimeViewUI() {
+    protected void updateDueDateTimeViewUI() {
+        String endDate = taskDetail.getTaskTimeInfo().getEndDate();
+        String endTime = taskDetail.getTaskTimeInfo().getEndTime();
         Log.d(TAG, "updateDueDateTimeViewUI: " + endDate + " " + endTime);
         requireActivity().runOnUiThread(() -> {
             if (endDate != null && endTime != null) {
@@ -286,6 +267,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 dueDateTextView.setTextColor(MainApplication.getUnCheckedColorStateList());
             }
         });
+    }
+
+    private void handleTagSet() {
+        // todo
     }
 
     private void createNewTask(TaskCreateReq taskCreateReq) {
