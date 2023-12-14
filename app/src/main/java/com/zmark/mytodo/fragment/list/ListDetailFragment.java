@@ -319,7 +319,7 @@ public class ListDetailFragment extends Fragment {
                         Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    TaskDetailBottomSheetFragment taskDetailBottomSheetFragment = new TaskDetailBottomSheetFragment(taskListSimple, new TaskDetail(taskDetailResp));
+                    TaskDetailBottomSheetFragment taskDetailBottomSheetFragment = new TaskDetailBottomSheetFragment(new TaskDetail(taskDetailResp));
                     taskDetailBottomSheetFragment.setOnTaskCompleteStateListener(taskDetail -> {
                         todoList.forEach(todo -> {
                             if (todo.getId().equals(taskDetail.getId())) {

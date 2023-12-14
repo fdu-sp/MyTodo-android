@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.zmark.mytodo.MainApplication;
-import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.service.ApiUtils;
 import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
@@ -42,15 +41,17 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
         void onTaskUpdated(TaskDetail taskDetail);
     }
 
+    public interface OnTaskDeleteListener {
+        void onTaskDeleted(TaskDetail taskDetail);
+    }
+
     private OnTaskCompleteStateListener onTaskCompleteStateListener;
-
     private OnTaskUpdateListener onTaskUpdateListener;
+    private OnTaskDeleteListener onTaskDeleteListener;
 
-    private final TaskListSimple taskListSimple;
 
-    public TaskDetailBottomSheetFragment(TaskListSimple taskListSimple, TaskDetail taskDetail) {
+    public TaskDetailBottomSheetFragment(TaskDetail taskDetail) {
         super(taskDetail);
-        this.taskListSimple = taskListSimple;
     }
 
     public void setOnTaskCompleteStateListener(OnTaskCompleteStateListener listener) {
@@ -59,6 +60,10 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
 
     public void setOnTaskUpdateListener(OnTaskUpdateListener listener) {
         this.onTaskUpdateListener = listener;
+    }
+
+    public void setOnTaskDeleteListener(OnTaskDeleteListener listener) {
+        this.onTaskDeleteListener = listener;
     }
 
     @Override
@@ -75,26 +80,86 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.taskListNameTextView.setText(taskListSimple.getName());
-        // 设置checkbox的事件和选中状态
-        this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                taskDetail.complete();
-                TaskServiceImpl.completeTask(taskDetail.getId());
-            } else {
-                taskDetail.unComplete();
-                TaskServiceImpl.unCompleteTask(taskDetail.getId());
-            }
-            if (onTaskCompleteStateListener != null) {
-                onTaskCompleteStateListener.onTaskCompleteStateChanged(taskDetail);
-            }
-        });
-        this.checkBox.setChecked(taskDetail.getCompleted());
         // 显示确认按钮
         confirmButton.setVisibility(View.VISIBLE);
 
+        // 设置创建时间
+        this.bottomCardView.setVisibility(View.VISIBLE);
+        this.updateTimeCreateUI();
+
+        // 设置删除
+        this.deleteImageView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void handleBackButtonClick(View view) {
+        this.updateTask();
+    }
+
+    @Override
+    protected void handleConfirmButtonClick(View view) {
+        this.updateTask();
+    }
+
+    /**
+     * 仅当成功时才会dismiss
+     */
+    private void updateTask() {
+        String title = taskTitle.getText().toString();
+        String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
+        taskDetail.setTitle(title);
+        taskDetail.getTaskContentInfo().setDescription(description);
+        Call<Result<TaskDetailResp>> call = MainApplication.getTaskService().updateTask(taskDetail.toTaskUpdateReq());
+        ApiUtils.doRequest(call, new ApiUtils.Callbacks<TaskDetailResp>() {
+            @Override
+            public void onSuccess(TaskDetailResp data) {
+                Log.i(TAG, "onSuccess: " + data);
+                taskDetail = new TaskDetail(data);
+                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
+
+                if (onTaskUpdateListener != null) {
+                    onTaskUpdateListener.onTaskUpdated(taskDetail);
+                }
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(Integer code, String msg) {
+                Log.w(TAG, "onFailure: " + code + " " + msg);
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClientRequestError(Throwable t) {
+                Log.e(TAG, "onClientRequestError: ", t);
+                Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onServerInternalError() {
+                Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void handleCheckBoxClick(View view, boolean isChecked) {
+        if (isChecked) {
+            taskDetail.complete();
+            TaskServiceImpl.completeTask(taskDetail.getId());
+        } else {
+            taskDetail.unComplete();
+            TaskServiceImpl.unCompleteTask(taskDetail.getId());
+        }
+        this.updateCheckBoxUI();
+        if (onTaskCompleteStateListener != null) {
+            onTaskCompleteStateListener.onTaskCompleteStateChanged(taskDetail);
+        }
+    }
+
+    @Override
+    protected void handleAddToMyDayClick(View view) {
         // 设置 添加到我的一天
-        // todo 如果是 我的一天 任务列表，需要通知上层更新
         this.addToMyDayLayout.setOnClickListener(v -> {
             if (taskDetail.isInMyDay()) {
                 MyDayTaskServiceImpl.removeFromMyDayList(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
@@ -102,6 +167,10 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
                     public void onSuccess() {
                         taskDetail.setInMyDay(false);
                         updateAddToMyDayUI();
+                        // 如果是 我的一天 任务列表，需要通知上层更新
+                        if (onTaskUpdateListener != null) {
+                            onTaskUpdateListener.onTaskUpdated(taskDetail);
+                        }
                     }
 
                     @Override
@@ -127,6 +196,10 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
                     public void onSuccess() {
                         taskDetail.setInMyDay(true);
                         updateAddToMyDayUI();
+                        // 如果是 我的一天 任务列表，需要通知上层更新
+                        if (onTaskUpdateListener != null) {
+                            onTaskUpdateListener.onTaskUpdated(taskDetail);
+                        }
                     }
 
                     @Override
@@ -149,52 +222,6 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
             }
         });
         this.updateAddToMyDayUI();
-
-        // 设置创建时间
-        this.bottomCardView.setVisibility(View.VISIBLE);
-        this.updateTimeCreateUI();
-
-        // 设置删除
-        this.deleteImageView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void handleConfirmButtonClick(View view) {
-        String title = taskTitle.getText().toString();
-        String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
-        taskDetail.setTitle(title);
-        taskDetail.getTaskContentInfo().setDescription(description);
-        Call<Result<TaskDetailResp>> call = MainApplication.getTaskService().updateTask(taskDetail.toTaskUpdateReq());
-        ApiUtils.doRequest(call, new ApiUtils.Callbacks<TaskDetailResp>() {
-            @Override
-            public void onSuccess(TaskDetailResp data) {
-                Log.i(TAG, "onSuccess: " + data);
-                taskDetail = new TaskDetail(data);
-                Toast.makeText(getContext(), "更新成功", Toast.LENGTH_SHORT).show();
-
-                if (onTaskUpdateListener != null) {
-                    onTaskUpdateListener.onTaskUpdated(taskDetail);
-                }
-            }
-
-            @Override
-            public void onFailure(Integer code, String msg) {
-                Log.w(TAG, "onFailure: " + code + " " + msg);
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onClientRequestError(Throwable t) {
-                Log.e(TAG, "onClientRequestError: ", t);
-                Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onServerInternalError() {
-                Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     @Override
@@ -210,6 +237,9 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
                 public void onSuccess(String data) {
                     Log.i(TAG, "onSuccess: " + data);
                     Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                    if (onTaskDeleteListener != null) {
+                        onTaskDeleteListener.onTaskDeleted(taskDetail);
+                    }
                     dismiss();
                 }
 
