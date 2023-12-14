@@ -50,4 +50,13 @@ public enum PriorityTypeE {
         }
         return null;
     }
+
+    public static PriorityTypeE getBy(Boolean isUrgent, Boolean isImportant) {
+        for (PriorityTypeE priorityTypeE : PriorityTypeE.values()) {
+            if (priorityTypeE.isUrgent() == isUrgent && priorityTypeE.isImportant() == isImportant) {
+                return priorityTypeE;
+            }
+        }
+        return null;
+    }
 }

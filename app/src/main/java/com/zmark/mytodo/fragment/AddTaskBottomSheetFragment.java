@@ -55,7 +55,6 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private OnTaskCreateListener onTaskCreateListener;
 
     protected TaskDetail taskDetail;
-    protected PriorityTypeE priorityTypeE;
 
     protected ColorStateList checkedColorStateList;
     protected ColorStateList unCheckedColorStateList;
@@ -270,16 +269,15 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("设置优先级");
         String[] priorityArray = PriorityTypeE.getPriorityArray();
-
+        PriorityTypeE originalPriorityTypeE = taskDetail.getPriorityType();
         // 设置当前选中的优先级
-        builder.setSingleChoiceItems(priorityArray, priorityTypeE.getCode() - 1, (dialog, which) -> {
-            priorityTypeE = PriorityTypeE.getByCode(which + 1);
+        builder.setSingleChoiceItems(priorityArray, originalPriorityTypeE.getCode() - 1, (dialog, which) -> {
+            PriorityTypeE priorityTypeE = PriorityTypeE.getByCode(which + 1);
             if (priorityTypeE == null) {
                 Log.e(TAG, "handlePrioritySet: 优先级设置错误");
                 priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
             }
-            taskDetail.getTaskPriorityInfo().setImportant(priorityTypeE.isImportant());
-            taskDetail.getTaskPriorityInfo().setUrgent(priorityTypeE.isUrgent());
+            taskDetail.setPriorityType(priorityTypeE);
             updatePriorityViewUI();
             dialog.dismiss();
         });
@@ -289,9 +287,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     protected void updatePriorityViewUI() {
+        PriorityTypeE priorityTypeE = taskDetail.getPriorityType();
         if (priorityTypeE == null) {
             priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
         }
+        // todo
         ColorStateList colorStateList = MainApplication.getPriorityTextColor(priorityTypeE);
         priorityTextView.setText(priorityTypeE.getDesc());
         priorityTextView.setTextColor(colorStateList);

@@ -226,8 +226,17 @@ public class TaskDetail {
         return taskPriorityInfo;
     }
 
-    public void setTaskPriorityInfo(TaskPriorityInfoResp taskPriorityInfo) {
-        this.taskPriorityInfo = taskPriorityInfo;
+    public PriorityTypeE getPriorityType() {
+        PriorityTypeE priorityTypeE = PriorityTypeE.getBy(this.taskPriorityInfo.getUrgent(), this.taskPriorityInfo.getImportant());
+        if (priorityTypeE == null) {
+            return PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
+        }
+        return priorityTypeE;
+    }
+
+    public void setPriorityType(PriorityTypeE priorityTypeE) {
+        this.taskPriorityInfo.setUrgent(priorityTypeE.isUrgent());
+        this.taskPriorityInfo.setImportant(priorityTypeE.isImportant());
     }
 
     public TaskTimeInfoResp getTaskTimeInfo() {
