@@ -164,8 +164,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         // 设置备注和描述
         this.updateDescriptionUI();
 
+        // 设置删除
+        deleteImageView.setOnClickListener(this::handleDeleteImageView);
+
         // 隐藏底部
-        bottomCardView.setVisibility(View.GONE);
+        bottomCardView.setVisibility(View.INVISIBLE);
 
         // 在输入法弹出时调整窗口的大小
         Dialog dialog = getDialog();
@@ -406,6 +409,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 editTextMultiLine.setText(description);
             }
         });
+    }
+
+    protected void handleDeleteImageView(View view) {
+
     }
 
     private void createNewTask(TaskCreateReq taskCreateReq) {
