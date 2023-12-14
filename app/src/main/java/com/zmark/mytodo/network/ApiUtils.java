@@ -1,6 +1,11 @@
 package com.zmark.mytodo.network;
 
+import static com.zmark.mytodo.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.invariant.Msg.SERVER_INTERNAL_ERROR;
+
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -44,6 +49,13 @@ public class ApiUtils {
         void onServerInternalError();
     }
 
+    public interface SimpleCallbacks<T> {
+        /**
+         * 请求成功，且业务逻辑成功的回调
+         */
+        void onSuccess(T data);
+    }
+
     public static <T> void doRequest(@NonNull Call<Result<T>> call, @NonNull Callbacks<T> callbacks) {
         call.enqueue(new Callback<Result<T>>() {
             @Override
@@ -54,7 +66,7 @@ public class ApiUtils {
                         callbacks.onServerInternalError();
                         return;
                     }
-                    if (result.getCode() == null || result.getCode() != ResultCode.SUCCESS.getCode()) {
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()) {
                         callbacks.onFailure(result.getCode(), result.getMsg());
                         return;
                     }
@@ -65,6 +77,36 @@ public class ApiUtils {
             @Override
             public void onFailure(@NonNull Call<Result<T>> call, @NonNull Throwable t) {
                 callbacks.onClientRequestError(t);
+            }
+        });
+    }
+
+    public static <T> void doRequest(@NonNull Call<Result<T>> call, String TAG, Context context,
+                                     @NonNull SimpleCallbacks<T> callbacks) {
+        call.enqueue(new Callback<Result<T>>() {
+            @Override
+            public void onResponse(@NonNull Call<Result<T>> call, @NonNull Response<Result<T>> response) {
+                if (response.isSuccessful()) {
+                    Result<T> result = response.body();
+                    if (result == null) {
+                        Toast.makeText(context, SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()) {
+                        Integer code = result.getCode();
+                        String msg = result.getMsg();
+                        Log.w(TAG, "onFailure: " + code + " " + msg);
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    callbacks.onSuccess(result.getObject());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Result<T>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onClientRequestError: ", t);
+                Toast.makeText(context, CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
     }
