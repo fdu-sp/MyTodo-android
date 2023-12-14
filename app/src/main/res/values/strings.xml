@@ -62,4 +62,5 @@
     <string name="add_title">输入标题</string>
     <string name="no_repetition">不重复</string>
     <string name="add_tag">添加标签</string>
+    <string name="drag_handle">拖动手柄</string>
 </resources>

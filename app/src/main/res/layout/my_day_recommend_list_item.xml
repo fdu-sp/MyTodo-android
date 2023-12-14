@@ -1,48 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white">
+    android:padding="20dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/recommendListTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:padding="3dp"
+        android:textColor="@color/black"
+        android:text="@string/title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recommendListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/my_day_recommend_task_item" />
+
+    <LinearLayout
+        android:id="@+id/noTaskMsgView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/recommendListTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:shadowColor="@color/wheat"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="3"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:padding="3dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recommendListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:id="@+id/noTaskMsgView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_tasks_here"
-                android:textSize="20sp" />
-        </LinearLayout>
+            android:text="@string/no_tasks_here"
+            android:textSize="20sp" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

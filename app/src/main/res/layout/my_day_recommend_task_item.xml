@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#FFFFFF">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +32,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/tasks" />
 
             <!-- 第二行，其他信息 -->
             <LinearLayout
@@ -55,14 +54,18 @@
                         android:id="@+id/tagLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/gray"
+                        android:text="@string/tag" />
 
                     <TextView
                         android:id="@+id/dueDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/black"
+                        android:text="@string/due_date" />
                 </LinearLayout>
 
                 <!-- 右侧，循环图标 -->
@@ -92,4 +95,10 @@
                 android:contentDescription="@string/add_to_my_day" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+    <!-- Bottom border view -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_gravity="bottom" />
+</LinearLayout>

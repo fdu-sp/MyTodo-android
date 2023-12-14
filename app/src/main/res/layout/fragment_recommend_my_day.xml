@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <!-- Drag handle -->
+    <ImageView
+        android:id="@+id/dragHandle"
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/grey"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/drag_handle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recommendListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/my_day_recommend_list_item" />
 
 </LinearLayout>
