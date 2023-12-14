@@ -27,6 +27,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainApplication extends Application {
+    public static final Long DEFAULT_LIST_ID = 1L;
+    public static final Long DEFAULT_GROUP_ID = 1L;
+    public static final String DEFAULT_LIST_NAME = "默认清单";
+    public static final String DEFAULT_GROUP_NAME = "默认分组";
     private static final String TAG = "MainApplication";
     /**
      * 优先级相关的颜色

@@ -122,6 +122,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (taskDetail.getTaskListId() == null) {
+            taskDetail.setTaskListName(MainApplication.DEFAULT_LIST_NAME);
+            taskDetail.setTaskListId(MainApplication.DEFAULT_LIST_ID);
+        }
     }
 
     @Override
@@ -233,6 +237,10 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         String description = Optional.of(editTextMultiLine.getText().toString()).orElse("");
         taskDetail.setTitle(title);
         taskDetail.getTaskContentInfo().setDescription(description);
+        if (taskDetail.getTaskListId() == null) {
+            taskDetail.setTaskListName(MainApplication.DEFAULT_LIST_NAME);
+            taskDetail.setTaskListId(MainApplication.DEFAULT_LIST_ID);
+        }
         // 执行添加待办事项的操作
         TaskCreateReq createReq = taskDetail.toTaskCreateReq();
         this.createNewTask(createReq);

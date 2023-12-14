@@ -1,5 +1,6 @@
 package com.zmark.mytodo.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +60,9 @@ public class HomeFragment extends Fragment {
         // 注册顶部菜单
         this.registerTopMenu();
         // 注册上部视图的点击事件
-        this.registerClickListener(view);
+        this.registerTopContentClickListener(view);
+        // 注册任务创建事件
+        this.registerOnTaskCreateListener();
         // 获取分组数据并更新UI
         this.fetchDataAndUpdateUI();
     }
@@ -74,7 +77,7 @@ public class HomeFragment extends Fragment {
         containerView = view.findViewById(R.id.taskGroupRecyclerView);
     }
 
-    private void registerClickListener(View view) {
+    private void registerTopContentClickListener(View view) {
         // 注册上部视图的点击事件
         view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToFragment(ListDetailFragment.MyDayInstance()));
         // todo more
@@ -82,6 +85,28 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.fourQuadrantsItem).setOnClickListener(v -> navigateToFragment(new QuadrantViewFragment()));
 //        view.findViewById(R.id.countdownItem).setOnClickListener(v -> navigateToFragment(new CountdownFragment()));
     }
+
+    private void registerOnTaskCreateListener() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.e(TAG, "registerTaskCreateListener: activity is null");
+            return;
+        }
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setOnTaskCreateListener(taskDetail -> {
+            for (TaskGroup taskGroup : taskGroups) {
+                List<TaskListSimple> taskListSimples = taskGroup.getTaskListSimpleList();
+                for (TaskListSimple taskListSimple : taskListSimples) {
+                    if (taskListSimple.getId().equals(taskDetail.getTaskListId())) {
+                        taskListSimple.setCount(taskListSimple.getCount() + 1);
+                        updateUI();
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
 
     private void fetchDataAndUpdateUI() {
         TaskGroupService taskGroupService = MainApplication.getTaskGroupService();
