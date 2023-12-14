@@ -53,11 +53,12 @@ public class MainActivity extends AppCompatActivity {
     private final Map<Integer, NavFragmentFactory> navFragmentFactoryMap = new HashMap<>();
 
     private AddTaskBottomSheetFragment.OnTaskCreateListener onTaskCreateListener;
-
-    private TextView navTopTitleView;
-    private BottomNavigationView bottomNavigation;
     private ClickListener onRightIconClickListener;
+
+    private ImageView leftIcon;
+    private TextView navTopTitleView;
     private ImageView rightIcon;
+    private BottomNavigationView bottomNavigation;
 
     private final List<TaskGroup> taskGroups = new ArrayList<>();
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.findViews();
         // 注册顶部导航栏
         this.registerTopNavigations();
         // 注册底部导航栏
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
+
     /**
      * 导航至某个页面
      */
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         // 添加到回退栈
         fragmentTransaction.addToBackStack(null);
+//        this.registerTopLeftAsBackToHome();
         // 提交事务
         fragmentTransaction.commit();
     }
@@ -121,15 +125,38 @@ public class MainActivity extends AppCompatActivity {
         this.onTaskCreateListener = listener;
     }
 
+    private void findViews() {
+        this.leftIcon = findViewById(R.id.icon_left);
+        this.navTopTitleView = findViewById(R.id.nav_top_title);
+        this.rightIcon = findViewById(R.id.icon_right);
+        this.bottomNavigation = findViewById(R.id.bottom_navigation);
+    }
+
     private void registerTopNavigations() {
         // 隐藏默认的ActionBar
         Objects.requireNonNull(getSupportActionBar()).hide();
 //        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 //        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
-        ImageView leftIcon = findViewById(R.id.icon_left);
-        rightIcon = findViewById(R.id.icon_right);
-        navTopTitleView = findViewById(R.id.nav_top_title);
 
+        // 注册左侧图标的点击事件 -- 打开左侧抽屉菜单
+        this.registerTopLeftAsMenu();
+
+        // 设置右侧图标的点击事件
+        rightIcon.setOnClickListener(view -> {
+            if (this.onRightIconClickListener != null) {
+                this.onRightIconClickListener.onRightIconClick(rightIcon);
+            } else {
+                openPopupMenu();
+            }
+        });
+    }
+
+    /**
+     * 设置左侧图标的点击事件 -- 打开左侧抽屉菜单设置左侧图标的点击事件 -- 打开左侧抽屉菜单
+     */
+    private void registerTopLeftAsMenu() {
+        leftIcon = findViewById(R.id.icon_left);
+        leftIcon.setImageResource(R.drawable.ic_top_menu_left);
         // 设置左侧图标的点击事件 -- 打开左侧抽屉菜单
         leftIcon.setOnClickListener(view -> openLeftDrawer());
 
@@ -140,14 +167,19 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
         params.width = (int) (screenWidth * 0.85);
         navigationView.setLayoutParams(params);
+    }
 
-        // 设置右侧图标的点击事件
-        rightIcon.setOnClickListener(view -> {
-            if (this.onRightIconClickListener != null) {
-                this.onRightIconClickListener.onRightIconClick(rightIcon);
-            } else {
-                openPopupMenu();
-            }
+    /**
+     * 设置左侧图标的点击事件 -- 返回上一个Fragment
+     *  todo 这个方案也有问题
+     */
+    private void registerTopLeftAsBackToHome() {
+        // 设置左侧图标为返回
+        leftIcon.setImageResource(R.drawable.ic_arrow_left);
+        leftIcon.setOnClickListener(view -> {
+            this.changeNavFragmentTo(R.id.navigation_home);
+            // 重新设置左侧图标的点击事件 -- 打开左侧抽屉菜单
+            this.registerTopLeftAsMenu();
         });
     }
 
