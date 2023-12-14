@@ -278,6 +278,8 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 Log.e(TAG, "handlePrioritySet: 优先级设置错误");
                 priorityTypeE = PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT;
             }
+            taskDetail.getTaskPriorityInfo().setImportant(priorityTypeE.isImportant());
+            taskDetail.getTaskPriorityInfo().setUrgent(priorityTypeE.isUrgent());
             updatePriorityViewUI();
             dialog.dismiss();
         });
