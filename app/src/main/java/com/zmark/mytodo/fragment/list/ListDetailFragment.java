@@ -276,11 +276,14 @@ public class ListDetailFragment extends Fragment {
     private void updateUI() {
         requireActivity().runOnUiThread(() -> {
             try {
+                Log.d(TAG, "updateUI: " + todoList.size());
                 if (this.todoList == null || this.todoList.isEmpty()) {
                     noTaskMsgView.setVisibility(View.VISIBLE);
+                    todoRecyclerView.setVisibility(View.GONE);
                     return;
                 }
                 noTaskMsgView.setVisibility(View.GONE);
+                todoRecyclerView.setVisibility(View.VISIBLE);
                 // 创建RecyclerView的Adapter
                 TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoList);
                 taskSimpleAdapter.setOnTaskContentClickListener(this::openTaskDetail);
@@ -326,6 +329,26 @@ public class ListDetailFragment extends Fragment {
                                 todo.setCompleted(taskDetail.getCompleted());
                             }
                         });
+                        sortData(TodoItemComparators.getComparator(sortType));
+                        updateUI();
+                    });
+                    taskDetailBottomSheetFragment.setOnTaskUpdateListener(taskDetail -> {
+                        TaskSimple todo = null;
+                        for (int i = 0; i < todoList.size(); i++) {
+                            if (todoList.get(i).getId().equals(taskDetail.getId())) {
+                                todo = todoList.get(i);
+                                break;
+                            }
+                        }
+                        if (todo == null) {
+                            todoList.add(new TaskSimple(taskDetail));
+                        } else if (todo.getId().equals(taskDetail.getId())) {
+                            todo.updateByTaskDetail(taskDetail);
+                            if (isMyDay && !taskDetail.isInMyDay()) {
+                                todoList.remove(todo);
+                            }
+                        }
+                        sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     });
                     taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());

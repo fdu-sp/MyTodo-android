@@ -1,12 +1,18 @@
 package com.zmark.mytodo.model.task;
 
+import android.util.Log;
+
+import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
 import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TaskSimple {
+    private static final String TAG = "TaskSimple";
     private Long id;
     private String title;
     private String description;
@@ -59,6 +65,41 @@ public class TaskSimple {
         this.tags = resp.getTags();
         this.createTime = resp.getCreateTime();
         this.updateTime = resp.getUpdateTime();
+    }
+
+    public TaskSimple(TaskDetail taskDetail) {
+        this.id = taskDetail.getId();
+        this.title = taskDetail.getTitle();
+        this.description = taskDetail.getTaskContentInfo().getDescription();
+        this.dueDate = taskDetail.getTaskTimeInfo().getEndDate();
+        this.expectedDate = taskDetail.getTaskTimeInfo().getExpectedExecutionDate();
+        this.isImportant = taskDetail.getTaskPriorityInfo().getImportant();
+        this.isUrgent = taskDetail.getTaskPriorityInfo().getUrgent();
+        this.completed = taskDetail.getCompleted();
+        this.completedTime = taskDetail.getCompletedTime();
+        this.archived = taskDetail.getArchived();
+        this.tags = taskDetail.getTags().stream().map(TagSimple::toTagSimpleResp).collect(Collectors.toList());
+        this.createTime = taskDetail.getCreateTime();
+        this.updateTime = taskDetail.getUpdateTime();
+    }
+
+    public void updateByTaskDetail(TaskDetail taskDetail) {
+        if (!Objects.equals(this.id, taskDetail.getId())) {
+            Log.w("TAG", "updateByTaskDetail: id不一致");
+            return;
+        }
+        this.title = taskDetail.getTitle();
+        this.description = taskDetail.getTaskContentInfo().getDescription();
+        this.dueDate = taskDetail.getTaskTimeInfo().getEndDate();
+        this.expectedDate = taskDetail.getTaskTimeInfo().getExpectedExecutionDate();
+        this.isImportant = taskDetail.getTaskPriorityInfo().getImportant();
+        this.isUrgent = taskDetail.getTaskPriorityInfo().getUrgent();
+        this.completed = taskDetail.getCompleted();
+        this.completedTime = taskDetail.getCompletedTime();
+        this.archived = taskDetail.getArchived();
+        this.tags = taskDetail.getTags().stream().map(TagSimple::toTagSimpleResp).collect(Collectors.toList());
+        this.createTime = taskDetail.getCreateTime();
+        this.updateTime = taskDetail.getUpdateTime();
     }
 
     public static List<TaskSimple> from(List<TaskSimpleResp> taskSimpleRespList) {
