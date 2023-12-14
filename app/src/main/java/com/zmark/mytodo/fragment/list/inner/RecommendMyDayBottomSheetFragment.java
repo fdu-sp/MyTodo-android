@@ -18,11 +18,11 @@ import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.myday.RecommendTaskList;
 import com.zmark.mytodo.model.myday.RecommendTaskListAdapter;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.bo.list.resp.RecommendMyDayResp;
-import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
-import com.zmark.mytodo.service.result.ResultCode;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.bo.list.resp.RecommendMyDayResp;
+import com.zmark.mytodo.network.invariant.Msg;
+import com.zmark.mytodo.network.result.Result;
+import com.zmark.mytodo.network.result.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;

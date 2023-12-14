@@ -17,10 +17,10 @@ import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.model.tag.TagSimpleListAdapter;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
-import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.bo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.network.invariant.Msg;
+import com.zmark.mytodo.network.result.Result;
 
 import java.util.ArrayList;
 import java.util.List;

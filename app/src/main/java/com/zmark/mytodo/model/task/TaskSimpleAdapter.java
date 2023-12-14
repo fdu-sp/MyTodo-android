@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
-import com.zmark.mytodo.service.impl.TaskServiceImpl;
+import com.zmark.mytodo.network.impl.TaskServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

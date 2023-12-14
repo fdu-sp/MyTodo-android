@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
-import com.zmark.mytodo.service.invariant.Msg;
+import com.zmark.mytodo.network.invariant.Msg;
 
 import java.util.HashMap;
 import java.util.Map;

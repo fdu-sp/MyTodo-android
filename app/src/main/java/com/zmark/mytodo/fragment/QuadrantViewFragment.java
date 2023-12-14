@@ -31,10 +31,10 @@ import com.zmark.mytodo.model.quadrant.FourQuadrant;
 import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.model.task.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.task.TaskSimple;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.bo.quadrant.resp.FourQuadrantDetailResp;
-import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.bo.quadrant.resp.FourQuadrantDetailResp;
+import com.zmark.mytodo.network.invariant.Msg;
+import com.zmark.mytodo.network.result.Result;
 
 import java.util.ArrayList;
 import java.util.Comparator;

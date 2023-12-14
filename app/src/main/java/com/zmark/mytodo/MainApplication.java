@@ -10,13 +10,13 @@ import androidx.core.content.ContextCompat;
 
 import com.zmark.mytodo.config.Config;
 import com.zmark.mytodo.model.task.PriorityTypeE;
-import com.zmark.mytodo.service.api.FourQuadrantService;
-import com.zmark.mytodo.service.api.HelloService;
-import com.zmark.mytodo.service.api.MyDayTaskService;
-import com.zmark.mytodo.service.api.TagService;
-import com.zmark.mytodo.service.api.TaskGroupService;
-import com.zmark.mytodo.service.api.TaskListService;
-import com.zmark.mytodo.service.api.TaskService;
+import com.zmark.mytodo.network.api.FourQuadrantService;
+import com.zmark.mytodo.network.api.HelloService;
+import com.zmark.mytodo.network.api.MyDayTaskService;
+import com.zmark.mytodo.network.api.TagService;
+import com.zmark.mytodo.network.api.TaskGroupService;
+import com.zmark.mytodo.network.api.TaskListService;
+import com.zmark.mytodo.network.api.TaskService;
 
 import java.util.HashMap;
 import java.util.Map;

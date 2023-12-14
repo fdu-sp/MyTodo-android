@@ -1,6 +1,6 @@
 package com.zmark.mytodo.model.group;
 
-import com.zmark.mytodo.service.bo.list.resp.TaskListSimpleResp;
+import com.zmark.mytodo.network.bo.list.resp.TaskListSimpleResp;
 
 /**
  * 清单，包含多个task

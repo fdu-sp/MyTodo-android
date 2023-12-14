@@ -1,7 +1,7 @@
 package com.zmark.mytodo.fragment;
 
-import static com.zmark.mytodo.service.invariant.Msg.CLIENT_REQUEST_ERROR;
-import static com.zmark.mytodo.service.invariant.Msg.SERVER_INTERNAL_ERROR;
+import static com.zmark.mytodo.network.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.network.invariant.Msg.SERVER_INTERNAL_ERROR;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +16,11 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.model.task.TaskDetail;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
-import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
-import com.zmark.mytodo.service.impl.TaskServiceImpl;
-import com.zmark.mytodo.service.result.Result;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
+import com.zmark.mytodo.network.impl.MyDayTaskServiceImpl;
+import com.zmark.mytodo.network.impl.TaskServiceImpl;
+import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.utils.TimeUtils;
 
 import java.util.Optional;

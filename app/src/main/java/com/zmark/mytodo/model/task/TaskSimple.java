@@ -3,8 +3,8 @@ package com.zmark.mytodo.model.task;
 import android.util.Log;
 
 import com.zmark.mytodo.model.tag.TagSimple;
-import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
-import com.zmark.mytodo.service.bo.task.resp.TaskSimpleResp;
+import com.zmark.mytodo.network.bo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.network.bo.task.resp.TaskSimpleResp;
 
 import java.util.ArrayList;
 import java.util.List;

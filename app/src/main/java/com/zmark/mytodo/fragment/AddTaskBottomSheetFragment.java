@@ -29,12 +29,12 @@ import com.zmark.mytodo.fragment.common.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.model.tag.TagSimple;
 import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.model.task.TaskDetail;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.api.TaskService;
-import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
-import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
-import com.zmark.mytodo.service.result.ResultCode;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.api.TaskService;
+import com.zmark.mytodo.network.bo.task.req.TaskCreateReq;
+import com.zmark.mytodo.network.invariant.Msg;
+import com.zmark.mytodo.network.result.Result;
+import com.zmark.mytodo.network.result.ResultCode;
 import com.zmark.mytodo.utils.TimeUtils;
 
 import java.util.List;

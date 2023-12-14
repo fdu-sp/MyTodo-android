@@ -21,12 +21,12 @@ import com.zmark.mytodo.fragment.list.ListDetailFragment;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.api.TaskGroupService;
-import com.zmark.mytodo.service.bo.group.resp.TaskGroupSimpleResp;
-import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
-import com.zmark.mytodo.service.result.ResultCode;
+import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.api.TaskGroupService;
+import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
+import com.zmark.mytodo.network.invariant.Msg;
+import com.zmark.mytodo.network.result.Result;
+import com.zmark.mytodo.network.result.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;

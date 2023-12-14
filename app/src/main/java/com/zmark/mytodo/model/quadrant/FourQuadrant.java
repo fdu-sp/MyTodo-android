@@ -2,7 +2,7 @@ package com.zmark.mytodo.model.quadrant;
 
 
 import com.zmark.mytodo.model.group.TaskListSimple;
-import com.zmark.mytodo.service.bo.quadrant.resp.FourQuadrantDetailResp;
+import com.zmark.mytodo.network.bo.quadrant.resp.FourQuadrantDetailResp;
 
 /**
  * @author ZMark

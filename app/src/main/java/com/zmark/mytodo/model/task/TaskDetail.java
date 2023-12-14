@@ -1,12 +1,12 @@
 package com.zmark.mytodo.model.task;
 
 import com.zmark.mytodo.model.tag.TagSimple;
-import com.zmark.mytodo.service.bo.task.req.TaskCreateReq;
-import com.zmark.mytodo.service.bo.task.req.TaskUpdateReq;
-import com.zmark.mytodo.service.bo.task.resp.TaskDetailResp;
-import com.zmark.mytodo.service.bo.task.resp.inner.TaskContentInfoResp;
-import com.zmark.mytodo.service.bo.task.resp.inner.TaskPriorityInfoResp;
-import com.zmark.mytodo.service.bo.task.resp.inner.TaskTimeInfoResp;
+import com.zmark.mytodo.network.bo.task.req.TaskCreateReq;
+import com.zmark.mytodo.network.bo.task.req.TaskUpdateReq;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
+import com.zmark.mytodo.network.bo.task.resp.inner.TaskContentInfoResp;
+import com.zmark.mytodo.network.bo.task.resp.inner.TaskPriorityInfoResp;
+import com.zmark.mytodo.network.bo.task.resp.inner.TaskTimeInfoResp;
 
 import java.util.ArrayList;
 import java.util.List;

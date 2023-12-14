@@ -1,7 +1,7 @@
 package com.zmark.mytodo.model.myday;
 
-import static com.zmark.mytodo.service.invariant.Msg.CLIENT_REQUEST_ERROR;
-import static com.zmark.mytodo.service.invariant.Msg.SERVER_INTERNAL_ERROR;
+import static com.zmark.mytodo.network.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.network.invariant.Msg.SERVER_INTERNAL_ERROR;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.task.TaskSimple;
-import com.zmark.mytodo.service.impl.MyDayTaskServiceImpl;
-import com.zmark.mytodo.service.impl.TaskServiceImpl;
+import com.zmark.mytodo.network.impl.MyDayTaskServiceImpl;
+import com.zmark.mytodo.network.impl.TaskServiceImpl;
 
 import java.util.List;
 

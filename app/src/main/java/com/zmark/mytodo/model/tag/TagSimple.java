@@ -1,6 +1,6 @@
 package com.zmark.mytodo.model.tag;
 
-import com.zmark.mytodo.service.bo.tag.resp.TagSimpleResp;
+import com.zmark.mytodo.network.bo.tag.resp.TagSimpleResp;
 
 public class TagSimple {
     private Long id;
