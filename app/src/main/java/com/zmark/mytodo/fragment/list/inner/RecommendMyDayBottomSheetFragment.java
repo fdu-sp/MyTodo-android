@@ -15,12 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.fragment.TaskDetailBottomSheetFragment;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.myday.RecommendTaskList;
 import com.zmark.mytodo.model.myday.RecommendTaskListAdapter;
+import com.zmark.mytodo.model.task.TaskDetail;
+import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.api.TaskService;
 import com.zmark.mytodo.network.bo.list.resp.RecommendMyDayResp;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
@@ -98,11 +103,58 @@ public class RecommendMyDayBottomSheetFragment extends BottomSheetDialogFragment
                 RecommendTaskListAdapter recommendTaskListAdapter
                         = new RecommendTaskListAdapter(recommendTaskLists);
                 recommendTaskListAdapter.setOnTaskAddedListener(onTaskSimpleAddedListener);
+                recommendTaskListAdapter.setOnTaskContentClickListener(this::openTaskDetail);
                 recommendListView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 recommendListView.setAdapter(recommendTaskListAdapter);
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openTaskDetail(TaskSimple taskSimple) {
+        TaskService taskService = MainApplication.getTaskService();
+        taskService.getDetailInfoById(taskSimple.getId()).enqueue(new retrofit2.Callback<Result<TaskDetailResp>>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<Result<TaskDetailResp>> call,
+                                   @NonNull retrofit2.Response<Result<TaskDetailResp>> response) {
+                if (response.isSuccessful()) {
+                    Result<TaskDetailResp> result = response.body();
+                    if (result == null) {
+                        Log.w(TAG, "result is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()) {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                        Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailResp taskDetailResp = result.getObject();
+                    if (taskDetailResp == null) {
+                        Log.w(TAG, "taskDetail is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailBottomSheetFragment taskDetailBottomSheetFragment = new TaskDetailBottomSheetFragment(new TaskDetail(taskDetailResp));
+                    taskDetailBottomSheetFragment.setOnTaskCompleteStateListener(taskDetail -> {
+                        fetchAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.setOnTaskUpdateListener(taskDetail -> {
+                        fetchAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.setOnTaskDeleteListener(taskDetail -> {
+                        fetchAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<Result<TaskDetailResp>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
     }

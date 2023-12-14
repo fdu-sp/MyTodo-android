@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskContentClickListener;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.network.impl.MyDayTaskServiceImpl;
@@ -31,8 +33,14 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
 
     private OnTaskSimpleAddedListener onTaskSimpleAddedListener;
 
+    private OnTaskContentClickListener onTaskContentClickListener;
+
     public void setOnTaskAddedListener(OnTaskSimpleAddedListener listener) {
         this.onTaskSimpleAddedListener = listener;
+    }
+
+    public void setOnTaskContentClickListener(OnTaskContentClickListener listener) {
+        this.onTaskContentClickListener = listener;
     }
 
     public RecommendTaskAdapter() {
@@ -66,6 +74,7 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public CheckBox checkBox;
+        public LinearLayout taskContentLayout;
         public TextView taskTitleTextView;
         public TextView tagsTextView;
         public TextView dueDateTextView;
@@ -75,6 +84,7 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkBox);
+            taskContentLayout = itemView.findViewById(R.id.taskContentLayout);
             taskTitleTextView = itemView.findViewById(R.id.todoTitle);
             tagsTextView = itemView.findViewById(R.id.tagLayout);
             dueDateTextView = itemView.findViewById(R.id.dueDate);
@@ -87,6 +97,12 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                 taskTitleTextView.setText(taskSimple.getTitle());
                 // 设置CheckBox的选中状态和事件
                 checkBox.setOnCheckedChangeListener(null);
+                // 设置任务内容点击事件
+                taskContentLayout.setOnClickListener(v -> {
+                    if (onTaskContentClickListener != null) {
+                        onTaskContentClickListener.onTaskContentClick(taskSimple);
+                    }
+                });
                 // 使用 setTag 区分不同的 CheckBox
                 checkBox.setTag(taskSimple.getId());
                 checkBox.setChecked(taskSimple.getCompleted());

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskContentClickListener;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 
 import java.util.List;
@@ -22,8 +23,14 @@ public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTask
 
     private OnTaskSimpleAddedListener onTaskSimpleAddedListener;
 
+    private OnTaskContentClickListener onTaskContentClickListener;
+
     public void setOnTaskAddedListener(OnTaskSimpleAddedListener listener) {
         this.onTaskSimpleAddedListener = listener;
+    }
+
+    public void setOnTaskContentClickListener(OnTaskContentClickListener listener) {
+        this.onTaskContentClickListener = listener;
     }
 
     public RecommendTaskListAdapter(List<RecommendTaskList> recommendTaskLists) {
@@ -69,6 +76,11 @@ public class RecommendTaskListAdapter extends RecyclerView.Adapter<RecommendTask
                 bind(recommendTaskLists.get(getAdapterPosition()));
                 if (onTaskSimpleAddedListener != null) {
                     onTaskSimpleAddedListener.onTaskAdded(taskSimple);
+                }
+            });
+            taskAdapter.setOnTaskContentClickListener(taskSimple -> {
+                if (onTaskContentClickListener != null) {
+                    onTaskContentClickListener.onTaskContentClick(taskSimple);
                 }
             });
             recommendListView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
