@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.model.group.TaskListSimple;
@@ -154,9 +155,7 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
         this.updateTimeCreateUI();
 
         // 设置删除
-        this.deleteImageView.setOnClickListener(v -> {
-            // todo
-        });
+        this.deleteImageView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -196,6 +195,48 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
             }
         });
 
+    }
+
+    @Override
+    protected void handleDeleteImageView(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("确认删除");
+        builder.setMessage("你确定要删除吗？");
+        // 添加确认按钮
+        builder.setPositiveButton("是", (dialog, which) -> {
+            Call<Result<String>> call = MainApplication.getTaskService().deleteTaskById(taskDetail.getId());
+            ApiUtils.doRequest(call, new ApiUtils.Callbacks<String>() {
+                @Override
+                public void onSuccess(String data) {
+                    Log.i(TAG, "onSuccess: " + data);
+                    Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                    dismiss();
+                }
+
+                @Override
+                public void onFailure(Integer code, String msg) {
+                    Log.w(TAG, "onFailure: " + code + " " + msg);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onClientRequestError(Throwable t) {
+                    Log.e(TAG, "onClientRequestError: ", t);
+                    Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onServerInternalError() {
+                    Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+        // 添加取消按钮
+        builder.setNegativeButton("否", (dialog, which) -> {
+            dialog.dismiss(); // 关闭对话框
+        });
+        // 创建并显示对话框
+        builder.create().show();
     }
 
     private void updateTimeCreateUI() {

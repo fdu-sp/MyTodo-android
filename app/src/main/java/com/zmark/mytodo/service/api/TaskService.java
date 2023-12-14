@@ -35,4 +35,7 @@ public interface TaskService {
 
     @POST("task/update")
     Call<Result<TaskDetailResp>> updateTask(@Body TaskUpdateReq taskUpdateReq);
+
+    @POST("task/delete/{task-id}")
+    Call<Result<String>> deleteTaskById(@Path("task-id") Long taskId);
 }
