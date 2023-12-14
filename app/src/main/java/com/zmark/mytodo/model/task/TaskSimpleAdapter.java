@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskContentClickListener;
 import com.zmark.mytodo.network.impl.TaskServiceImpl;
 
 import java.util.ArrayList;
@@ -22,10 +23,6 @@ import java.util.List;
 
 public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> {
     private static final String TAG = "TaskSimpleAdapter";
-
-    public interface OnTaskContentClickListener {
-        void onTaskContentClick(TaskSimple taskSimple);
-    }
 
     private OnTaskContentClickListener onTaskContentClickListener;
 
