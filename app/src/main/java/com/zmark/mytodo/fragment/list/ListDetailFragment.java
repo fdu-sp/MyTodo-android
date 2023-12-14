@@ -29,6 +29,7 @@ import com.zmark.mytodo.fragment.TaskDetailBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
+import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.model.task.TaskSimple;
@@ -37,7 +38,6 @@ import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskService;
 import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.bo.task.resp.TaskSimpleResp;
-import com.zmark.mytodo.network.invariant.Msg;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 

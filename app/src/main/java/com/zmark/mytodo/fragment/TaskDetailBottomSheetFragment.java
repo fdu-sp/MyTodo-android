@@ -1,7 +1,7 @@
 package com.zmark.mytodo.fragment;
 
-import static com.zmark.mytodo.network.invariant.Msg.CLIENT_REQUEST_ERROR;
-import static com.zmark.mytodo.network.invariant.Msg.SERVER_INTERNAL_ERROR;
+import static com.zmark.mytodo.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.invariant.Msg.SERVER_INTERNAL_ERROR;
 
 import android.os.Bundle;
 import android.util.Log;

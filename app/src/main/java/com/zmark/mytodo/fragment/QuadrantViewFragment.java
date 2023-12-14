@@ -27,13 +27,13 @@ import com.zmark.mytodo.comparator.task.TodoItemComparators;
 import com.zmark.mytodo.fragment.common.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
+import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
 import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.model.task.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.bo.quadrant.resp.FourQuadrantDetailResp;
-import com.zmark.mytodo.network.invariant.Msg;
 import com.zmark.mytodo.network.result.Result;
 
 import java.util.ArrayList;

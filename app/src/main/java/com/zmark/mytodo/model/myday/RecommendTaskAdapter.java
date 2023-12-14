@@ -1,7 +1,7 @@
 package com.zmark.mytodo.model.myday;
 
-import static com.zmark.mytodo.network.invariant.Msg.CLIENT_REQUEST_ERROR;
-import static com.zmark.mytodo.network.invariant.Msg.SERVER_INTERNAL_ERROR;
+import static com.zmark.mytodo.invariant.Msg.CLIENT_REQUEST_ERROR;
+import static com.zmark.mytodo.invariant.Msg.SERVER_INTERNAL_ERROR;
 
 import android.os.Handler;
 import android.os.Looper;

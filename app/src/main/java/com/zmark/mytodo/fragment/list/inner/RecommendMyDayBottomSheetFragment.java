@@ -16,11 +16,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
+import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.myday.RecommendTaskList;
 import com.zmark.mytodo.model.myday.RecommendTaskListAdapter;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.bo.list.resp.RecommendMyDayResp;
-import com.zmark.mytodo.network.invariant.Msg;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 

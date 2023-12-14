@@ -1,4 +1,4 @@
-package com.zmark.mytodo.network.invariant;
+package com.zmark.mytodo.invariant;
 
 public class Msg {
 

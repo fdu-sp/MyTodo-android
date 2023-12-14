@@ -16,12 +16,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnListClickListener;
+import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskGroupService;
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
-import com.zmark.mytodo.network.invariant.Msg;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
