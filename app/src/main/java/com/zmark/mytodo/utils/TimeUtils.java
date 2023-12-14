@@ -133,10 +133,25 @@ public class TimeUtils {
      * @param timestampStr 时间戳字符串 yyyy-MM-dd HH:mm:ss
      * @return HH:mm
      */
-    public static String getTimeStrFromTimeStamp(String timestampStr) {
+    public static String getFormattedTimeStrFromTimeStamp(String timestampStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             java.util.Date date = inputFormat.parse(timestampStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            return outputFormat.format(Objects.requireNonNull(date));
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+     * @param timeStr 时间字符串 HH:mm:ss
+     * @return HH:mm
+     */
+    public static String getFormattedTimeStrFromTimeStr(String timeStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            java.util.Date date = inputFormat.parse(timeStr);
             SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             return outputFormat.format(Objects.requireNonNull(date));
         } catch (Exception e) {

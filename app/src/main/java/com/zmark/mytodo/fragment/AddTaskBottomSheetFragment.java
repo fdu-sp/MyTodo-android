@@ -256,7 +256,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         requireActivity().runOnUiThread(() -> {
             if (reminderTimestamp != null) {
                 String formattedDateStr = TimeUtils.getFormattedDateStrFromTimeStamp(reminderTimestamp);
-                String timeStr = TimeUtils.getTimeStrFromTimeStamp(reminderTimestamp);
+                String timeStr = TimeUtils.getFormattedTimeStrFromTimeStamp(reminderTimestamp);
                 String reminderStr = "在 " + formattedDateStr + " " + timeStr + "时提醒我";
                 reminderTextView.setText(reminderStr);
                 reminderTextView.setTextColor(checkedColorStateList);
@@ -288,7 +288,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 String dueDateTimeStr =
                         TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(endDate))
                                 + " " + TimeUtils.getDayOfWeek(endDate)
-                                + " " + endTime + " 到期";
+                                + " " + TimeUtils.getFormattedTimeStrFromTimeStr(endTime) + " 到期";
                 Log.d(TAG, "updateDueDateTimeViewUI: " + dueDateTimeStr);
                 dueDateTextView.setText(dueDateTimeStr);
                 dueDateTextView.setTextColor(checkedColorStateList);
@@ -319,7 +319,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                 String expectedExecutionDateStr =
                         TimeUtils.getFormattedDateStr(TimeUtils.getDateFromStr(expectedExecutionDate))
                                 + " " + TimeUtils.getDayOfWeek(expectedExecutionDate)
-                                + " " + expectedExecutionStartPeriod + " 开始";
+                                + " " + TimeUtils.getFormattedTimeStrFromTimeStr(expectedExecutionStartPeriod) + " 开始";
                 Log.d(TAG, "updateExpectedExecutionViewUI: " + expectedExecutionDateStr);
                 expectedExecutionDateTextView.setText(expectedExecutionDateStr);
                 expectedExecutionDateTextView.setTextColor(checkedColorStateList);
