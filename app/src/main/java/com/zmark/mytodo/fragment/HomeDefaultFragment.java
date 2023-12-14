@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,19 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.fragment.common.AddGroupDialogFragment;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
+import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskGroupAdapter;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskGroupService;
+import com.zmark.mytodo.network.bo.group.req.TaskGroupCreateReq;
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,12 +45,14 @@ public class HomeDefaultFragment extends Fragment {
     private final static String TAG = "HomeDefaultFragment";
     private static final String NAV_TOP_TITLE = "主页";
     private RecyclerView containerView;
+    private Map<Integer, MenuItemHandler> menuHandlerMap;
     private List<TaskGroup> taskGroups;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.taskGroups = new ArrayList<>();
+        this.menuHandlerMap = new HashMap<>();
     }
 
     @Override
@@ -68,9 +76,50 @@ public class HomeDefaultFragment extends Fragment {
     }
 
     private void registerTopMenu() {
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
-        // todo  注册右侧菜单的点击事件
+        menuHandlerMap.put(R.id.addGroup, item -> this.handleAddGroup());
+        menuHandlerMap.put(R.id.addList, item -> this.handleAddList());
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
+            mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+        }
+    }
+
+    private void handleAddGroup() {
+        AddGroupDialogFragment dialogFragment = new AddGroupDialogFragment();
+        dialogFragment.setOnGroupCreatedListener(this::createGroup);
+        dialogFragment.show(getChildFragmentManager(), dialogFragment.getTag());
+    }
+
+
+    private void createGroup(String groupName, String description) {
+        TaskGroupCreateReq taskGroupCreateReq = new TaskGroupCreateReq(groupName, description);
+        Call<Result<TaskGroupSimpleResp>> call = MainApplication.getTaskGroupService().createNew(taskGroupCreateReq);
+        ApiUtils.doRequest(call, TAG, requireContext(),
+                data -> {
+                    TaskGroup taskGroup = TaskGroup.from(data);
+                    taskGroups.add(taskGroup);
+                    updateUI();
+                });
+    }
+
+    private void handleAddList() {
+
+    }
+
+    private void initPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+        // 替换为自定义的菜单资源
+        popupMenu.inflate(R.menu.menu_home_default);
+        // 设置菜单项的点击事件
+        popupMenu.setOnMenuItemClickListener(item -> {
+            MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
+            if (menuItemHandler != null) {
+                menuItemHandler.handle(item);
+            }
+            return true;
+        });
+        popupMenu.show();
     }
 
     private void findView(View view) {
