@@ -17,4 +17,10 @@ public class TaskListCreateReq {
     String description;
 
     Long taskGroupId;
+
+    public TaskListCreateReq(String listName, String description, Long taskGroupId) {
+        this.name = listName;
+        this.description = description;
+        this.taskGroupId = taskGroupId;
+    }
 }

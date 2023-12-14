@@ -1,5 +1,6 @@
 package com.zmark.mytodo.model.group;
 
+import com.zmark.mytodo.network.bo.list.resp.TaskListDetailResp;
 import com.zmark.mytodo.network.bo.list.resp.TaskListSimpleResp;
 
 /**
@@ -25,6 +26,16 @@ public class TaskListSimple {
         this.groupId = simpleResp.getGroupId();
         this.createTime = simpleResp.getCreateTime();
         this.updateTime = simpleResp.getUpdateTime();
+    }
+
+    public TaskListSimple(TaskListDetailResp taskListDetailResp) {
+        this.id = taskListDetailResp.getId();
+        this.name = taskListDetailResp.getName();
+        this.count = taskListDetailResp.getCount();
+        this.description = taskListDetailResp.getDescription();
+        this.groupId = taskListDetailResp.getGroupId();
+        this.createTime = taskListDetailResp.getCreateTime();
+        this.updateTime = taskListDetailResp.getUpdateTime();
     }
 
     public static TaskListSimple from(TaskListSimpleResp simpleResp) {

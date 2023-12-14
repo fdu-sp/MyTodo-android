@@ -19,6 +19,7 @@ import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.fragment.common.AddGroupDialogFragment;
+import com.zmark.mytodo.fragment.common.AddListDialogFragment;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.invariant.Msg;
@@ -29,6 +30,8 @@ import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskGroupService;
 import com.zmark.mytodo.network.bo.group.req.TaskGroupCreateReq;
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
+import com.zmark.mytodo.network.bo.list.req.TaskListCreateReq;
+import com.zmark.mytodo.network.bo.list.resp.TaskListDetailResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
@@ -104,8 +107,27 @@ public class HomeDefaultFragment extends Fragment {
     }
 
     private void handleAddList() {
-
+        AddListDialogFragment dialogFragment = new AddListDialogFragment(taskGroups);
+        dialogFragment.setOnListCreatedListener(this::createList);
+        dialogFragment.show(getChildFragmentManager(), dialogFragment.getTag());
     }
+
+    private void createList(String listName, String description, Long taskGroupId) {
+        TaskListCreateReq taskListCreateReq = new TaskListCreateReq(listName, description, taskGroupId);
+        Call<Result<TaskListDetailResp>> call = MainApplication.getTaskListService().createNewTaskList(taskListCreateReq);
+        ApiUtils.doRequest(call, TAG, requireContext(),
+                data -> {
+                    for (TaskGroup taskGroup : taskGroups) {
+                        if (taskGroup.getId().equals(taskGroupId)) {
+                            TaskListSimple taskListSimple = new TaskListSimple(data);
+                            taskGroup.getTaskListSimpleList().add(taskListSimple);
+                            updateUI();
+                            return;
+                        }
+                    }
+                });
+    }
+
 
     private void initPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), view);
