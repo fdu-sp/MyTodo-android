@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.handler.OnTaskContentClickListener;
 import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.result.Result;
@@ -28,6 +29,8 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
     private final Activity activity;
     private final List<TaskSimple> tasks;
     private final ColorStateList colorStateList;
+
+    private OnTaskContentClickListener onTaskContentClickListener;
 
     public interface OnTaskCompleteStateListener {
         void onTaskCompleteStateChanged(TaskSimple taskSimple);
@@ -44,6 +47,10 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
 
     public static void setOnTaskCompleteStateListener(OnTaskCompleteStateListener onTaskCompleteStateListener) {
         QuadrantTaskItemAdapter.onTaskCompleteStateListener = onTaskCompleteStateListener;
+    }
+
+    public void setOnTaskContentClickListener(OnTaskContentClickListener listener) {
+        this.onTaskContentClickListener = listener;
     }
 
     @NonNull
@@ -143,6 +150,11 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
             });
             this.taskCheckBox.setButtonTintList(colorStateList);
             this.taskTitleView.setText(task.getTitle());
+            this.taskTitleView.setOnClickListener(v -> {
+                if (onTaskContentClickListener != null) {
+                    onTaskContentClickListener.onTaskContentClick(task);
+                }
+            });
             this.taskCheckBox.setChecked(task.getCompleted());
         }
 

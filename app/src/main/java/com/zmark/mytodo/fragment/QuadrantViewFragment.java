@@ -31,10 +31,14 @@ import com.zmark.mytodo.invariant.Msg;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
 import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.model.task.QuadrantTaskItemAdapter;
+import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.network.ApiUtils;
+import com.zmark.mytodo.network.api.TaskService;
 import com.zmark.mytodo.network.bo.quadrant.resp.FourQuadrantDetailResp;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.result.Result;
+import com.zmark.mytodo.network.result.ResultCode;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -285,8 +289,55 @@ public class QuadrantViewFragment extends Fragment {
             textView.setVisibility(View.GONE);
             Activity activity = requireActivity();
             QuadrantTaskItemAdapter quadrantTaskItemAdapter = new QuadrantTaskItemAdapter(activity, tasks, colorStateList);
+            quadrantTaskItemAdapter.setOnTaskContentClickListener(this::openTaskDetail);
             recyclerView.setAdapter(quadrantTaskItemAdapter);
         }
+    }
+
+    private void openTaskDetail(TaskSimple taskSimple) {
+        TaskService taskService = MainApplication.getTaskService();
+        taskService.getDetailInfoById(taskSimple.getId()).enqueue(new retrofit2.Callback<Result<TaskDetailResp>>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<Result<TaskDetailResp>> call,
+                                   @NonNull retrofit2.Response<Result<TaskDetailResp>> response) {
+                if (response.isSuccessful()) {
+                    Result<TaskDetailResp> result = response.body();
+                    if (result == null) {
+                        Log.w(TAG, "result is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (result.getCode() != ResultCode.SUCCESS.getCode()) {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                        Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailResp taskDetailResp = result.getObject();
+                    if (taskDetailResp == null) {
+                        Log.w(TAG, "taskDetail is null");
+                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    TaskDetailBottomSheetFragment taskDetailBottomSheetFragment = new TaskDetailBottomSheetFragment(new TaskDetail(taskDetailResp));
+                    taskDetailBottomSheetFragment.setOnTaskCompleteStateListener(taskDetail -> {
+                        fetchDataAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.setOnTaskUpdateListener(taskDetail -> {
+                        fetchDataAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.setOnTaskDeleteListener(taskDetail -> {
+                        fetchDataAndUpdateUI();
+                    });
+                    taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<Result<TaskDetailResp>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
