@@ -94,11 +94,13 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
             // 显示标签
             String tagsString = todoItem.getTagString();
             if (!tagsString.isEmpty()) {
+                if (tagsString.length() >= 6) {
+                    tagsString = tagsString.substring(0, 6) + "...";
+                }
                 holder.tagsTextView.setText(tagsString);
             } else {
                 holder.tagsTextView.setVisibility(View.GONE);
             }
-
             // 显示到期时间
             holder.dueDateTextView.setText(todoItem.getDueDate());
 
