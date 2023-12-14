@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private AddTaskBottomSheetFragment.OnTaskCreateListener onTaskCreateListener;
 
     private TextView navTopTitleView;
+    private BottomNavigationView bottomNavigation;
     private ClickListener onRightIconClickListener;
     private ImageView rightIcon;
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         // 注册 FloatingActionButton
         this.registerFloatingActionButton();
         // 加载默认的Fragment
-        this.loadFragment(Objects.requireNonNull(this.navFragmentFactoryMap.get(R.id.navigation_home)).createFragment());
+        this.changeNavFragmentTo(R.id.navigation_home);
         // 获取欢迎信息
         this.fetchHelloMsg();
     }
@@ -156,16 +157,35 @@ public class MainActivity extends AppCompatActivity {
 //        navFragmentFactoryMap.put(R.id.navigation_calendar_view, CalendarViewFragment::new);
         navFragmentFactoryMap.put(R.id.navigation_four_quadrants_view, QuadrantViewFragment::new);
         // 设置底部导航的点击事件
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnItemSelectedListener(item -> {
             int menuItemId = item.getItemId();
-            if (navFragmentFactoryMap.containsKey(menuItemId)) {
-                loadFragment(getFragmentById(menuItemId));
-                return true;
-            } else {
-                return false;
-            }
+            changeNavFragmentTo(menuItemId);
+            return true;
         });
+    }
+
+    /**
+     * 通过底部导航栏加载Fragment
+     */
+    private void changeNavFragmentTo(Integer id) {
+        NavFragmentFactory fragmentFactory = navFragmentFactoryMap.get(id);
+        if (fragmentFactory != null) {
+            Fragment fragment = fragmentFactory.createFragment();
+            // 获取FragmentManager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            // 开启事务
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // 替换Fragment
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            // 提交事务
+            fragmentTransaction.commit();
+            // 清空回退栈
+            fragmentManager.popBackStackImmediate();
+        } else {
+            Log.e(TAG, "changeNavFragmentTo: fragmentFactory is null");
+            Toast.makeText(MainActivity.this, Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public Fragment getFragmentById(int id) {
@@ -269,13 +289,6 @@ public class MainActivity extends AppCompatActivity {
     private void openPopupMenu() {
         // TODO: 2021/4/25 打开设置菜单？
         Toast.makeText(MainActivity.this, "右侧图标被点击", Toast.LENGTH_SHORT).show();
-    }
-
-    private void loadFragment(Fragment fragment) {
-        this.setOnRightIconClickListener(null);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
     }
 
     private void fetchHelloMsg() {
