@@ -117,13 +117,18 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         View bottomSheetView = inflater.inflate(R.layout.fragment_task_detail, container, false);// 获取底部抽屉中的 EditText
         this.findViews(bottomSheetView);
 
-        this.taskListNameTextView.setText("默认清单");
-        this.backButton.setOnClickListener(v -> this.dismiss());
-        // 设置checkbox的事件和选中状态
-        this.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> taskDetail.setCompleted(isChecked));
-        this.checkBox.setChecked(taskDetail.getCompleted());
+        // 设置清单标题
+        this.updateTaskListView();
+
+        // 设置返回按钮
+        this.backButton.setOnClickListener(this::handleBackButtonClick);
+
+        // 设置checkbox
+        this.checkBox.setOnCheckedChangeListener(this::handleCheckBoxClick);
+        this.updateCheckBoxUI();
+
         // 设置任务标题
-        this.taskTitle.setText(taskDetail.getTitle());
+        this.updateTaskTitleUI();
 
         // 显示确认按钮
         confirmButton.setVisibility(View.VISIBLE);
@@ -177,6 +182,38 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
         return bottomSheetView;
+    }
+
+    protected void updateTaskListView() {
+        requireActivity().runOnUiThread(() -> {
+            taskListNameTextView.setText(taskDetail.getTaskListName());
+        });
+    }
+
+    /**
+     * 返回则关闭底部抽屉，舍弃用户的输入
+     */
+    protected void handleBackButtonClick(View view) {
+        // 处理用户点击返回按钮的逻辑
+        this.dismiss();
+    }
+
+    protected void handleCheckBoxClick(View view, boolean isChecked) {
+        // 处理用户点击checkbox的逻辑
+        taskDetail.setCompleted(!taskDetail.getCompleted());
+        this.updateCheckBoxUI();
+    }
+
+    protected void updateCheckBoxUI() {
+        requireActivity().runOnUiThread(() -> {
+            checkBox.setChecked(taskDetail.getCompleted());
+        });
+    }
+
+    protected void updateTaskTitleUI() {
+        requireActivity().runOnUiThread(() -> {
+            taskTitle.setText(taskDetail.getTitle());
+        });
     }
 
     protected void handleConfirmButtonClick(View view) {
@@ -365,6 +402,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
         String taskListName = taskDetail.getTaskListName();
         requireActivity().runOnUiThread(() -> {
             if (taskListId != null && taskListName != null) {
+                updateTaskListView();
                 listTextView.setText(taskListName);
                 listTextView.setTextColor(checkedColorStateList);
                 listImageView.setImageTintList(checkedColorStateList);
