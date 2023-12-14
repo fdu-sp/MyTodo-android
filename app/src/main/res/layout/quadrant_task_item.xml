@@ -10,7 +10,7 @@
     <CheckBox
         android:id="@+id/taskCheckBox"
         android:layout_width="35dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:contentDescription="@string/check_box" />
 
     <!-- 右侧，todoTitle -->
@@ -19,6 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:text="@string/tasks" />
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.zmark.mytodo.model.task;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
     private final static String TAG = "QuadrantTaskItemAdapter";
     private final Activity activity;
     private final List<TaskSimple> tasks;
+    private final ColorStateList colorStateList;
 
     public interface OnTaskCompleteStateListener {
         void onTaskCompleteStateChanged(TaskSimple taskSimple);
@@ -33,9 +35,11 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
 
     private static OnTaskCompleteStateListener onTaskCompleteStateListener;
 
-    public QuadrantTaskItemAdapter(@NonNull Activity activity, @NonNull List<TaskSimple> tasks) {
+    public QuadrantTaskItemAdapter(@NonNull Activity activity, @NonNull List<TaskSimple> tasks,
+                                   @NonNull ColorStateList colorStateList) {
         this.activity = activity;
         this.tasks = tasks;
+        this.colorStateList = colorStateList;
     }
 
     public static void setOnTaskCompleteStateListener(OnTaskCompleteStateListener onTaskCompleteStateListener) {
@@ -137,6 +141,7 @@ public class QuadrantTaskItemAdapter extends RecyclerView.Adapter<QuadrantTaskIt
                     });
                 }
             });
+            this.taskCheckBox.setButtonTintList(colorStateList);
             this.taskTitleView.setText(task.getTitle());
             this.taskCheckBox.setChecked(task.getCompleted());
         }

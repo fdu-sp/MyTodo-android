@@ -3,6 +3,7 @@ package com.zmark.mytodo.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.zmark.mytodo.fragment.common.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.model.quadrant.FourQuadrant;
+import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.model.task.QuadrantTaskItemAdapter;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.service.ApiUtils;
@@ -229,19 +231,23 @@ public class QuadrantViewFragment extends Fragment {
             setQuadrantAdapter(view, urgentImportantRecyclerView,
                     fourQuadrant.getUrgentAndImportant().getTitle(),
                     urgentImportantTasks,
-                    R.id.urgentImportantTitleTextView, R.id.urgentImportantEmptyTextView);
+                    R.id.urgentImportantTitleTextView, R.id.urgentImportantEmptyTextView,
+                    MainApplication.getPriorityTextColor(PriorityTypeE.URGENCY_IMPORTANT));
             setQuadrantAdapter(view, notUrgentImportantRecyclerView,
                     fourQuadrant.getNotUrgentAndImportant().getTitle(),
                     notUrgentImportantTasks,
-                    R.id.notUrgentImportantTitleTextView, R.id.notUrgentImportantEmptyTextView);
+                    R.id.notUrgentImportantTitleTextView, R.id.notUrgentImportantEmptyTextView,
+                    MainApplication.getPriorityTextColor(PriorityTypeE.NOT_URGENCY_IMPORTANT));
             setQuadrantAdapter(view, urgentNotImportantRecyclerView,
                     fourQuadrant.getUrgentAndNotImportant().getTitle(),
                     urgentNotImportantTasks,
-                    R.id.urgentNotImportantTitleTextView, R.id.urgentNotImportantEmptyTextView);
+                    R.id.urgentNotImportantTitleTextView, R.id.urgentNotImportantEmptyTextView,
+                    MainApplication.getPriorityTextColor(PriorityTypeE.URGENCY_NOT_IMPORTANT));
             setQuadrantAdapter(view, notUrgentNotImportantRecyclerView,
                     fourQuadrant.getNotUrgentAndNotImportant().getTitle(),
                     notUrgentNotImportantTasks,
-                    R.id.notUrgentNotImportantTitleTextView, R.id.notUrgentNotImportantEmptyTextView);
+                    R.id.notUrgentNotImportantTitleTextView, R.id.notUrgentNotImportantEmptyTextView
+                    , MainApplication.getPriorityTextColor(PriorityTypeE.NOT_URGENCY_NOT_IMPORTANT));
         });
     }
 
@@ -252,7 +258,8 @@ public class QuadrantViewFragment extends Fragment {
 
     private void setQuadrantAdapter(@NonNull View view, RecyclerView recyclerView,
                                     String title, List<TaskSimple> tasks,
-                                    int titleTextViewId, int emptyTaskTextId) {
+                                    int titleTextViewId, int emptyTaskTextId,
+                                    ColorStateList colorStateList) {
         TextView titleTextView = view.findViewById(titleTextViewId);
         titleTextView.setText(title);
         if (tasks.isEmpty()) {
@@ -264,7 +271,7 @@ public class QuadrantViewFragment extends Fragment {
             TextView textView = view.findViewById(emptyTaskTextId);
             textView.setVisibility(View.GONE);
             Activity activity = requireActivity();
-            QuadrantTaskItemAdapter quadrantTaskItemAdapter = new QuadrantTaskItemAdapter(activity, tasks);
+            QuadrantTaskItemAdapter quadrantTaskItemAdapter = new QuadrantTaskItemAdapter(activity, tasks, colorStateList);
             recyclerView.setAdapter(quadrantTaskItemAdapter);
         }
     }

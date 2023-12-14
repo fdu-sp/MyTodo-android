@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:columnCount="2"
     android:rowCount="2"
     android:orientation="horizontal">
@@ -18,16 +19,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/prior_bg_urgent_and_import"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/urgentImportantTitleTextView"
+            <LinearLayout
+                android:id="@+id/urgentImportantLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/title" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/urgentImportantImageView"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/ic_priority"
+                    app:tint="@color/prior_text_urgent_and_import"
+                    android:contentDescription="@string/setPriority" />
+
+                <TextView
+                    android:id="@+id/urgentImportantTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/prior_text_urgent_and_import"
+                    android:text="@string/title" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/urgentImportantRecyclerView"
@@ -59,16 +79,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/prior_bg_not_urgent_and_import"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/notUrgentImportantTitleTextView"
+            <LinearLayout
+                android:id="@+id/notUrgentImportantLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/title" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/notUrgentImportantImageView"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/ic_priority"
+                    app:tint="@color/prior_text_not_urgent_and_import"
+                    android:contentDescription="@string/setPriority" />
+
+                <TextView
+                    android:id="@+id/notUrgentImportantTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/prior_text_not_urgent_and_import"
+                    android:text="@string/title" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/notUrgentImportantRecyclerView"
@@ -99,16 +138,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/prior_bg_urgent_not_import"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/urgentNotImportantTitleTextView"
+            <LinearLayout
+                android:id="@+id/urgentNotImportantLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/title" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/urgentNotImportantImageView"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/ic_priority"
+                    app:tint="@color/prior_text_urgent_not_import"
+                    android:contentDescription="@string/setPriority" />
+
+                <TextView
+                    android:id="@+id/urgentNotImportantTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/prior_text_urgent_not_import"
+                    android:text="@string/title" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/urgentNotImportantRecyclerView"
@@ -139,16 +197,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/prior_bg_not_urgent_not_import"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/notUrgentNotImportantTitleTextView"
+            <LinearLayout
+                android:id="@+id/notUrgentNotImportantLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/title" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/notUrgentNotImportantImageView"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/ic_priority"
+                    app:tint="@color/prior_text_not_urgent_not_import"
+                    android:contentDescription="@string/setPriority" />
+
+                <TextView
+                    android:id="@+id/notUrgentNotImportantTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/prior_text_not_urgent_not_import"
+                    android:text="@string/title" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/notUrgentNotImportantRecyclerView"
