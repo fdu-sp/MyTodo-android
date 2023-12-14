@@ -2,7 +2,9 @@ package com.zmark.mytodo.model.group;
 
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +33,8 @@ public class TaskGroup {
         taskGroup.description = simpleResp.getDescription();
         taskGroup.count = simpleResp.getCount();
         taskGroup.taskListSimpleList =
-                simpleResp.getTaskLists()
+                Optional.ofNullable(simpleResp.getTaskLists())
+                        .orElseGet(Collections::emptyList)
                         .stream()
                         .map(TaskListSimple::from)
                         .collect(Collectors.toList());
