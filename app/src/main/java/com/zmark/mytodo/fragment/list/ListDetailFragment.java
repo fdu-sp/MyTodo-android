@@ -351,6 +351,16 @@ public class ListDetailFragment extends Fragment {
                         sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     });
+                    taskDetailBottomSheetFragment.setOnTaskDeleteListener(taskDetail -> {
+                        for (int i = 0; i < todoList.size(); i++) {
+                            if (todoList.get(i).getId().equals(taskDetail.getId())) {
+                                todoList.remove(i);
+                                break;
+                            }
+                        }
+                        sortData(TodoItemComparators.getComparator(sortType));
+                        updateUI();
+                    });
                     taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());
                 }
             }
