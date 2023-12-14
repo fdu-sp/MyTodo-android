@@ -1,6 +1,5 @@
 package com.zmark.mytodo.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,166 +10,74 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.zmark.mytodo.MainActivity;
-import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
+import com.zmark.mytodo.fragment.factory.NavFragmentFactory;
 import com.zmark.mytodo.fragment.list.ListDetailFragment;
-import com.zmark.mytodo.model.group.TaskGroup;
-import com.zmark.mytodo.model.group.TaskGroupAdapter;
-import com.zmark.mytodo.model.group.TaskListSimple;
-import com.zmark.mytodo.service.ApiUtils;
-import com.zmark.mytodo.service.api.TaskGroupService;
-import com.zmark.mytodo.service.bo.group.resp.TaskGroupSimpleResp;
 import com.zmark.mytodo.service.invariant.Msg;
-import com.zmark.mytodo.service.result.Result;
-import com.zmark.mytodo.service.result.ResultCode;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
     private final static String TAG = "HomeFragment";
-    private static final String NAV_TOP_TITLE = "主页";
-    private RecyclerView containerView;
-    private List<TaskGroup> taskGroups;
+    private final Map<Integer, NavFragmentFactory> childFragmentFactoryMap = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.taskGroups = new ArrayList<>();
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        this.findView(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 注册顶部菜单
-        this.registerTopMenu();
-        // 注册上部视图的点击事件
-        this.registerTopContentClickListener(view);
-        // 注册任务创建事件
-        this.registerOnTaskCreateListener();
-        // 获取分组数据并更新UI
-        this.fetchDataAndUpdateUI();
+        this.registerChildFragmentFactoryMap();
+        // 加载默认的childFragment --> HomeDefaultFragment
+        this.navigateToChildFragment(R.id.homeDefaultLayout);
     }
 
-    private void registerTopMenu() {
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
-        // todo  注册右侧菜单的点击事件
+    private void registerChildFragmentFactoryMap() {
+        // 注册childFragmentFactoryMap
+        childFragmentFactoryMap.put(R.id.myDayItem, ListDetailFragment::MyDayInstance);
+        childFragmentFactoryMap.put(R.id.fourQuadrantsItem, QuadrantViewFragment::new);
+        childFragmentFactoryMap.put(R.id.homeDefaultLayout, HomeDefaultFragment::new);
+        // todo 后续的日历视图、倒计时视图
+//        childFragmentFactoryMap.put(R.id.calendarViewItem,CalendarViewFragment::new);
+//        childFragmentFactoryMap.put(R.id.countdownItem, CountdownFragment::new);
     }
 
-    private void findView(View view) {
-        containerView = view.findViewById(R.id.taskGroupRecyclerView);
-    }
-
-    private void registerTopContentClickListener(View view) {
-        // 注册上部视图的点击事件
-        view.findViewById(R.id.myDayItem).setOnClickListener(v -> navigateToFragment(ListDetailFragment.MyDayInstance()));
-        // todo more
-        view.findViewById(R.id.calendarViewItem).setOnClickListener(v -> navigateToFragment(new CalendarViewFragment()));
-        view.findViewById(R.id.fourQuadrantsItem).setOnClickListener(v -> navigateToFragment(new QuadrantViewFragment()));
-//        view.findViewById(R.id.countdownItem).setOnClickListener(v -> navigateToFragment(new CountdownFragment()));
-    }
-
-    private void registerOnTaskCreateListener() {
-        Activity activity = getActivity();
-        if (activity == null) {
-            Log.e(TAG, "registerTaskCreateListener: activity is null");
+    public void navigateToChildFragment(Integer id) {
+        NavFragmentFactory childFragmentFactory = childFragmentFactoryMap.get(id);
+        if (childFragmentFactory == null) {
+            Log.e(TAG, "navigateToChildFragment: childFragmentFactory is null");
+            Toast.makeText(requireContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             return;
         }
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.setOnTaskCreateListener(taskDetail -> {
-            for (TaskGroup taskGroup : taskGroups) {
-                List<TaskListSimple> taskListSimples = taskGroup.getTaskListSimpleList();
-                for (TaskListSimple taskListSimple : taskListSimples) {
-                    if (taskListSimple.getId().equals(taskDetail.getTaskListId())) {
-                        taskListSimple.setCount(taskListSimple.getCount() + 1);
-                        updateUI();
-                        return;
-                    }
-                }
-            }
-        });
+        Fragment childFragment = childFragmentFactory.createFragment();
+        this.navigateToChildFragment(childFragment);
     }
 
-
-    private void fetchDataAndUpdateUI() {
-        TaskGroupService taskGroupService = MainApplication.getTaskGroupService();
-        Call<Result<List<TaskGroupSimpleResp>>> call = taskGroupService.getAllTaskGroup();
-        call.enqueue(new Callback<Result<List<TaskGroupSimpleResp>>>() {
-            @Override
-            public void onResponse(@NonNull Call<Result<List<TaskGroupSimpleResp>>> call,
-                                   @NonNull Response<Result<List<TaskGroupSimpleResp>>> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-                    ApiUtils.handleResponseError(TAG, response);
-                    return;
-                }
-                Result<List<TaskGroupSimpleResp>> result = response.body();
-                if (result == null) {
-                    Log.e(TAG, "onResponse: result is null");
-                    Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (result.getCode() == ResultCode.SUCCESS.getCode()) {
-                    List<TaskGroupSimpleResp> simpleRespList = result.getObject();
-                    if (simpleRespList == null) {
-                        Log.e(TAG, "onResponse: simpleRespList is null");
-                        Toast.makeText(requireContext(), Msg.SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    taskGroups.clear();
-                    taskGroups.addAll(TaskGroup.from(simpleRespList));
-                    updateUI();
-                } else {
-                    Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
-                    Toast.makeText(requireContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Result<List<TaskGroupSimpleResp>>> call, @NonNull Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-                Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void updateUI() {
-        requireActivity().runOnUiThread(() -> {
-            try {
-                TaskGroupAdapter taskGroupAdapter = new TaskGroupAdapter(taskGroups);
-                containerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                containerView.setAdapter(taskGroupAdapter);
-                taskGroupAdapter.setOnListClickListener(this::navigateToListDetailFragment);
-            } catch (Exception e) {
-                Log.e(TAG, "updateUI: " + e.getMessage(), e);
-                Toast.makeText(requireContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void navigateToListDetailFragment(TaskListSimple taskListSimple) {
-        ListDetailFragment listDetailFragment = ListDetailFragment.NewListDetailFragmentInstance(taskListSimple);
-        this.navigateToFragment(listDetailFragment);
-    }
-
-    private void navigateToFragment(Fragment fragment) {
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.navigateToFragment(fragment);
+    public void navigateToChildFragment(Fragment childFragment) {
+        // 获取 ChildFragmentManager
+        FragmentManager childFragmentManager = getChildFragmentManager();
+        // 开启新的事务
+        FragmentTransaction fragmentTransaction = childFragmentManager.beginTransaction();
+        // 添加自定义过渡动画
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        // 替换当前 Fragment 为新的 ChildFragment
+        fragmentTransaction.replace(R.id.childFragmentContainer, childFragment);
+        // 将事务添加到回退栈
+        // todo 无效
+        fragmentTransaction.addToBackStack(null);
+        // 提交事务
+        fragmentTransaction.commit();
     }
 }
