@@ -25,6 +25,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:clickable="true"
             android:focusable="true">
 
@@ -49,6 +53,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:clickable="true"
             android:focusable="true">
 
@@ -67,14 +75,20 @@
         </LinearLayout>
 
         <!-- four_quadrants_view -->
+
+        <!-- 倒计时 -->
         <LinearLayout
             android:id="@+id/fourQuadrantsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="15dp"
@@ -84,19 +98,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/four_quadrants_view"
-                android:textSize="20sp"
                 android:paddingStart="4dp"
-                android:paddingEnd="4dp" />
+                android:paddingEnd="4dp"
+                android:text="@string/four_quadrants_view"
+                android:textSize="20sp" />
         </LinearLayout>
 
-        <!-- 倒计时 -->
         <LinearLayout
             android:id="@+id/countdownItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:clickable="true"
             android:focusable="true">
 
