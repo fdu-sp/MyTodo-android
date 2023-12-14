@@ -48,6 +48,12 @@ import retrofit2.Response;
 public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String TAG = "AddTaskBottomSheetFragment";
 
+    public interface OnTaskCreateListener {
+        void onTaskCreate(TaskDetail taskDetail);
+    }
+
+    private OnTaskCreateListener onTaskCreateListener;
+
     protected TaskDetail taskDetail;
     protected PriorityTypeE priorityTypeE;
 
@@ -101,10 +107,16 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
     public AddTaskBottomSheetFragment() {
         this.taskDetail = new TaskDetail();
+        this.onTaskCreateListener = null;
     }
 
     public AddTaskBottomSheetFragment(TaskDetail taskDetail) {
         this.taskDetail = taskDetail;
+        this.onTaskCreateListener = null;
+    }
+
+    public void setOnTaskCreateListener(OnTaskCreateListener onTaskCreateListener) {
+        this.onTaskCreateListener = onTaskCreateListener;
     }
 
     @Override
@@ -459,6 +471,9 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
                     if (result.getCode() == ResultCode.SUCCESS.getCode()) {
                         Log.i(TAG, "onResponse: 任务创建成功");
                         Toast.makeText(requireContext(), "任务创建成功", Toast.LENGTH_SHORT).show();
+                        if (onTaskCreateListener != null) {
+                            onTaskCreateListener.onTaskCreate(taskDetail);
+                        }
                         // 关闭底部抽屉
                         dismiss();
                     } else {

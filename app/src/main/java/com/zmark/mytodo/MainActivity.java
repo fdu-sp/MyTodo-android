@@ -51,6 +51,9 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final Map<Integer, NavFragmentFactory> navFragmentFactoryMap = new HashMap<>();
+
+    private AddTaskBottomSheetFragment.OnTaskCreateListener onTaskCreateListener;
+
     private TextView navTopTitleView;
     private ClickListener onRightIconClickListener;
     private ImageView rightIcon;
@@ -108,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void setOnRightIconClickListener(ClickListener listener) {
         this.onRightIconClickListener = listener;
+    }
+
+    /**
+     * 设置任务创建的监听器
+     */
+    public void setOnTaskCreateListener(AddTaskBottomSheetFragment.OnTaskCreateListener listener) {
+        this.onTaskCreateListener = listener;
     }
 
     private void registerTopNavigations() {
@@ -168,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         // 设置点击监听器
         fabAddTodo.setOnClickListener(view -> {
             AddTaskBottomSheetFragment addTaskBottomSheetFragment = new AddTaskBottomSheetFragment();
+            addTaskBottomSheetFragment.setOnTaskCreateListener(onTaskCreateListener);
             addTaskBottomSheetFragment.show(getSupportFragmentManager(), addTaskBottomSheetFragment.getTag());
         });
     }
