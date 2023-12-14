@@ -370,8 +370,15 @@ public class ListDetailFragment extends Fragment {
                             todoList.add(new TaskSimple(taskDetail));
                         } else if (todo.getId().equals(taskDetail.getId())) {
                             todo.updateByTaskDetail(taskDetail);
-                            if (isMyDay && !taskDetail.isInMyDay()) {
-                                todoList.remove(todo);
+                            // 如果不在清单中，需要移除
+                            if (isMyDay) {
+                                if (!taskDetail.isInMyDay()) {
+                                    todoList.remove(todo);
+                                }
+                            } else {
+                                if (!taskDetail.getTaskListId().equals(taskListSimple.getId())) {
+                                    todoList.remove(todo);
+                                }
                             }
                         }
                         sortData(TodoItemComparators.getComparator(sortType));
