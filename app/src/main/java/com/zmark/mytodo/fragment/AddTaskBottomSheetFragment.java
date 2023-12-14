@@ -185,9 +185,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     protected void updateTaskListView() {
-        requireActivity().runOnUiThread(() -> {
-            taskListNameTextView.setText(taskDetail.getTaskListName());
-        });
+        requireActivity().runOnUiThread(() -> taskListNameTextView.setText(taskDetail.getTaskListName()));
     }
 
     /**
@@ -205,15 +203,11 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     protected void updateCheckBoxUI() {
-        requireActivity().runOnUiThread(() -> {
-            checkBox.setChecked(taskDetail.getCompleted());
-        });
+        requireActivity().runOnUiThread(() -> checkBox.setChecked(taskDetail.getCompleted()));
     }
 
     protected void updateTaskTitleUI() {
-        requireActivity().runOnUiThread(() -> {
-            taskTitle.setText(taskDetail.getTitle());
-        });
+        requireActivity().runOnUiThread(() -> taskTitle.setText(taskDetail.getTitle()));
     }
 
     protected void handleConfirmButtonClick(View view) {
