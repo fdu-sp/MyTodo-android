@@ -256,8 +256,8 @@ public class ListDetailFragment extends Fragment {
             return;
         }
         if (call.isExecuted()) {
-            Log.e(TAG, "fetchDataAndUpdateUI: call is executed");
-            Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR + "is " + this.todoList.size(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "fetchDataAndUpdateUI: call is executed, taskListSimple:" + taskListSimple.getId());
+//            Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
             return;
         }
         call.enqueue(new Callback<Result<List<TaskSimpleResp>>>() {
