@@ -1,18 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
-    android:padding="1dp"
-    android:orientation="horizontal"
-    android:layout_marginStart="0dp">
+    android:layout_marginStart="1dp"
+    android:orientation="horizontal">
 
     <!-- 左侧圆形勾选框 -->
     <CheckBox
         android:id="@+id/taskCheckBox"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:contentDescription="@string/check_box" />
-
     <!-- 右侧，todoTitle -->
     <TextView
         android:id="@+id/taskTitle"
