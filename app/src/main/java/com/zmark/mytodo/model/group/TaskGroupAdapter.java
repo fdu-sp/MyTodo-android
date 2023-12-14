@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.TaskGroupViewHolder> {
+    private static final String TAG = "TaskGroupAdapter";
 
     private final List<TaskGroup> taskGroups;
 
@@ -102,6 +104,7 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
             groupListCountTextView.setText(String.valueOf(taskGroup.getTaskListSimpleList().size()));
 
             groupItemContainer.setOnClickListener(v -> {
+                Log.d(TAG, "bind: groupItemContainer clicked");
                 animateBackGroundDeepen(groupItemContainer, () -> {
                     // 处理点击事件
                     handleGroupFoldClick(taskGroup);
@@ -114,30 +117,28 @@ public class TaskGroupAdapter extends RecyclerView.Adapter<TaskGroupAdapter.Task
         }
 
         private void animateBackGroundDeepen(View view, Runnable onClick) {
-            view.setOnClickListener(v -> {
-                // 创建颜色变化动画
-                ValueAnimator colorAnimator = ValueAnimator.ofArgb(0xFFFFFFFF, 0xFFCCCCCC); // 默认颜色到按下状态颜色
-                colorAnimator.setDuration(150);
+            // 创建颜色变化动画
+            ValueAnimator colorAnimator = ValueAnimator.ofArgb(0xFFFFFFFF, 0xFFCCCCCC); // 默认颜色到按下状态颜色
+            colorAnimator.setDuration(150);
 
-                // 监听动画值的变化，设置背景颜色
-                colorAnimator.addUpdateListener(animation -> {
-                    view.setBackgroundColor((int) animation.getAnimatedValue());
-                });
-
-                // 设置动画结束后的回调
-                colorAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        // 处理点击事件
-                        onClick.run();
-                        // 恢复背景颜色
-                        view.setBackgroundResource(R.color.white);
-                    }
-                });
-
-                // 启动动画
-                colorAnimator.start();
+            // 监听动画值的变化，设置背景颜色
+            colorAnimator.addUpdateListener(animation -> {
+                view.setBackgroundColor((int) animation.getAnimatedValue());
             });
+
+            // 设置动画结束后的回调
+            colorAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    // 处理点击事件
+                    onClick.run();
+                    // 恢复背景颜色
+                    view.setBackgroundResource(R.color.white);
+                }
+            });
+
+            // 启动动画
+            colorAnimator.start();
         }
 
         private void animateScale(View view, boolean isExpanded) {
