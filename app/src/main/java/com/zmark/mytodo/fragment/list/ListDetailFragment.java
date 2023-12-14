@@ -117,6 +117,8 @@ public class ListDetailFragment extends Fragment {
         this.findView(containerView);
         // 注册顶部菜单
         this.registerTopMenu();
+        // 注册任务创建事件
+        this.registerOnTaskCreateListener();
         // 注册底部图标
         this.registerBottomIcon();
         // 获取数据并更新UI
@@ -159,6 +161,30 @@ public class ListDetailFragment extends Fragment {
             mainActivity.setOnRightIconClickListener(this::initPopupMenu);
             mainActivity.setNavTopTitleView(taskListSimple.getName());
         }
+    }
+
+    private void registerOnTaskCreateListener() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.e(TAG, "registerTaskCreateListener: activity is null");
+            return;
+        }
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setOnTaskCreateListener(taskDetail -> {
+            if (isMyDay) {
+                if (taskDetail.getInMyDay()) {
+                    todoList.add(new TaskSimple(taskDetail));
+                    sortData(TodoItemComparators.getComparator(sortType));
+                    updateUI();
+                }
+            } else {
+                if (taskListSimple.getId().equals(taskDetail.getTaskListId())) {
+                    todoList.add(new TaskSimple(taskDetail));
+                    sortData(TodoItemComparators.getComparator(sortType));
+                    updateUI();
+                }
+            }
+        });
     }
 
     private void registerBottomIcon() {
