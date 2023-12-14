@@ -105,6 +105,8 @@ public class QuadrantViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // 注册顶部菜单
         this.registerTopMenu();
+        // 注册任务创建事件
+        this.registerOnTaskCreateListener();
         // 获取数据并更新UI
         this.fetchDataAndUpdateUI();
     }
@@ -116,6 +118,17 @@ public class QuadrantViewFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setNavTopTitleView(NAV_TOP_TITLE);
         mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+    }
+
+    private void registerOnTaskCreateListener() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            MainActivity mainActivity = (MainActivity) activity;
+            mainActivity.setOnTaskCreateListener(taskDetail -> {
+                this.fetchDataAndUpdateUI();
+                // todo maybe优化
+            });
+        }
     }
 
     private void showListSelectFragment() {
