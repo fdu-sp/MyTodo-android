@@ -134,7 +134,7 @@ public class ListDetailFragment extends Fragment {
     private void initPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), view);
         // 替换为自定义的菜单资源
-        popupMenu.inflate(R.menu.menu_myday);
+        popupMenu.inflate(R.menu.menu_list_detail);
         // 设置菜单项的点击事件
         this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
         popupMenu.setOnMenuItemClickListener(item -> {
