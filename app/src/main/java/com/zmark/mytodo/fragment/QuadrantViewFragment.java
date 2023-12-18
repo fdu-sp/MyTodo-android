@@ -23,7 +23,7 @@ import com.zmark.mytodo.MainActivity;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.comparator.task.SortTypeE;
-import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.comparator.task.TaskSimpleComparators;
 import com.zmark.mytodo.fragment.common.TaskListSelectBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
@@ -218,7 +218,7 @@ public class QuadrantViewFragment extends Fragment {
 
     private void sortData() {
         // 根据用户选择的排序方式对todoList进行排序
-        Comparator<TaskSimple> comparator = TodoItemComparators.getComparator(sortType);
+        Comparator<TaskSimple> comparator = TaskSimpleComparators.getComparator(sortType);
         this.fourQuadrant.getUrgentAndImportant().getTasks().sort(comparator);
         this.fourQuadrant.getNotUrgentAndImportant().getTasks().sort(comparator);
         this.fourQuadrant.getUrgentAndNotImportant().getTasks().sort(comparator);

@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 默认先按照状态排序
  */
-public class TodoItemComparators {
+public class TaskSimpleComparators {
     private static final Map<SortTypeE, Comparator<TaskSimple>> sortComparatorMap = new HashMap<>();
 
     static {

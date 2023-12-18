@@ -24,7 +24,7 @@ import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.anim.AnimUtils;
 import com.zmark.mytodo.comparator.task.SortTypeE;
-import com.zmark.mytodo.comparator.task.TodoItemComparators;
+import com.zmark.mytodo.comparator.task.TaskSimpleComparators;
 import com.zmark.mytodo.fragment.TaskDetailBottomSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
@@ -242,7 +242,7 @@ public class ListDetailFragment extends Fragment {
     }
 
     private List<TaskSimple> getShowData() {
-        Comparator<TaskSimple> comparator = TodoItemComparators.getComparator(sortType);
+        Comparator<TaskSimple> comparator = TaskSimpleComparators.getComparator(sortType);
         todoList.sort(comparator);
         // 根据当前状态进行设置
         if (completedTasksVisible) {
