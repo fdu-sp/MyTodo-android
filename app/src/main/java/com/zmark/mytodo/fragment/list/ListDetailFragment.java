@@ -141,9 +141,9 @@ public class ListDetailFragment extends Fragment {
         if (!isMyDay) {
             this.menuHandlerMap.put(R.id.edit_list_info, this::handleListEdit);
         }
-        this.menuHandlerMap.put(R.id.view_switching, this::handleViewSwitching);
+//        this.menuHandlerMap.put(R.id.view_switching, this::handleViewSwitching);
         this.menuHandlerMap.put(R.id.hide_or_show_completed_tasks, this::handleCompletedTasksVisible);
-        this.menuHandlerMap.put(R.id.hide_or_show_details, this::handleDetailsVisible);
+//        this.menuHandlerMap.put(R.id.hide_or_show_details, this::handleDetailsVisible);
 
 
         // 设置顶部菜单
@@ -163,7 +163,7 @@ public class ListDetailFragment extends Fragment {
             popupMenu.inflate(R.menu.menu_list_detail);
         }
         // 根据用户偏好设置菜单项的 title
-        this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
+//        this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
         this.setCompletedTasksVisibleMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_completed_tasks));
         // 设置菜单项的点击事件
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -273,10 +273,10 @@ public class ListDetailFragment extends Fragment {
         // 根据当前状态进行设置
         if (detailsVisible) {
             // 显示细节
-            item.setTitle("隐藏细节");
+            item.setTitle(R.string.show_details);
         } else {
             // 隐藏细节
-            item.setTitle("显示细节");
+            item.setTitle(R.string.hide_details);
         }
     }
 
@@ -290,8 +290,11 @@ public class ListDetailFragment extends Fragment {
     }
 
     private void showGroupAndSortDialog() {
+        // todo 分组方式选择
+//        BottomGroupAndSortSheetFragment bottomGroupAndSortSheetFragment =
+//                new BottomGroupAndSortSheetFragment(this.groupType, this.sortType);
         BottomGroupAndSortSheetFragment bottomGroupAndSortSheetFragment =
-                new BottomGroupAndSortSheetFragment(this.groupType, this.sortType);
+                new BottomGroupAndSortSheetFragment(null, this.sortType);
         bottomGroupAndSortSheetFragment.setSortListener((sortTypeE) -> {
             // 更新排序方式
             this.sortType = sortTypeE;

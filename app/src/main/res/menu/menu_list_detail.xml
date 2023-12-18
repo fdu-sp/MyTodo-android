@@ -6,21 +6,21 @@
         android:icon="@drawable/ic_top_menu_left"
         app:showAsAction="ifRoom"
         android:title="@string/edit_list_info" />
-    <item
-        android:id="@+id/view_switching"
-        android:icon="@drawable/ic_top_menu_left"
-        app:showAsAction="ifRoom"
-        android:title="@string/view_switching" />
+<!--    <item-->
+<!--        android:id="@+id/view_switching"-->
+<!--        android:icon="@drawable/ic_top_menu_left"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:title="@string/view_switching" />-->
     <item
         android:id="@+id/hide_or_show_completed_tasks"
         android:icon="@drawable/ic_top_menu_left"
         app:showAsAction="ifRoom"
         android:title="@string/hide_or_show_completed_tasks" />
-    <item
-        android:id="@+id/hide_or_show_details"
-        android:icon="@drawable/ic_top_menu_left"
-        app:showAsAction="ifRoom"
-        android:title="@string/show_or_hide_details" />
+<!--    <item-->
+<!--        android:id="@+id/hide_or_show_details"-->
+<!--        android:icon="@drawable/ic_top_menu_left"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:title="@string/show_or_hide_details" />-->
     <item
         android:id="@+id/menu_task_sort"
         android:icon="@drawable/ic_top_menu_right"
