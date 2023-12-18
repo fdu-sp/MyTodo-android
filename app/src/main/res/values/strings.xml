@@ -69,4 +69,9 @@
     <string name="group_description_optional">分组描述（选填）</string>
     <string name="list_name">清单名称</string>
     <string name="manifest_description_optional">清单描述（可选）</string>
+    <string name="edit_list_info">编辑清单信息</string>
+    <string name="view_switching">视图切换</string>
+    <string name="hide_or_show_completed_tasks">隐藏/显示已完成</string>
+    <string name="hide_completed_tasks">隐藏已完成</string>
+    <string name="show_completed_tasks">显示已完成</string>
 </resources>

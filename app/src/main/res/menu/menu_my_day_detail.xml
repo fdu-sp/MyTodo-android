@@ -2,11 +2,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/edit_list_info"
-        android:icon="@drawable/ic_top_menu_left"
-        app:showAsAction="ifRoom"
-        android:title="@string/edit_list_info" />
-    <item
         android:id="@+id/view_switching"
         android:icon="@drawable/ic_top_menu_left"
         app:showAsAction="ifRoom"

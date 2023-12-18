@@ -53,6 +53,8 @@ import retrofit2.Response;
 
 public class ListDetailFragment extends Fragment {
     private static final String TAG = "ListDetailFragment";
+    private static final String HIDE_OR_SHOW_COMPLETED_TASKS = "hide_or_show_completed_tasks";
+    private static final String HIDE_OR_SHOW_DETAILS = "hide_or_show_details";
     private static final String KEY_GROUP_BY = "group_by";
     private static final String KEY_SORT_BY = "sort_by";
     /**
@@ -67,6 +69,7 @@ public class ListDetailFragment extends Fragment {
     private final Call<Result<List<TaskSimpleResp>>> call;
     private List<TaskSimple> todoList;
     private Map<Integer, MenuItemHandler> menuHandlerMap;
+    private boolean completedTasksVisible;
     private boolean detailsVisible;
     private BottomGroupAndSortSheetFragment.GroupTypeE groupType;
     private SortTypeE sortType;
@@ -83,7 +86,7 @@ public class ListDetailFragment extends Fragment {
      */
     private ListDetailFragment(TaskListSimple taskListSimple, Call<Result<List<TaskSimpleResp>>> call) {
         this.taskListSimple = taskListSimple;
-        this.perfName = "TASK_LIST_PREF" + taskListSimple.getId();
+        this.perfName = "MyDay" + taskListSimple.getId();
         this.call = call;
         this.isMyDay = true;
     }
@@ -100,13 +103,14 @@ public class ListDetailFragment extends Fragment {
         return new ListDetailFragment(myDay, myDayCall);
     }
 
-    // todo: 切换细节的显示和隐藏
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.todoList = new ArrayList<>();
         this.menuHandlerMap = new HashMap<>();
-        this.detailsVisible = true;
+        // 获取用户偏好设置
+        this.completedTasksVisible = getHideOrShowCompletedTasks();
+        this.detailsVisible = getHideOrShowDetails();
         this.groupType = getSavedGroupBy();
         this.sortType = getSavedSortBy();
     }
@@ -131,12 +135,37 @@ public class ListDetailFragment extends Fragment {
         this.noTaskMsgView = containerView.findViewById(R.id.noTaskMsgView);
     }
 
+    private void registerTopMenu() {
+        // 注册菜单项的点击事件
+        this.menuHandlerMap.put(R.id.menu_task_sort, item -> showGroupAndSortDialog());
+        if (!isMyDay) {
+            this.menuHandlerMap.put(R.id.edit_list_info, this::handleListEdit);
+        }
+        this.menuHandlerMap.put(R.id.view_switching, this::handleViewSwitching);
+        this.menuHandlerMap.put(R.id.hide_or_show_completed_tasks, this::handleCompletedTasksVisible);
+        this.menuHandlerMap.put(R.id.hide_or_show_details, this::handleDetailsVisible);
+
+
+        // 设置顶部菜单
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.setOnRightIconClickListener(this::initPopupMenu);
+            mainActivity.setNavTopTitleView(taskListSimple.getName());
+        }
+    }
+
     private void initPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), view);
         // 替换为自定义的菜单资源
-        popupMenu.inflate(R.menu.menu_list_detail);
-        // 设置菜单项的点击事件
+        if (isMyDay) {
+            popupMenu.inflate(R.menu.menu_my_day_detail);
+        } else {
+            popupMenu.inflate(R.menu.menu_list_detail);
+        }
+        // 根据用户偏好设置菜单项的 title
         this.setDetailShowMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_details));
+        this.setCompletedTasksVisibleMenuItem(popupMenu.getMenu().findItem(R.id.hide_or_show_completed_tasks));
+        // 设置菜单项的点击事件
         popupMenu.setOnMenuItemClickListener(item -> {
             MenuItemHandler menuItemHandler = menuHandlerMap.get(item.getItemId());
             if (menuItemHandler != null) {
@@ -147,20 +176,35 @@ public class ListDetailFragment extends Fragment {
         popupMenu.show();
     }
 
-    private void registerTopMenu() {
-        this.menuHandlerMap.put(R.id.menu_task_sort, item -> showGroupAndSortDialog());
-        this.menuHandlerMap.put(R.id.hide_or_show_details, item -> {
-            // 切换状态
-            detailsVisible = !detailsVisible;
-            setDetailShowMenuItem(item);
-            // todo
-            Toast.makeText(getContext(), "显示or隐藏细节", Toast.LENGTH_SHORT).show();
-        });
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.setOnRightIconClickListener(this::initPopupMenu);
-            mainActivity.setNavTopTitleView(taskListSimple.getName());
-        }
+    private void handleListEdit(MenuItem item) {
+        // todo
+        Toast.makeText(getContext(), "编辑清单", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleViewSwitching(MenuItem item) {
+        // todo 切换视图
+        Toast.makeText(getContext(), "切换视图", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleCompletedTasksVisible(MenuItem item) {
+        // 切换状态
+        completedTasksVisible = !completedTasksVisible;
+        // 保存状态
+        this.saveHideOrShowCompletedTasks(completedTasksVisible);
+        // 更新菜单项相关的UI
+        this.setCompletedTasksVisibleMenuItem(item);
+        this.updateUI();
+    }
+
+    private void handleDetailsVisible(MenuItem item) {
+        // 切换状态
+        detailsVisible = !detailsVisible;
+        // 设置菜单项的 title
+        this.setDetailShowMenuItem(item);
+        // 保存状态
+        this.saveHideOrShowDetails(detailsVisible);
+        // todo 切换细节的显示和隐藏
+        Toast.makeText(getContext(), "显示or隐藏细节", Toast.LENGTH_SHORT).show();
     }
 
     private void registerOnTaskCreateListener() {
@@ -174,13 +218,11 @@ public class ListDetailFragment extends Fragment {
             if (isMyDay) {
                 if (taskDetail.getInMyDay()) {
                     todoList.add(new TaskSimple(taskDetail));
-                    sortData(TodoItemComparators.getComparator(sortType));
                     updateUI();
                 }
             } else {
                 if (taskListSimple.getId().equals(taskDetail.getTaskListId())) {
                     todoList.add(new TaskSimple(taskDetail));
-                    sortData(TodoItemComparators.getComparator(sortType));
                     updateUI();
                 }
             }
@@ -199,20 +241,42 @@ public class ListDetailFragment extends Fragment {
         }
     }
 
-    private void sortData(Comparator<TaskSimple> comparator) {
+    private List<TaskSimple> getShowData() {
+        Comparator<TaskSimple> comparator = TodoItemComparators.getComparator(sortType);
         todoList.sort(comparator);
+        // 根据当前状态进行设置
+        if (completedTasksVisible) {
+            // 当前需要显示已完成的任务
+            return todoList;
+        } else {
+            // 当前需要隐藏已完成的任务
+            List<TaskSimple> todoListTemp = new ArrayList<>();
+            for (TaskSimple todo : todoList) {
+                if (!todo.getCompleted()) {
+                    todoListTemp.add(todo);
+                }
+            }
+            return todoListTemp;
+        }
+    }
+
+    private void setCompletedTasksVisibleMenuItem(MenuItem item) {
+        // 根据当前状态进行设置
+        if (completedTasksVisible) {
+            item.setTitle(R.string.hide_completed_tasks);
+        } else {
+            item.setTitle(R.string.show_completed_tasks);
+        }
     }
 
     private void setDetailShowMenuItem(MenuItem item) {
         // 根据当前状态进行设置
         if (detailsVisible) {
             // 显示细节
-            item.setTitle("隐藏细节"); // 设置菜单项的 title
-//            item.setIcon(R.drawable.ic_show_details); // 设置菜单项的图标
+            item.setTitle("隐藏细节");
         } else {
             // 隐藏细节
             item.setTitle("显示细节");
-//            item.setIcon(R.drawable.ic_hide_details); // 设置菜单项的图标
         }
     }
 
@@ -220,7 +284,6 @@ public class ListDetailFragment extends Fragment {
         RecommendMyDayBottomSheetFragment fragment = new RecommendMyDayBottomSheetFragment();
         fragment.setOnTaskAddedListener(taskSimple -> {
             this.todoList.add(taskSimple);
-            this.sortData(TodoItemComparators.getComparator(this.sortType));
             this.updateUI();
         });
         fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
@@ -230,19 +293,17 @@ public class ListDetailFragment extends Fragment {
         BottomGroupAndSortSheetFragment bottomGroupAndSortSheetFragment =
                 new BottomGroupAndSortSheetFragment(this.groupType, this.sortType);
         bottomGroupAndSortSheetFragment.setSortListener((sortTypeE) -> {
-            // 根据用户选择的分组方式和排序方式对todoList进行排序
+            // 更新排序方式
             this.sortType = sortTypeE;
             this.saveSelectedSortType(sortTypeE);
-            this.sortData(TodoItemComparators.getComparator(this.sortType));
             // 更新UI
             this.updateUI();
         });
         bottomGroupAndSortSheetFragment.setGroupListener((groupTypeE) -> {
-            // 根据用户选择的分组方式和排序方式对todoList进行排序
+            // 更新分组方式
             this.groupType = groupTypeE;
             this.saveSelectGroupType(groupTypeE);
             //  todo setGroupListener
-//            this.sortData(TodoItemComparators.getComparator(this.sortType));
             // 更新UI
 //            this.updateUI();
         });
@@ -282,8 +343,6 @@ public class ListDetailFragment extends Fragment {
                     }
                     todoList.clear();
                     todoList.addAll(TaskSimple.from(taskList));
-                    // 根据用户选择的排序方式对todoList进行排序
-                    sortData(TodoItemComparators.getComparator(sortType));
                     updateUI();
                 } else {
                     Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
@@ -300,9 +359,10 @@ public class ListDetailFragment extends Fragment {
     }
 
     private void updateUI() {
+        List<TaskSimple> todoListTemp = getShowData();
         requireActivity().runOnUiThread(() -> {
             try {
-                Log.d(TAG, "updateUI: " + todoList.size());
+                Log.d(TAG, "updateUI: " + todoListTemp.size());
                 if (this.todoList == null || this.todoList.isEmpty()) {
                     noTaskMsgView.setVisibility(View.VISIBLE);
                     todoRecyclerView.setVisibility(View.GONE);
@@ -311,7 +371,7 @@ public class ListDetailFragment extends Fragment {
                 noTaskMsgView.setVisibility(View.GONE);
                 todoRecyclerView.setVisibility(View.VISIBLE);
                 // 创建RecyclerView的Adapter
-                TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoList);
+                TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoListTemp);
                 taskSimpleAdapter.setOnTaskContentClickListener(this::openTaskDetail);
                 // 设置RecyclerView的LayoutManager
                 todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -355,7 +415,6 @@ public class ListDetailFragment extends Fragment {
                                 todo.setCompleted(taskDetail.getCompleted());
                             }
                         });
-                        sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     });
                     taskDetailBottomSheetFragment.setOnTaskUpdateListener(taskDetail -> {
@@ -381,7 +440,6 @@ public class ListDetailFragment extends Fragment {
                                 }
                             }
                         }
-                        sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     });
                     taskDetailBottomSheetFragment.setOnTaskDeleteListener(taskDetail -> {
@@ -391,7 +449,6 @@ public class ListDetailFragment extends Fragment {
                                 break;
                             }
                         }
-                        sortData(TodoItemComparators.getComparator(sortType));
                         updateUI();
                     });
                     taskDetailBottomSheetFragment.show(requireActivity().getSupportFragmentManager(), taskDetailBottomSheetFragment.getTag());
@@ -454,5 +511,43 @@ public class ListDetailFragment extends Fragment {
             editor.putString(KEY_SORT_BY, sortType.getDesc());
             editor.apply();
         }
+    }
+
+    private void saveHideOrShowCompletedTasks(boolean hideOrShow) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(HIDE_OR_SHOW_COMPLETED_TASKS, hideOrShow);
+            editor.apply();
+        }
+    }
+
+    private boolean getHideOrShowCompletedTasks() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            return preferences.getBoolean(HIDE_OR_SHOW_COMPLETED_TASKS, false);
+        }
+        return false;
+    }
+
+    private void saveHideOrShowDetails(boolean hideOrShow) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(HIDE_OR_SHOW_DETAILS, hideOrShow);
+            editor.apply();
+        }
+    }
+
+    private boolean getHideOrShowDetails() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences preferences = activity.getSharedPreferences(perfName, Context.MODE_PRIVATE);
+            return preferences.getBoolean(HIDE_OR_SHOW_DETAILS, false);
+        }
+        return false;
     }
 }
