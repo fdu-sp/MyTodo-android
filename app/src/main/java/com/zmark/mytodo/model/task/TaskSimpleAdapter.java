@@ -103,12 +103,10 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
             // 显示到期时间
             holder.dueDateTextView.setText(todoItem.getDueDate());
             // 已过期的任务，设置颜色
-            if (!todoItem.getCompleted()) {
-                if (TimeUtils.isDateOverdue(todoItem.getDueDate())) {
-                    holder.dueDateTextView.setTextColor(MainApplication.getOverdueTaskTextColor());
-                } else {
-                    holder.dueDateTextView.setTextColor(MainApplication.getTextColor());
-                }
+            if (!todoItem.getCompleted() && TimeUtils.isDateOverdue(todoItem.getDueDate())) {
+                holder.dueDateTextView.setTextColor(MainApplication.getOverdueTaskTextColor());
+            } else {
+                holder.dueDateTextView.setTextColor(MainApplication.getTextColor());
             }
 
             // 显示循环图标（如果是循环任务）
@@ -119,6 +117,11 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
             }
 
             // 已完成的任务，需要设置颜色
+            if (todoItem.getCompleted()) {
+                holder.titleTextView.setTextColor(MainApplication.getCompletedTaskTextColor());
+            } else {
+                holder.titleTextView.setTextColor(MainApplication.getTextColor());
+            }
 
             // 重要：确保每次设置 CheckBox 状态时都明确指定，避免 RecyclerView 复用导致的问题
             holder.checkBox.setChecked(todoItem.getCompleted());
