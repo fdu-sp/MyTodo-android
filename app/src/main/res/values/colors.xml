@@ -20,6 +20,9 @@
     <color name="prior_text_not_urgent_and_import">@color/orange</color>
     <color name="prior_text_urgent_not_import">@color/cornflowerblue</color>
     <color name="prior_text_not_urgent_not_import">@color/green</color>
+    <!-- 任务状态颜色 -->
+    <color name="completed_task_text_color">#9E9E9E</color>
+    <color name="overdue_task_text_color">@color/red</color>
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
     <color name="lightyellow">#FFFFE0</color><!--亮黄色 -->
     <color name="yellow">#FFFF00</color><!--黄色 -->

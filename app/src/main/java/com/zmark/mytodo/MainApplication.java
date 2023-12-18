@@ -40,6 +40,10 @@ public class MainApplication extends Application {
     private static ColorStateList checkedColorStateList;
     private static ColorStateList unCheckedColorStateList;
 
+    private static ColorStateList completedTaskTextColor;
+
+    private static ColorStateList overdueTaskTextColor;
+
     private static Retrofit retrofit;
     private static HelloService helloService;
     private static TaskService taskService;
@@ -61,6 +65,14 @@ public class MainApplication extends Application {
         return unCheckedColorStateList;
     }
 
+    public static ColorStateList getCompletedTaskTextColor() {
+        return completedTaskTextColor;
+    }
+
+    public static ColorStateList getOverdueTaskTextColor() {
+        return overdueTaskTextColor;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,7 +92,10 @@ public class MainApplication extends Application {
                 ContextCompat.getColorStateList(this, R.color.cornflower_blue);
         unCheckedColorStateList =
                 ContextCompat.getColorStateList(this, R.color.black);
-
+        completedTaskTextColor =
+                ContextCompat.getColorStateList(this, R.color.completed_task_text_color);
+        overdueTaskTextColor =
+                ContextCompat.getColorStateList(this, R.color.overdue_task_text_color);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.SECONDS)
