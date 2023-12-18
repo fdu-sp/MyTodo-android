@@ -158,4 +158,29 @@ public class TimeUtils {
             return "";
         }
     }
+
+    public static boolean isDateOverdue(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) {
+            return false;
+        }
+        Date date = getDateFromStr(dateStr);
+        return date.before(today());
+    }
+
+    public static boolean isTimeStampOverdue(String timestampStr) {
+        if (timestampStr == null || timestampStr.isEmpty()) {
+            return false;
+        }
+        Timestamp timestamp = getTimestampFromStr(timestampStr);
+        return timestamp.before(new Timestamp(System.currentTimeMillis()));
+    }
+
+    public static boolean isTimeOverdue(String timeStr) {
+        if (timeStr == null || timeStr.isEmpty()) {
+            return false;
+        }
+        String dateStr = today().toString();
+        String timestampStr = dateStr + " " + timeStr + ":00";
+        return isTimeStampOverdue(timestampStr);
+    }
 }

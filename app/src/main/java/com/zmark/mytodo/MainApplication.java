@@ -40,8 +40,8 @@ public class MainApplication extends Application {
     private static ColorStateList checkedColorStateList;
     private static ColorStateList unCheckedColorStateList;
 
+    private static ColorStateList textColor;
     private static ColorStateList completedTaskTextColor;
-
     private static ColorStateList overdueTaskTextColor;
 
     private static Retrofit retrofit;
@@ -63,6 +63,10 @@ public class MainApplication extends Application {
 
     public static ColorStateList getUnCheckedColorStateList() {
         return unCheckedColorStateList;
+    }
+
+    public static ColorStateList getTextColor() {
+        return textColor;
     }
 
     public static ColorStateList getCompletedTaskTextColor() {
@@ -91,6 +95,8 @@ public class MainApplication extends Application {
         checkedColorStateList =
                 ContextCompat.getColorStateList(this, R.color.cornflower_blue);
         unCheckedColorStateList =
+                ContextCompat.getColorStateList(this, R.color.black);
+        textColor =
                 ContextCompat.getColorStateList(this, R.color.black);
         completedTaskTextColor =
                 ContextCompat.getColorStateList(this, R.color.completed_task_text_color);
