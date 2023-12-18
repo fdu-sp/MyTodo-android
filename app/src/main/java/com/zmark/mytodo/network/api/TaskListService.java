@@ -1,6 +1,7 @@
 package com.zmark.mytodo.network.api;
 
 import com.zmark.mytodo.network.bo.list.req.TaskListCreateReq;
+import com.zmark.mytodo.network.bo.list.req.TaskListUpdateReq;
 import com.zmark.mytodo.network.bo.list.resp.TaskListDetailResp;
 import com.zmark.mytodo.network.bo.list.resp.TaskListSimpleResp;
 import com.zmark.mytodo.network.result.Result;
@@ -16,4 +17,7 @@ public interface TaskListService {
 
     @GET("task-list/simple/my-day")
     Call<Result<TaskListSimpleResp>> getMyDayTaskList();
+
+    @POST("task-list/update-info")
+    Call<Result<TaskListSimpleResp>> updateTaskList(@Body TaskListUpdateReq updateReq);
 }
