@@ -26,16 +26,20 @@ import com.zmark.mytodo.anim.AnimUtils;
 import com.zmark.mytodo.comparator.task.SortTypeE;
 import com.zmark.mytodo.comparator.task.TaskSimpleComparators;
 import com.zmark.mytodo.fragment.TaskDetailBottomSheetFragment;
+import com.zmark.mytodo.fragment.common.UpdateListDialogFragment;
 import com.zmark.mytodo.fragment.list.inner.BottomGroupAndSortSheetFragment;
 import com.zmark.mytodo.fragment.list.inner.RecommendMyDayBottomSheetFragment;
 import com.zmark.mytodo.handler.MenuItemHandler;
 import com.zmark.mytodo.invariant.Msg;
+import com.zmark.mytodo.model.group.TaskGroup;
 import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.model.task.TaskSimpleAdapter;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskService;
+import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
+import com.zmark.mytodo.network.bo.list.resp.TaskListSimpleResp;
 import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.bo.task.resp.TaskSimpleResp;
 import com.zmark.mytodo.network.result.Result;
@@ -177,8 +181,27 @@ public class ListDetailFragment extends Fragment {
     }
 
     private void handleListEdit(MenuItem item) {
-        // todo
-        Toast.makeText(getContext(), "编辑清单", Toast.LENGTH_SHORT).show();
+        Call<Result<List<TaskGroupSimpleResp>>> call = MainApplication.getTaskGroupService().getAllTaskGroup();
+        ApiUtils.doRequest(call, TAG, requireContext(), data -> {
+            List<TaskGroup> taskGroupList = TaskGroup.from(data);
+            UpdateListDialogFragment updateListDialogFragment = new UpdateListDialogFragment(taskListSimple, taskGroupList);
+            // 和服务器同步
+            updateListDialogFragment.setOnListCreatedListener(this::synListInfo);
+            updateListDialogFragment.show(requireActivity().getSupportFragmentManager(), updateListDialogFragment.getTag());
+        });
+    }
+
+    private void synListInfo(TaskListSimple taskListSimple) {
+        Call<Result<TaskListSimpleResp>> call = MainApplication.getTaskListService().updateTaskList(taskListSimple.toTaskListUpdateReq());
+        ApiUtils.doRequest(call, TAG, requireContext(), data -> {
+            // 更新UI
+            this.taskListSimple.updateByTaskListSimple(TaskListSimple.from(data));
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                mainActivity.setNavTopTitleView(this.taskListSimple.getName());
+            }
+            Toast.makeText(getContext(), Msg.UPDATE_SUCCESS, Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void handleViewSwitching(MenuItem item) {

@@ -11,4 +11,6 @@ public class Msg {
     public static final String CLIENT_REQUEST_ERROR = "出错了，可能是网络问题~";
 
     public static final String CLIENT_INTERNAL_ERROR = "客户端出错了~";
+
+    public static final String UPDATE_SUCCESS = "更新成功";
 }

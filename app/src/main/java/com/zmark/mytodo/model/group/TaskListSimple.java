@@ -1,7 +1,10 @@
 package com.zmark.mytodo.model.group;
 
+import com.zmark.mytodo.network.bo.list.req.TaskListUpdateReq;
 import com.zmark.mytodo.network.bo.list.resp.TaskListDetailResp;
 import com.zmark.mytodo.network.bo.list.resp.TaskListSimpleResp;
+
+import java.util.Objects;
 
 /**
  * 清单，包含多个task
@@ -48,6 +51,15 @@ public class TaskListSimple {
         taskListSimple.createTime = simpleResp.getCreateTime();
         taskListSimple.updateTime = simpleResp.getUpdateTime();
         return taskListSimple;
+    }
+
+    public TaskListUpdateReq toTaskListUpdateReq() {
+        TaskListUpdateReq taskListUpdateReq = new TaskListUpdateReq();
+        taskListUpdateReq.setId(this.id);
+        taskListUpdateReq.setName(this.name);
+        taskListUpdateReq.setDescription(this.description);
+        taskListUpdateReq.setTaskGroupId(this.groupId);
+        return taskListUpdateReq;
     }
 
     public Long getId() {
@@ -104,5 +116,17 @@ public class TaskListSimple {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public void updateByTaskListSimple(TaskListSimple updatedTaskListSimple) {
+        if (!Objects.equals(this.id, updatedTaskListSimple.id)) {
+            throw new IllegalArgumentException("id不一致");
+        }
+        this.name = updatedTaskListSimple.name;
+        this.count = updatedTaskListSimple.count;
+        this.description = updatedTaskListSimple.description;
+        this.groupId = updatedTaskListSimple.groupId;
+        this.createTime = updatedTaskListSimple.createTime;
+        this.updateTime = updatedTaskListSimple.updateTime;
     }
 }
