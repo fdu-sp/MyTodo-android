@@ -2,6 +2,14 @@ package com.zmark.mytodo;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -11,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -35,12 +44,18 @@ import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.HelloService;
 import com.zmark.mytodo.network.api.TaskGroupService;
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
+import com.zmark.mytodo.network.bo.reminder.TaskReminderInfoResp;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         this.changeNavFragmentTo(R.id.navigation_home);
         // 获取欢迎信息
         this.fetchHelloMsg();
+        // 设置提醒事件
+        this.registerReminder();
     }
 
     @Override
@@ -350,4 +367,193 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void registerReminder() {
+        createNotificationChannel();
+
+        Call<Result<List<TaskReminderInfoResp>>> call = MainApplication.getReminderService().getAll();
+        ApiUtils.doRequest(call, TAG, MainActivity.this, taskReminderInfoRespList -> {
+            for (TaskReminderInfoResp taskReminderInfoResp : taskReminderInfoRespList) {
+                scheduleNotificationForReminder(
+                        taskReminderInfoResp.getTaskId().intValue(),
+                        taskReminderInfoResp.getReminderTimestamp()
+                );
+            }
+        });
+    }
+
+    private static final String CHANNEL_ID = "task_reminder_channel";
+    private static final int NOTIFICATION_ID = 1;
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Task Reminder Channel";
+            String description = "Task Reminder Channel Description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    // 日期和时间格式，包含小数部分
+    private static final String DATE_TIME_FORMAT_WITH_DECIMAL = "yyyy-MM-dd HH:mm:ss.S";
+
+    private void scheduleNotificationForReminder(int reminderId, String reminderTimestampStr) {
+        PendingIntent pendingIntent = ReminderReceiver.getPendingIntent(this, reminderId);
+
+        try {
+            // 将字符串转换为时间戳
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_WITH_DECIMAL, Locale.getDefault());
+            Date reminderDate = dateFormat.parse(reminderTimestampStr);
+            if (reminderDate == null) {
+                Log.e(TAG, "scheduleNotificationForReminder: reminderDate is null");
+                return;
+            }
+            long reminderTimestamp = reminderDate.getTime();
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        AlarmManager.AlarmClockInfo alarmClockInfo =
+                                new AlarmManager.AlarmClockInfo(reminderTimestamp, pendingIntent);
+                        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+                        Log.i(TAG, "scheduleNotificationForReminder1: " + reminderId + "-" + reminderDate);
+                    } else {
+                        // 处理无法使用准确的定时器的情况，可以降级为使用setExactAndAllowWhileIdle，或采取其他适当的措施
+                        Log.w(TAG, "scheduleNotificationForReminder: 无法使用准确的定时器");
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            reminderTimestamp,
+                            pendingIntent
+                    );
+                    Log.i(TAG, "scheduleNotificationForReminder2: " + reminderId + "-" + reminderDate);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    alarmManager.setExact(
+                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            reminderTimestamp,
+                            pendingIntent
+                    );
+                    Log.i(TAG, "scheduleNotificationForReminder3: " + reminderId + "-" + reminderDate);
+                } else {
+                    alarmManager.set(
+                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            reminderTimestamp,
+                            pendingIntent
+                    );
+                    Log.i(TAG, "scheduleNotificationForReminder4: " + reminderId + "-" + reminderDate);
+                }
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "scheduleNotificationForReminder: " + e.getMessage(), e);
+        }
+    }
+
+
+    public static class ReminderReceiver extends BroadcastReceiver {
+        private static final String EXTRA_REMINDER_ID = "reminder_id";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int reminderId = intent.getIntExtra(EXTRA_REMINDER_ID, 0);
+            showNotification(context, reminderId);
+        }
+
+        private void showNotification(Context context, int reminderId) {
+            Call<Result<TaskDetailResp>> call = MainApplication.getTaskService().getDetailInfoById((long) reminderId);
+            ApiUtils.doRequest(call, TAG, context, taskDetailResp -> {
+                if (taskDetailResp == null) {
+                    Log.e(TAG, "showNotification: taskDetailResp is null");
+                    return;
+                }
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder =
+                        new NotificationCompat.Builder(context, CHANNEL_ID)
+                                .setSmallIcon(R.drawable.ic_remind_padding)
+                                .setContentTitle("定时提醒")
+                                .setContentText(taskDetailResp.getTitle())
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                if (notificationManager != null) {
+                    notificationManager.notify(NOTIFICATION_ID, builder.build());
+                }
+            });
+        }
+
+        public static PendingIntent getPendingIntent(Context context, int reminderId) {
+            Intent intent = new Intent(context, ReminderReceiver.class);
+            intent.putExtra(EXTRA_REMINDER_ID, reminderId);
+            return PendingIntent.getBroadcast(
+                    context,
+                    reminderId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        }
+    }
+
+//    private void createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = "My Channel";
+//            String description = "My Channel Description";
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
+//
+//    private void scheduleNotification() {
+//        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+//                this,
+//                0,
+//                notificationIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT
+//        );
+//
+//        long futureInMillis = SystemClock.elapsedRealtime() + INTERVAL_MILLIS;
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        if (alarmManager != null) {
+//            alarmManager.setInexactRepeating(
+//                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                    futureInMillis,
+//                    INTERVAL_MILLIS,
+//                    pendingIntent
+//            );
+//        }
+//    }
+//
+//    public static class NotificationReceiver extends BroadcastReceiver {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            showNotification(context);
+//        }
+//
+//        private void showNotification(Context context) {
+//            NotificationManager notificationManager =
+//                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//            NotificationCompat.Builder builder =
+//                    new NotificationCompat.Builder(context, CHANNEL_ID)
+//                            .setSmallIcon(R.drawable.ic_remind_padding)
+//                            .setContentTitle("定时提醒")
+//                            .setContentText("该做任务了！")
+//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//
+//            if (notificationManager != null) {
+//                notificationManager.notify(NOTIFICATION_ID, builder.build());
+//            }
+//        }
+//    }
+
 }
