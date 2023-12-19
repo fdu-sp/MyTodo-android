@@ -50,6 +50,12 @@ public class TaskSimpleTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
+    public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
+        // 这意味着用户只需滑动超过项宽度的25%即可触发事件
+        return 0.25f;
+    }
+
+    @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                             @NonNull RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
