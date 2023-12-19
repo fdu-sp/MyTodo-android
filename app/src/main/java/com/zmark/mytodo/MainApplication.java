@@ -3,6 +3,7 @@ package com.zmark.mytodo;
 import static com.zmark.mytodo.model.task.PriorityTypeE.NOT_URGENCY_IMPORTANT;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.Log;
 
@@ -75,6 +76,10 @@ public class MainApplication extends Application {
 
     public static ColorStateList getOverdueTaskTextColor() {
         return overdueTaskTextColor;
+    }
+
+    public static ColorStateList getColor(Context context, int colorId) {
+        return ContextCompat.getColorStateList(context, colorId);
     }
 
     @Override

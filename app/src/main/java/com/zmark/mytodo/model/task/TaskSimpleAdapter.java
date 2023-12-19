@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskContentClickListener;
+import com.zmark.mytodo.model.task.touch.TaskSimpleTouchHelperAdapter;
 import com.zmark.mytodo.network.impl.TaskServiceImpl;
 import com.zmark.mytodo.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> {
+public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> implements TaskSimpleTouchHelperAdapter {
     private static final String TAG = "TaskSimpleAdapter";
 
     private OnTaskContentClickListener onTaskContentClickListener;
@@ -132,6 +133,21 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
     public int getItemCount() {
         return todoList.size();
     }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+    }
+
+    @Override
+    public void onItemLeftSwipe(int adapterPosition) {
+        
+    }
+
+    @Override
+    public void onItemRightSwipe(int adapterPosition) {
+
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CheckBox checkBox;

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ import com.zmark.mytodo.model.group.TaskListSimple;
 import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.model.task.TaskSimpleAdapter;
+import com.zmark.mytodo.model.task.touch.TaskSimpleTouchHelperCallback;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskService;
 import com.zmark.mytodo.network.bo.group.resp.TaskGroupSimpleResp;
@@ -403,6 +405,11 @@ public class ListDetailFragment extends Fragment {
                 todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 // 将Adapter设置给RecyclerView
                 todoRecyclerView.setAdapter(taskSimpleAdapter);
+
+                ItemTouchHelper.Callback callback = new TaskSimpleTouchHelperCallback(requireContext(), taskSimpleAdapter);
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                itemTouchHelper.attachToRecyclerView(todoRecyclerView);
+
             } catch (Exception e) {
                 Log.e(TAG, "updateUI: " + e.getMessage(), e);
                 Toast.makeText(getContext(), Msg.CLIENT_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
