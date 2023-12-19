@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
@@ -463,11 +465,25 @@ public class MainActivity extends AppCompatActivity {
                         new NotificationCompat.Builder(context, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.ic_remind_padding)
                                 .setContentTitle(taskDetailResp.getTitle())
-                                .setContentText(taskDetailResp.getTaskContentInfo().getDescription())
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
+                String description = taskDetailResp.getTaskContentInfo().getDescription();
+                if (description != null) {
+                    builder.setStyle(new NotificationCompat.BigTextStyle().bigText(description));
+                }
                 if (notificationManager != null) {
                     notificationManager.notify(NOTIFICATION_ID, builder.build());
+                    // 获取Vibrator服务
+                    Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    if (vibrator != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            // 对于Android 8.0及以上版本，使用VibrationEffect
+                            VibrationEffect effect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
+                            vibrator.vibrate(effect);
+                        } else {
+                            // 对于早期版本，使用旧的vibrate方法
+                            vibrator.vibrate(500);
+                        }
+                    }
                 }
             });
         }
