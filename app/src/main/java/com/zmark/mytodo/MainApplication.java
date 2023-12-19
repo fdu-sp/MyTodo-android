@@ -14,6 +14,7 @@ import com.zmark.mytodo.model.task.PriorityTypeE;
 import com.zmark.mytodo.network.api.FourQuadrantService;
 import com.zmark.mytodo.network.api.HelloService;
 import com.zmark.mytodo.network.api.MyDayTaskService;
+import com.zmark.mytodo.network.api.ReminderService;
 import com.zmark.mytodo.network.api.TagService;
 import com.zmark.mytodo.network.api.TaskGroupService;
 import com.zmark.mytodo.network.api.TaskListService;
@@ -53,6 +54,7 @@ public class MainApplication extends Application {
     private static MyDayTaskService myDayTaskService;
     private static FourQuadrantService fourQuadrantService;
     private static TagService tagService;
+    private static ReminderService reminderService;
 
     public static ColorStateList getPriorityTextColor(PriorityTypeE priorityTypeE) {
         return priorityTextColorMap.get(priorityTypeE);
@@ -125,6 +127,7 @@ public class MainApplication extends Application {
         myDayTaskService = retrofit.create(MyDayTaskService.class);
         fourQuadrantService = retrofit.create(FourQuadrantService.class);
         tagService = retrofit.create(TagService.class);
+        reminderService = retrofit.create(ReminderService.class);
     }
 
     public static HelloService getHelloService() {
@@ -153,5 +156,9 @@ public class MainApplication extends Application {
 
     public static TagService getTagService() {
         return tagService;
+    }
+
+    public static ReminderService getReminderService() {
+        return reminderService;
     }
 }
