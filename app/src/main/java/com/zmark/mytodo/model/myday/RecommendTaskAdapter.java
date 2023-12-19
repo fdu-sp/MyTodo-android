@@ -18,12 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zmark.mytodo.MainApplication;
 import com.zmark.mytodo.R;
 import com.zmark.mytodo.handler.OnTaskContentClickListener;
 import com.zmark.mytodo.handler.OnTaskSimpleAddedListener;
 import com.zmark.mytodo.model.task.TaskSimple;
 import com.zmark.mytodo.network.impl.MyDayTaskServiceImpl;
 import com.zmark.mytodo.network.impl.TaskServiceImpl;
+import com.zmark.mytodo.utils.TimeUtils;
 
 import java.util.List;
 
@@ -136,6 +138,12 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                 }
                 // 显示到期时间
                 dueDateTextView.setText(taskSimple.getDueDate());
+                // 已过期的任务，设置颜色
+                if (!taskSimple.getCompleted() && TimeUtils.isDateOverdue(taskSimple.getDueDate())) {
+                    dueDateTextView.setTextColor(MainApplication.getOverdueTaskTextColor());
+                } else {
+                    dueDateTextView.setTextColor(MainApplication.getTextColor());
+                }
                 // 显示循环图标（如果是循环任务）
                 recurringIconImageView.setVisibility(taskSimple.isRecurring() ? View.VISIBLE : View.GONE);
                 // 重要：确保每次设置 CheckBox 状态时都明确指定，避免 RecyclerView 复用导致的问题
