@@ -456,11 +456,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static class ReminderReceiver extends BroadcastReceiver {
+        private static final String TAG = "MainActivity.ReminderReceiver";
         private static final String EXTRA_REMINDER_ID = "reminder_id";
 
         @Override
         public void onReceive(Context context, Intent intent) {
             int reminderId = intent.getIntExtra(EXTRA_REMINDER_ID, 0);
+            Log.i(TAG, "onReceive: " + reminderId);
+            if (reminderId == 0) {
+                Log.e(TAG, "onReceive: reminderId is 0");
+                return;
+            }
             showNotification(context, reminderId);
         }
 
