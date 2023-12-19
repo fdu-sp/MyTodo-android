@@ -140,12 +140,32 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
 
     @Override
     public void onItemLeftSwipe(int adapterPosition) {
-        
+        Log.d(TAG, "onItemLeftSwipe: " + adapterPosition);
+        // 左滑删除任务
+        // 从列表中删除任务
+        TaskSimple taskToRemove = todoList.remove(adapterPosition);
+        // 通知适配器移除了项目
+        notifyItemRemoved(adapterPosition);
+        // 可选：调用后端服务删除任务
+        TaskServiceImpl.deleteTask(taskToRemove.getId());
     }
 
     @Override
     public void onItemRightSwipe(int adapterPosition) {
-
+        Log.d(TAG, "onItemRightSwipe: " + adapterPosition);
+        // 右滑完成/取消完成任务
+        TaskSimple task = todoList.get(adapterPosition);
+        if (task.getCompleted()) {
+            // 如果任务已完成，取消完成
+            task.unComplete();
+            TaskServiceImpl.unCompleteTask(task.getId());
+        } else {
+            // 如果任务未完成，标记为完成
+            task.complete();
+            TaskServiceImpl.completeTask(task.getId());
+        }
+        // 通知适配器项目发生更改
+        notifyItemChanged(adapterPosition);
     }
 
 

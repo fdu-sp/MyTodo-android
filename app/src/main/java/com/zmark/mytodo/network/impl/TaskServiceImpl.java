@@ -64,4 +64,29 @@ public class TaskServiceImpl {
         });
     }
 
+    public static void deleteTask(Long taskId) {
+        TaskService taskService = MainApplication.getTaskService();
+        taskService.deleteTaskById(taskId).enqueue(new retrofit2.Callback<Result<String>>() {
+            @Override
+            public void onResponse(@NonNull retrofit2.Call<Result<String>> call, @NonNull retrofit2.Response<Result<String>> response) {
+                if (response.isSuccessful()) {
+                    Result<String> result = response.body();
+                    if (result == null) {
+                        Log.w(TAG, "result is null");
+                        return;
+                    }
+                    if (result.getCode() == ResultCode.SUCCESS.getCode()) {
+                        Log.i(TAG, "onResponse: 任务删除成功");
+                    } else {
+                        Log.w(TAG, "code:" + result.getCode() + " onResponse: " + result.getMsg());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull retrofit2.Call<Result<String>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
+    }
 }
