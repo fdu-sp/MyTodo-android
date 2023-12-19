@@ -390,8 +390,7 @@ public class ListDetailFragment extends Fragment {
         List<TaskSimple> todoListTemp = getShowData();
         requireActivity().runOnUiThread(() -> {
             try {
-                Log.d(TAG, "updateUI: " + todoListTemp.size());
-                if (this.todoList == null || this.todoList.isEmpty()) {
+                if (todoListTemp == null || todoListTemp.isEmpty()) {
                     noTaskMsgView.setVisibility(View.VISIBLE);
                     todoRecyclerView.setVisibility(View.GONE);
                     return;
