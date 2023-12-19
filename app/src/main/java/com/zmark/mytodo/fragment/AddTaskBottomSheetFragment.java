@@ -33,6 +33,7 @@ import com.zmark.mytodo.model.task.TaskDetail;
 import com.zmark.mytodo.network.ApiUtils;
 import com.zmark.mytodo.network.api.TaskService;
 import com.zmark.mytodo.network.bo.task.req.TaskCreateReq;
+import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 import com.zmark.mytodo.utils.TimeUtils;
@@ -471,18 +472,19 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void createNewTask(TaskCreateReq taskCreateReq) {
         TaskService taskService = MainApplication.getTaskService();
-        Call<Result<Object>> call = taskService.createNewTask(taskCreateReq);
-        call.enqueue(new Callback<Result<Object>>() {
+        Call<Result<TaskDetailResp>> call = taskService.createNewTask(taskCreateReq);
+        call.enqueue(new Callback<Result<TaskDetailResp>>() {
             @Override
-            public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
+            public void onResponse(@NonNull Call<Result<TaskDetailResp>> call, @NonNull Response<Result<TaskDetailResp>> response) {
                 if (response.isSuccessful()) {
-                    Result<Object> result = response.body();
+                    Result<TaskDetailResp> result = response.body();
                     assert result != null;
                     if (result.getCode() == ResultCode.SUCCESS.getCode()) {
                         Log.i(TAG, "onResponse: 任务创建成功");
                         Toast.makeText(requireContext(), "任务创建成功", Toast.LENGTH_SHORT).show();
+                        TaskDetailResp taskDetailResp = result.getObject();
                         if (onTaskCreateListener != null) {
-                            onTaskCreateListener.onTaskCreate(taskDetail);
+                            onTaskCreateListener.onTaskCreate(new TaskDetail(taskDetailResp));
                         }
                         // 关闭底部抽屉
                         dismiss();
@@ -496,7 +498,7 @@ public class AddTaskBottomSheetFragment extends BottomSheetDialogFragment {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Result<Object>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Result<TaskDetailResp>> call, @NonNull Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 Toast.makeText(requireContext(), Msg.CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
             }

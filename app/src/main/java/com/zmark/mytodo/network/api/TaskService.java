@@ -31,7 +31,7 @@ public interface TaskService {
     Call<Result<String>> unCompleteTask(@Path("task-id") Long taskId);
 
     @POST("task/create-new-task")
-    Call<Result<Object>> createNewTask(@Body TaskCreateReq taskCreateReq);
+    Call<Result<TaskDetailResp>> createNewTask(@Body TaskCreateReq taskCreateReq);
 
     @POST("task/update")
     Call<Result<TaskDetailResp>> updateTask(@Body TaskUpdateReq taskUpdateReq);
