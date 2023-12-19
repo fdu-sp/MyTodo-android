@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
@@ -49,7 +50,6 @@ import com.zmark.mytodo.network.bo.task.resp.TaskDetailResp;
 import com.zmark.mytodo.network.result.Result;
 import com.zmark.mytodo.network.result.ResultCode;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -402,54 +402,34 @@ public class MainActivity extends AppCompatActivity {
     private static final String DATE_TIME_FORMAT_WITH_DECIMAL = "yyyy-MM-dd HH:mm:ss.S";
 
     private void scheduleNotificationForReminder(int reminderId, String reminderTimestampStr) {
-        PendingIntent pendingIntent = ReminderReceiver.getPendingIntent(this, reminderId);
-
         try {
+            PendingIntent pendingIntent = ReminderReceiver.getPendingIntent(this, reminderId);
             // 将字符串转换为时间戳
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_WITH_DECIMAL, Locale.getDefault());
             Date reminderDate = dateFormat.parse(reminderTimestampStr);
             if (reminderDate == null) {
-                Log.e(TAG, "scheduleNotificationForReminder: reminderDate is null");
+                Log.e(TAG, "scheduleNotificationForReminder: reminderDate is null, reminderId: " + reminderId);
                 return;
             }
-            long reminderTimestamp = reminderDate.getTime();
-
+            long INTERVAL_MILLIS = reminderDate.getTime() - System.currentTimeMillis();
+            if (INTERVAL_MILLIS < 0) {
+                Log.e(TAG, "scheduleNotificationForReminder: INTERVAL_MILLIS is negative, reminderId: " + reminderId);
+                return;
+            }
+            long futureInMillis = SystemClock.elapsedRealtime() + INTERVAL_MILLIS;
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    if (alarmManager.canScheduleExactAlarms()) {
-                        AlarmManager.AlarmClockInfo alarmClockInfo =
-                                new AlarmManager.AlarmClockInfo(reminderTimestamp, pendingIntent);
-                        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-                        Log.i(TAG, "scheduleNotificationForReminder1: " + reminderId + "-" + reminderDate);
-                    } else {
-                        // 处理无法使用准确的定时器的情况，可以降级为使用setExactAndAllowWhileIdle，或采取其他适当的措施
-                        Log.w(TAG, "scheduleNotificationForReminder: 无法使用准确的定时器");
-                    }
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(
-                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            reminderTimestamp,
-                            pendingIntent
-                    );
-                    Log.i(TAG, "scheduleNotificationForReminder2: " + reminderId + "-" + reminderDate);
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    alarmManager.setExact(
-                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            reminderTimestamp,
-                            pendingIntent
-                    );
-                    Log.i(TAG, "scheduleNotificationForReminder3: " + reminderId + "-" + reminderDate);
-                } else {
-                    alarmManager.set(
-                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            reminderTimestamp,
-                            pendingIntent
-                    );
-                    Log.i(TAG, "scheduleNotificationForReminder4: " + reminderId + "-" + reminderDate);
-                }
+                alarmManager.setInexactRepeating(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        futureInMillis,
+                        INTERVAL_MILLIS,
+                        pendingIntent
+                );
+                Log.i(TAG, "scheduleNotificationForReminder: " + reminderId + "-" + reminderDate);
+            } else {
+                Log.e(TAG, "scheduleNotificationForReminder: alarmManager is null");
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             Log.e(TAG, "scheduleNotificationForReminder: " + e.getMessage(), e);
         }
     }
@@ -482,8 +462,8 @@ public class MainActivity extends AppCompatActivity {
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.ic_remind_padding)
-                                .setContentTitle("定时提醒")
-                                .setContentText(taskDetailResp.getTitle())
+                                .setContentTitle(taskDetailResp.getTitle())
+                                .setContentText(taskDetailResp.getTaskContentInfo().getDescription())
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                 if (notificationManager != null) {
@@ -495,71 +475,18 @@ public class MainActivity extends AppCompatActivity {
         public static PendingIntent getPendingIntent(Context context, int reminderId) {
             Intent intent = new Intent(context, ReminderReceiver.class);
             intent.putExtra(EXTRA_REMINDER_ID, reminderId);
-            return PendingIntent.getBroadcast(
-                    context,
-                    reminderId,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-            );
+
+            int flags;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // 对于Android 12及以上版本，需要指定FLAG_IMMUTABLE或FLAG_MUTABLE
+                flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+            } else {
+                // 对于更早的版本，可以继续使用原来的标志
+                flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            }
+
+            return PendingIntent.getBroadcast(context, reminderId, intent, flags);
         }
+
     }
-
-//    private void createNotificationChannel() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = "My Channel";
-//            String description = "My Channel Description";
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-//            channel.setDescription(description);
-//
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//    }
-//
-//    private void scheduleNotification() {
-//        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-//                this,
-//                0,
-//                notificationIntent,
-//                PendingIntent.FLAG_UPDATE_CURRENT
-//        );
-//
-//        long futureInMillis = SystemClock.elapsedRealtime() + INTERVAL_MILLIS;
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        if (alarmManager != null) {
-//            alarmManager.setInexactRepeating(
-//                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                    futureInMillis,
-//                    INTERVAL_MILLIS,
-//                    pendingIntent
-//            );
-//        }
-//    }
-//
-//    public static class NotificationReceiver extends BroadcastReceiver {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            showNotification(context);
-//        }
-//
-//        private void showNotification(Context context) {
-//            NotificationManager notificationManager =
-//                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//            NotificationCompat.Builder builder =
-//                    new NotificationCompat.Builder(context, CHANNEL_ID)
-//                            .setSmallIcon(R.drawable.ic_remind_padding)
-//                            .setContentTitle("定时提醒")
-//                            .setContentText("该做任务了！")
-//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//
-//            if (notificationManager != null) {
-//                notificationManager.notify(NOTIFICATION_ID, builder.build());
-//            }
-//        }
-//    }
-
 }
