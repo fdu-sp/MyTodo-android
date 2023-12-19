@@ -13,21 +13,21 @@ import retrofit2.http.Path;
 
 public interface MyDayTaskService {
 
-    @POST("/api/task/my-day/add/{task-id}")
+    @POST("task/my-day/add/{task-id}")
     Call<Result<Object>> addTaskToMyDay(@Path("task-id") Long taskId);
 
-    @POST("/api/task/my-day/remove/{task-id}")
+    @POST("task/my-day/remove/{task-id}")
     Call<Result<Object>> removeFromMyDayList(@Path("task-id") Long taskId);
 
-    @POST("/api/task/my-day/clear")
+    @POST("task/my-day/clear")
     Call<Result<Object>> clearMyDayList();
 
-    @GET("/api/task/my-day/simple/list")
+    @GET("task/my-day/simple/list")
     Call<Result<List<TaskSimpleResp>>> getMyDayListWithSimpleInfo();
 
-    @GET("/api/task/my-day/detail/list")
+    @GET("task/my-day/detail/list")
     Call<Result<List<TaskSimpleResp>>> getMyDayListWithDetailInfo();
 
-    @GET("/api/task/my-day/recommend")
+    @GET("task/my-day/recommend")
     Call<Result<RecommendMyDayResp>> getRecommendTaskList();
 }
