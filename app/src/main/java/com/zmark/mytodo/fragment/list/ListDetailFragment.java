@@ -398,7 +398,7 @@ public class ListDetailFragment extends Fragment {
                 noTaskMsgView.setVisibility(View.GONE);
                 todoRecyclerView.setVisibility(View.VISIBLE);
                 // 创建RecyclerView的Adapter
-                TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(todoListTemp);
+                TaskSimpleAdapter taskSimpleAdapter = new TaskSimpleAdapter(requireContext(), todoListTemp);
                 taskSimpleAdapter.setOnTaskContentClickListener(this::openTaskDetail);
                 // 设置RecyclerView的LayoutManager
                 todoRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));

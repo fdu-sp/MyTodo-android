@@ -1,5 +1,6 @@
 package com.zmark.mytodo.model.task;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zmark.mytodo.MainApplication;
@@ -27,11 +29,13 @@ import java.util.List;
 public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.ViewHolder> implements TaskSimpleTouchHelperAdapter {
     private static final String TAG = "TaskSimpleAdapter";
 
-    private OnTaskContentClickListener onTaskContentClickListener;
-
+    private final Context context;
     private final List<TaskSimple> todoList;
 
-    public TaskSimpleAdapter(List<TaskSimple> todoList) {
+    private OnTaskContentClickListener onTaskContentClickListener;
+
+    public TaskSimpleAdapter(Context context, List<TaskSimple> todoList) {
+        this.context = context;
         this.todoList = new ArrayList<>();
         this.todoList.addAll(todoList);
     }
@@ -141,14 +145,37 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
     @Override
     public void onItemLeftSwipe(int adapterPosition) {
         Log.d(TAG, "onItemLeftSwipe: " + adapterPosition);
-        // 左滑删除任务
-        // 从列表中删除任务
-        TaskSimple taskToRemove = todoList.remove(adapterPosition);
-        // 通知适配器移除了项目
-        notifyItemRemoved(adapterPosition);
-        // 可选：调用后端服务删除任务
-        TaskServiceImpl.deleteTask(taskToRemove.getId());
+
+        // 构建 AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("确认删除");
+        builder.setMessage("确定要删除这个任务吗？");
+
+        // 确定按钮
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            // 从列表中删除任务
+            TaskSimple taskToRemove = todoList.remove(adapterPosition);
+            // 通知适配器移除了项目
+            notifyItemRemoved(adapterPosition);
+            // 可选：调用后端服务删除任务
+            TaskServiceImpl.deleteTask(taskToRemove.getId());
+
+            // 关闭对话框
+            dialog.dismiss();
+        });
+
+        // 取消按钮
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            // 用户取消删除操作，通知适配器数据发生了变化，以便恢复视图状态
+            notifyItemChanged(adapterPosition);
+
+            // 关闭对话框
+            dialog.dismiss();
+        });
+        // 显示对话框
+        builder.show();
     }
+
 
     @Override
     public void onItemRightSwipe(int adapterPosition) {
