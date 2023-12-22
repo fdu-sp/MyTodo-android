@@ -45,6 +45,34 @@ public class TimeUtils {
         return date.toString();
     }
 
+    public static String getFormattedDateStr(String dateStr) {
+        return getFormattedDateStr(getDateFromStr(dateStr));
+    }
+
+    /**
+     * 如果在本周内，返回周几
+     * 否则返回日期
+     */
+    public static String getSingleFormattedDateStr(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) {
+            return "";
+        }
+        Date date = getDateFromStr(dateStr);
+        if (isInThisWeek(date)) {
+            return getDayOfWeek(dateStr);
+        }
+        return getFormattedDateStr(dateStr);
+    }
+
+    public static boolean isInThisWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        Calendar todayCalendar = Calendar.getInstance();
+        int todayWeekOfYear = todayCalendar.get(Calendar.WEEK_OF_YEAR);
+        return weekOfYear == todayWeekOfYear;
+    }
+
     public static String getDayOfWeek(Timestamp timestamp) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(timestamp.getTime()));
@@ -164,7 +192,7 @@ public class TimeUtils {
             return false;
         }
         Date date = getDateFromStr(dateStr);
-        return date.before(today());
+        return date.before(today()) && !dateEquals(date, today());
     }
 
     public static boolean isTimeStampOverdue(String timestampStr) {

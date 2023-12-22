@@ -137,9 +137,11 @@ public class RecommendTaskAdapter extends RecyclerView.Adapter<RecommendTaskAdap
                     tagsTextView.setVisibility(View.GONE);
                 }
                 // 显示到期时间
-                dueDateTextView.setText(taskSimple.getDueDate());
+                String dueDate = taskSimple.getDueDate();
+                String formattedDueDate = TimeUtils.getSingleFormattedDateStr(dueDate);
+                dueDateTextView.setText(formattedDueDate);
                 // 已过期的任务，设置颜色
-                if (!taskSimple.getCompleted() && TimeUtils.isDateOverdue(taskSimple.getDueDate())) {
+                if (!taskSimple.getCompleted() && TimeUtils.isDateOverdue(dueDate)) {
                     dueDateTextView.setTextColor(MainApplication.getOverdueTaskTextColor());
                 } else {
                     dueDateTextView.setTextColor(MainApplication.getTextColor());

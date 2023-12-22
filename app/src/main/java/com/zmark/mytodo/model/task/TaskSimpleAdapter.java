@@ -106,9 +106,11 @@ public class TaskSimpleAdapter extends RecyclerView.Adapter<TaskSimpleAdapter.Vi
                 holder.tagsTextView.setVisibility(View.GONE);
             }
             // 显示到期时间
-            holder.dueDateTextView.setText(todoItem.getDueDate());
+            String dueDate = todoItem.getDueDate();
+            String formattedDueDate = TimeUtils.getSingleFormattedDateStr(dueDate);
+            holder.dueDateTextView.setText(formattedDueDate);
             // 已过期的任务，设置颜色
-            if (!todoItem.getCompleted() && TimeUtils.isDateOverdue(todoItem.getDueDate())) {
+            if (!todoItem.getCompleted() && TimeUtils.isDateOverdue(dueDate)) {
                 holder.dueDateTextView.setTextColor(MainApplication.getOverdueTaskTextColor());
             } else {
                 holder.dueDateTextView.setTextColor(MainApplication.getTextColor());
