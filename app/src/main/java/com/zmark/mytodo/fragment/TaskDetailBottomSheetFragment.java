@@ -160,67 +160,65 @@ public class TaskDetailBottomSheetFragment extends AddTaskBottomSheetFragment {
     @Override
     protected void handleAddToMyDayClick(View view) {
         // 设置 添加到我的一天
-        this.addToMyDayLayout.setOnClickListener(v -> {
-            if (taskDetail.isInMyDay()) {
-                MyDayTaskServiceImpl.removeFromMyDayList(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
-                    @Override
-                    public void onSuccess() {
-                        taskDetail.setInMyDay(false);
-                        updateAddToMyDayUI();
-                        // 如果是 我的一天 任务列表，需要通知上层更新
-                        if (onTaskUpdateListener != null) {
-                            onTaskUpdateListener.onTaskUpdated(taskDetail);
-                        }
+        if (taskDetail.isInMyDay()) {
+            MyDayTaskServiceImpl.removeFromMyDayList(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
+                @Override
+                public void onSuccess() {
+                    taskDetail.setInMyDay(false);
+                    updateAddToMyDayUI();
+                    // 如果是 我的一天 任务列表，需要通知上层更新
+                    if (onTaskUpdateListener != null) {
+                        onTaskUpdateListener.onTaskUpdated(taskDetail);
                     }
+                }
 
-                    @Override
-                    public void onFailure(Integer code, String msg) {
-                        Log.w(TAG, "onFailure: " + code + " " + msg);
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
+                @Override
+                public void onFailure(Integer code, String msg) {
+                    Log.w(TAG, "onFailure: " + code + " " + msg);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onClientRequestError(Throwable t) {
-                        Log.e(TAG, "onClientRequestError: ", t);
-                        Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-                    }
+                @Override
+                public void onClientRequestError(Throwable t) {
+                    Log.e(TAG, "onClientRequestError: ", t);
+                    Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onServerInternalError() {
-                        Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                @Override
+                public void onServerInternalError() {
+                    Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            MyDayTaskServiceImpl.addTaskToMyDay(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
+                @Override
+                public void onSuccess() {
+                    taskDetail.setInMyDay(true);
+                    updateAddToMyDayUI();
+                    // 如果是 我的一天 任务列表，需要通知上层更新
+                    if (onTaskUpdateListener != null) {
+                        onTaskUpdateListener.onTaskUpdated(taskDetail);
                     }
-                });
-            } else {
-                MyDayTaskServiceImpl.addTaskToMyDay(taskDetail.getId(), new MyDayTaskServiceImpl.Callbacks() {
-                    @Override
-                    public void onSuccess() {
-                        taskDetail.setInMyDay(true);
-                        updateAddToMyDayUI();
-                        // 如果是 我的一天 任务列表，需要通知上层更新
-                        if (onTaskUpdateListener != null) {
-                            onTaskUpdateListener.onTaskUpdated(taskDetail);
-                        }
-                    }
+                }
 
-                    @Override
-                    public void onFailure(Integer code, String msg) {
-                        Log.w(TAG, "onFailure: " + code + " " + msg);
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
+                @Override
+                public void onFailure(Integer code, String msg) {
+                    Log.w(TAG, "onFailure: " + code + " " + msg);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onClientRequestError(Throwable t) {
-                        Log.e(TAG, "onClientRequestError: ", t);
-                        Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
-                    }
+                @Override
+                public void onClientRequestError(Throwable t) {
+                    Log.e(TAG, "onClientRequestError: ", t);
+                    Toast.makeText(getContext(), CLIENT_REQUEST_ERROR, Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onServerInternalError() {
-                        Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+                @Override
+                public void onServerInternalError() {
+                    Toast.makeText(getContext(), SERVER_INTERNAL_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         this.updateAddToMyDayUI();
     }
 
