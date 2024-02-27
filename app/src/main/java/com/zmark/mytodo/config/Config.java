@@ -6,7 +6,8 @@ public class Config {
     private static final String SERVER_IP = "10.117.65.255";
 //    private static final String SERVER_IP = "192.168.31.61";
 
-    private static final String SERVER_PORT = "8787";
+    private static final String SERVER_PORT = "8788"; // prod
+//    private static final String SERVER_PORT = "8787"; // dev
 
     /**
      * baseUrl must end in /
