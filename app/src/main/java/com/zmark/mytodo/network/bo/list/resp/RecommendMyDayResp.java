@@ -6,11 +6,6 @@ package com.zmark.mytodo.network.bo.list.resp;
  */
 public class RecommendMyDayResp {
     /**
-     * 截止日期为今天的任务
-     */
-    RecommendTaskListResp tasksEndToday;
-
-    /**
      * 截止日期为之后三天的任务
      */
     RecommendTaskListResp tasksEndInThreeDays;
@@ -29,10 +24,6 @@ public class RecommendMyDayResp {
      * 最新一天创建的任务
      */
     RecommendTaskListResp latestCreatedTasks;
-
-    public RecommendTaskListResp getTasksEndToday() {
-        return tasksEndToday;
-    }
 
     public RecommendTaskListResp getTasksEndInThreeDays() {
         return tasksEndInThreeDays;

@@ -95,7 +95,6 @@ public class RecommendMyDayBottomSheetFragment extends BottomSheetDialogFragment
         requireActivity().runOnUiThread(() -> {
             try {
                 List<RecommendTaskList> recommendTaskLists = new ArrayList<>();
-                recommendTaskLists.add(new RecommendTaskList(recommendMyDayResp.getTasksEndToday()));
                 recommendTaskLists.add(new RecommendTaskList(recommendMyDayResp.getTasksEndInThreeDays()));
                 recommendTaskLists.add(new RecommendTaskList(recommendMyDayResp.getTasksEndInFourToSevenDays()));
                 recommendTaskLists.add(new RecommendTaskList(recommendMyDayResp.getUncompletedTasksEndBeforeToday()));
